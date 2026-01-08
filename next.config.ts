@@ -1,7 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
+  images: {
+    domains: ['placeholder.com'],
+    formats: ['image/webp', 'image/avif'],
+  },
+  experimental: {
+    mdxRs: true,
+  },
 };
 
 export default nextConfig;

@@ -1,0 +1,91 @@
+{
+  "navigation": {
+    "home": "Home",
+    "projects": "Projects",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "hero": {
+    "name": "Fernando Rios",
+    "role": "Data Scientist & Full-Stack Developer",
+    "description": "Passionate about transforming data into insights and building scalable solutions that drive real-world impact.",
+    "cta": {
+      "primary": "View Projects",
+      "secondary": "Get In Touch"
+    }
+  },
+  "projects": {
+    "title": "Featured Projects",
+    "subtitle": "A selection of my recent work in data science, machine learning, and full-stack development",
+    "viewMore": "View All Projects",
+    "filters": {
+      "all": "All",
+      "dataScience": "Data Science",
+      "fullStack": "Full-Stack",
+      "ml": "Machine Learning",
+      "visualization": "Visualization"
+    },
+    "empty": "No projects found matching your criteria.",
+    "search": {
+      "placeholder": "Search projects...",
+      "clear": "Clear search"
+    },
+    "sort": {
+      "featured": "Featured",
+      "newest": "Newest",
+      "category": "Category"
+    },
+    "links": {
+      "demo": "View Demo",
+      "repo": "View Code",
+      "details": "Read More"
+    }
+  },
+  "about": {
+    "title": "About Me",
+    "bio": "I'm a data scientist and full-stack developer with a passion for creating innovative solutions that bridge the gap between complex data analysis and user-friendly applications. With expertise in machine learning, statistical modeling, and modern web development, I help organizations unlock insights from their data and build scalable digital products.",
+    "techStack": {
+      "title": "Tech Stack",
+      "frontend": "Frontend",
+      "backend": "Backend",
+      "data": "Data & ML",
+      "tools": "Tools"
+    },
+    "education": {
+      "title": "Education & Certifications",
+      "placeholder": "Coming soon - Coding bootcamps, certifications, and continuous learning journey"
+    },
+    "social": {
+      "title": "Connect With Me"
+    }
+  },
+  "contact": {
+    "title": "Get In Touch",
+    "subtitle": "Let's discuss your next project or collaboration opportunity",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "message": "Message",
+      "send": "Send Message",
+      "note": "Form integration coming soon. For now, please reach out directly via email."
+    },
+    "direct": {
+      "title": "Or reach out directly:",
+      "email": "Send Email"
+    }
+  },
+  "footer": {
+    "copyright": "Built with Next.js, TypeScript, and Tailwind CSS"
+  },
+  "theme": {
+    "toggle": "Toggle theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "language": {
+    "toggle": "Change language",
+    "en": "English",
+    "es": "Español"
+  }
+}
