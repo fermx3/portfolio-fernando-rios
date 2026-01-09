@@ -138,8 +138,31 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
             {/* Project Content */}
             <FadeIn direction="up" delay={0.3}>
-              <div className="prose prose-gray dark:prose-invert max-w-none">
-                <div dangerouslySetInnerHTML={{ __html: project.content }} />
+              <div
+                className="max-w-none"
+                style={{
+                  fontSize: '1.125rem',
+                  lineHeight: '1.7',
+                  color: 'hsl(var(--muted-foreground))'
+                }}
+              >
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: project.content.replace(
+                      /<h2>/g, '<h2 style="font-size: 1.5rem; font-weight: 700; margin: 2rem 0 1rem 0; border-bottom: 1px solid hsl(var(--border)); padding-bottom: 0.5rem; color: hsl(var(--foreground));">'
+                    ).replace(
+                      /<h3>/g, '<h3 style="font-size: 1.25rem; font-weight: 600; margin: 1.5rem 0 0.75rem 0; color: hsl(var(--foreground));">'
+                    ).replace(
+                      /<p>/g, '<p style="margin-bottom: 1.25rem; line-height: 1.7; color: hsl(var(--muted-foreground));">'
+                    ).replace(
+                      /<strong>/g, '<strong style="font-weight: 600; color: hsl(var(--foreground));">'
+                    ).replace(
+                      /<ul>/g, '<ul style="margin: 1.5rem 0; padding-left: 1.5rem; list-style-type: disc;">'
+                    ).replace(
+                      /<li>/g, '<li style="margin-bottom: 0.5rem; color: hsl(var(--muted-foreground)); display: list-item;">'
+                    )
+                  }}
+                />
               </div>
             </FadeIn>
           </div>

@@ -3,11 +3,19 @@
 import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
+import MarkdownIt from 'markdown-it'
 import { cache } from 'react'
 import { projectSchema } from './validations'
 import { Project } from '@/types/project'
 
 const contentDirectory = path.join(process.cwd(), 'content/projects')
+
+// Initialize markdown processor
+const md = new MarkdownIt({
+  html: true,
+  linkify: true,
+  typographer: true,
+})
 
 export const getAllProjects = cache(async (): Promise<Project[]> => {
   try {
@@ -29,6 +37,9 @@ export const getAllProjects = cache(async (): Promise<Project[]> => {
         const fileContent = fs.readFileSync(filePath, 'utf8')
         const { data, content } = matter(fileContent)
 
+        // Process MDX content to HTML
+        const processedContent = md.render(content)
+
         // Validate frontmatter with Zod
         const validatedData = projectSchema.parse({
           ...data,
@@ -37,7 +48,7 @@ export const getAllProjects = cache(async (): Promise<Project[]> => {
 
         return {
           ...validatedData,
-          content,
+          content: processedContent,
         }
       })
   )
@@ -60,6 +71,9 @@ export const getProjectBySlug = cache(async (slug: string): Promise<Project | nu
     const fileContent = fs.readFileSync(filePath, 'utf8')
     const { data, content } = matter(fileContent)
 
+    // Process MDX content to HTML
+    const processedContent = md.render(content)
+
     const validatedData = projectSchema.parse({
       ...data,
       slug,
@@ -67,7 +81,7 @@ export const getProjectBySlug = cache(async (slug: string): Promise<Project | nu
 
     return {
       ...validatedData,
-      content,
+      content: processedContent,
     }
   } catch {
     return null
