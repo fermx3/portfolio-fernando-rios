@@ -5,6 +5,8 @@ import { Separator } from '@/components/ui/separator'
 export function Footer() {
   const t = useTranslations('footer')
 
+  const year = new Date().getFullYear()
+
   return (
     <footer className="border-t">
       <Container>
@@ -12,7 +14,7 @@ export function Footer() {
           <Separator className="mb-8" />
           <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
             <p className="text-sm text-muted-foreground text-center md:text-left">
-              © 2024 Fernando Rios. All rights reserved.
+              © {year} Fernando Rios. All rights reserved.
             </p>
             <p className="text-sm text-muted-foreground text-center md:text-right">
               {t('copyright')}

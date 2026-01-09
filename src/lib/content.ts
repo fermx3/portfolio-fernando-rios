@@ -4,7 +4,7 @@ import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
 import { cache } from 'react'
-import { ProjectFrontmatter, projectSchema } from './validations'
+import { projectSchema } from './validations'
 import { Project } from '@/types/project'
 
 const contentDirectory = path.join(process.cwd(), 'content/projects')
