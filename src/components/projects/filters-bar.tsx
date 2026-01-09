@@ -17,7 +17,7 @@ interface FiltersBarProps {
   onTagToggle: (tag: string) => void
 }
 
-const categories: (ProjectCategory | 'all')[] = ['all', 'data-science', 'full-stack', 'ml', 'visualization']
+const categories: (ProjectCategory | 'all')[] = ['all', 'data-science', 'full-stack', 'ml', 'visualization', 'web-development']
 
 export function FiltersBar({
   selectedCategory,

@@ -7,6 +7,7 @@ import { Container } from '@/components/layout/container'
 import { Section } from '@/components/layout/section'
 import { FadeIn } from '@/components/motion/fade-in'
 import { StaggerContainer, StaggerItem } from '@/components/motion/stagger-container'
+import ProfilePicture from '@/components/ui/profile-picture'
 
 interface EducationItem {
   institution: string
@@ -15,10 +16,10 @@ interface EducationItem {
 }
 
 const techStack = {
-  frontend: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Vue.js'],
+  frontend: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS'],
   backend: ['Node.js', 'Python', 'FastAPI', 'PostgreSQL', 'MongoDB'],
-  data: ['Pandas', 'NumPy', 'Scikit-learn', 'TensorFlow', 'PyTorch', 'Jupyter'],
-  tools: ['Git', 'Docker', 'AWS', 'Vercel', 'Figma', 'VS Code']
+  data: ['Pandas', 'NumPy', 'Scikit-learn', 'TensorFlow', 'Jupyter'],
+  tools: ['Git', 'Docker', 'AWS', 'Vercel', 'VS Code', 'Google Colab', 'GCP']
 }
 
 export function About() {
@@ -33,45 +34,63 @@ export function About() {
           </h2>
         </FadeIn>
 
-        <div className="mt-16 grid gap-12 lg:grid-cols-2 lg:gap-16">
-          {/* Bio */}
-          <FadeIn direction="up" delay={0.1}>
-            <div className="space-y-6">
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                {t('bio')}
-              </p>
+<div className="mt-16 grid gap-8 lg:grid-cols-2 lg:gap-16">
+          {/* Profile Card - Solo */}
+          <FadeIn direction="left" delay={0.1}>
+            <div>
+              <Card className="relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-lime-500/10 via-transparent to-blue-500/10"></div>
+                <CardContent className="pt-8 pb-6 text-center relative">
+                  <div className="mb-6 flex justify-center">
+                    <div className="relative">
+                      <ProfilePicture className="ring-lime-400/30 shadow-xl" />
+                      <div className="absolute -bottom-2 -right-2 w-6 h-6 bg-lime-400 rounded-full ring-4 ring-background"></div>
+                    </div>
+                  </div>
+                  <h3 className="font-bold text-xl mb-2">Fernando Rios</h3>
+                  <p className="text-muted-foreground text-sm">Data Scientist & Full-Stack Developer</p>
 
-              {/* Social Links */}
+                  {/* Social Links - Compact horizontal */}
+                  <div className="mt-6">
+                    <div className="flex justify-center gap-2">
+                      <Button variant="outline" size="sm" asChild>
+                        <a
+                          href="https://github.com/fermx3"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <Github className="h-4 w-4" />
+                        </a>
+                      </Button>
+                      <Button variant="outline" size="sm" asChild>
+                        <a
+                          href="https://www.linkedin.com/in/riosafernando/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <Linkedin className="h-4 w-4" />
+                        </a>
+                      </Button>
+                      <Button variant="outline" size="sm" asChild>
+                        <a href="mailto:fer.riosalcantara@gmail.com">
+                          <Mail className="h-4 w-4" />
+                        </a>
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </FadeIn>
+
+          {/* Bio & Education - Together */}
+          <FadeIn direction="up" delay={0.2}>
+            <div className="space-y-6">
               <div>
-                <h3 className="mb-4 text-lg font-semibold">{t('social.title')}</h3>
-                <div className="flex gap-4">
-                  <Button variant="outline" size="sm" asChild>
-                    <a
-                      href="https://github.com/fermx3"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Github className="mr-2 h-4 w-4" />
-                      GitHub
-                    </a>
-                  </Button>
-                  <Button variant="outline" size="sm" asChild>
-                    <a
-                      href="https://www.linkedin.com/in/riosafernando/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Linkedin className="mr-2 h-4 w-4" />
-                      LinkedIn
-                    </a>
-                  </Button>
-                  <Button variant="outline" size="sm" asChild>
-                    <a href="mailto:fer.riosalcantara@gmail.com">
-                      <Mail className="mr-2 h-4 w-4" />
-                      Email
-                    </a>
-                  </Button>
-                </div>
+                <h3 className="mb-4 text-lg font-semibold">About Me</h3>
+                <p className="text-lg text-muted-foreground leading-relaxed">
+                  {t('bio')}
+                </p>
               </div>
 
               {/* Education */}
@@ -79,7 +98,7 @@ export function About() {
                 <h3 className="mb-4 text-lg font-semibold">{t('education.title')}</h3>
                 <div className="space-y-4">
                   {t.raw('education.items').map((item: EducationItem, index: number) => (
-                    <Card key={index}>
+                    <Card key={index} className="hover:shadow-md transition-shadow">
                       <CardContent className="pt-6">
                         <div className="space-y-2">
                           <h4 className="font-semibold text-foreground">{item.institution}</h4>
@@ -93,16 +112,18 @@ export function About() {
               </div>
             </div>
           </FadeIn>
+        </div>
 
-          {/* Tech Stack */}
-          <FadeIn direction="up" delay={0.2}>
+        {/* Tech Stack - Full width section below */}
+        <div className="mt-16">
+          <FadeIn direction="up" delay={0.3}>
             <div>
-              <h3 className="mb-6 text-lg font-semibold">{t('techStack.title')}</h3>
+              <h3 className="mb-8 text-lg font-semibold">{t('techStack.title')}</h3>
 
               <StaggerContainer className="space-y-6">
                 {Object.entries(techStack).map(([category, technologies]) => (
                   <StaggerItem key={category}>
-                    <Card>
+                    <Card className="hover:shadow-md transition-shadow">
                       <CardHeader className="pb-3">
                         <CardTitle className="text-base">
                           {t(`techStack.${category}`)}

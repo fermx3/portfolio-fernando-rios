@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
+import { usePathname } from 'next/navigation'
 import { ExternalLink, Github } from 'lucide-react'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -16,26 +17,35 @@ interface ProjectCardProps {
 
 export function ProjectCard({ project }: ProjectCardProps) {
   const t = useTranslations('projects')
+  const pathname = usePathname()
+
+  // Get current locale from pathname
+  const getCurrentLocale = () => {
+    const pathSegments = pathname.split('/').filter(Boolean)
+    return pathSegments[0] === 'es' || pathSegments[0] === 'en' ? pathSegments[0] : 'en'
+  }
 
   return (
     <Card className="group h-full overflow-hidden transition-all duration-300 hover:shadow-lg">
-      <div className="relative aspect-video overflow-hidden">
-        {project.coverImage ? (
-          <Image
-            src={project.coverImage}
-            alt={project.title}
-            fill
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
-          />
-        ) : (
-          <div
-            className="h-full w-full"
-            style={{
-              background: generatePlaceholderGradient(project.title)
-            }}
-          />
-        )}
-      </div>
+      <Link href={`/${getCurrentLocale()}/projects/${project.slug}`} className="block">
+        <div className="relative aspect-video overflow-hidden">
+          {project.coverImage ? (
+            <Image
+              src={project.coverImage}
+              alt={project.title}
+              fill
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
+            />
+          ) : (
+            <div
+              className="h-full w-full"
+              style={{
+                background: generatePlaceholderGradient(project.title)
+              }}
+            />
+          )}
+        </div>
+      </Link>
 
       <CardHeader>
         <div className="flex items-start justify-between gap-4">
@@ -87,20 +97,24 @@ export function ProjectCard({ project }: ProjectCardProps) {
       </CardContent>
 
       <CardFooter className="gap-2">
-        <Button variant="outline" size="sm" asChild className="flex-1">
-          <a href={project.demoUrl} target="_blank" rel="noopener noreferrer">
-            <ExternalLink className="mr-1 h-3 w-3" />
-            {t('links.demo')}
-          </a>
-        </Button>
-        <Button variant="outline" size="sm" asChild className="flex-1">
-          <a href={project.repoUrl} target="_blank" rel="noopener noreferrer">
-            <Github className="mr-1 h-3 w-3" />
-            {t('links.repo')}
-          </a>
-        </Button>
+        {(project.liveUrl || project.demoUrl) && (
+          <Button variant="outline" size="sm" asChild className="flex-1">
+            <a href={project.liveUrl || project.demoUrl} target="_blank" rel="noopener noreferrer">
+              <ExternalLink className="mr-1 h-3 w-3" />
+              {t('links.demo')}
+            </a>
+          </Button>
+        )}
+        {project.repoUrl && (
+          <Button variant="outline" size="sm" asChild className="flex-1">
+            <a href={project.repoUrl} target="_blank" rel="noopener noreferrer">
+              <Github className="mr-1 h-3 w-3" />
+              {t('links.repo')}
+            </a>
+          </Button>
+        )}
         <Button size="sm" asChild>
-          <Link href={`/projects/${project.slug}`}>
+          <Link href={`/${getCurrentLocale()}/projects/${project.slug}`}>
             {t('links.details')}
           </Link>
         </Button>

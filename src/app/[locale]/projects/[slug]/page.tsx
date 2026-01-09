@@ -14,10 +14,10 @@ import { getCategoryColor, formatDate, generatePlaceholderGradient } from '@/lib
 import { Metadata } from 'next'
 
 interface ProjectPageProps {
-  params: {
+  params: Promise<{
     slug: string
     locale: string
-  }
+  }>
 }
 
 export async function generateStaticParams() {
@@ -28,7 +28,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
-  const project = await getProjectBySlug(params.slug)
+  const { slug } = await params
+  const project = await getProjectBySlug(slug)
 
   if (!project) {
     return {
@@ -49,7 +50,8 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
 }
 
 export default async function ProjectPage({ params }: ProjectPageProps) {
-  const project = await getProjectBySlug(params.slug)
+  const { slug, locale } = await params
+  const project = await getProjectBySlug(slug)
 
   if (!project) {
     notFound()
@@ -60,7 +62,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       <Container size="lg">
         <FadeIn direction="up">
           <Button variant="ghost" asChild className="mb-6">
-            <Link href="/projects">
+            <Link href={`/${locale}/projects`}>
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Projects
             </Link>
@@ -98,7 +100,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
                 <div className="flex gap-4">
                   <Button asChild>
-                    <a href={project.demoUrl} target="_blank" rel="noopener noreferrer">
+                    <a href={project.liveUrl || project.demoUrl} target="_blank" rel="noopener noreferrer">
                       <ExternalLink className="mr-2 h-4 w-4" />
                       View Demo
                     </a>
