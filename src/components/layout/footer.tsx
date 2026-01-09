@@ -1,4 +1,3 @@
-// FILE: src/components/layout/footer.tsx
 import { useTranslations } from 'next-intl'
 import { Container } from './container'
 import { Separator } from '@/components/ui/separator'

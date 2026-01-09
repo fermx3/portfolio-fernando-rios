@@ -1,4 +1,3 @@
-// FILE: src/components/layout/theme-toggle.tsx
 "use client"
 
 import { Moon, Sun } from "lucide-react"

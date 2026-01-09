@@ -20,12 +20,15 @@
     "viewMore": "Ver Todos los Proyectos",
     "filters": {
       "all": "Todos",
-      "dataScience": "Ciencia de Datos",
-      "fullStack": "Full-Stack",
+      "data-science": "Ciencia de Datos",
+      "full-stack": "Full-Stack",
       "ml": "Machine Learning",
-      "visualization": "Visualización"
+      "visualization": "Visualización",
+      "dataScience": "Ciencia de Datos",
+      "fullStack": "Full-Stack"
     },
-    "empty": "No se encontraron proyectos que coincidan con tus criterios.",
+    "empty": "No Hay Proyectos Destacados",
+    "emptyDescription": "Actualmente no hay proyectos destacados para mostrar. ¡Vuelve pronto para ver nuevos desarrollos emocionantes!",
     "search": {
       "placeholder": "Buscar proyectos...",
       "clear": "Limpiar búsqueda"
@@ -53,7 +56,13 @@
     },
     "education": {
       "title": "Educación y Certificaciones",
-      "placeholder": "Próximamente - Bootcamps de programación, certificaciones y jornada de aprendizaje continuo"
+      "items": [
+      {
+        "institution": "Le Wagon",
+        "program": "Bootcamp de Ciencia de Datos e IA",
+        "date": "Graduado el 15 de Noviembre de 2025"
+      }
+      ]
     },
     "social": {
       "title": "Conecta Conmigo"

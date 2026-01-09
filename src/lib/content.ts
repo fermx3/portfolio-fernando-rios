@@ -1,4 +1,5 @@
-// FILE: src/lib/content.ts
+'use server'
+
 import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
@@ -9,7 +10,16 @@ import { Project } from '@/types/project'
 const contentDirectory = path.join(process.cwd(), 'content/projects')
 
 export const getAllProjects = cache(async (): Promise<Project[]> => {
-  const files = fs.readdirSync(contentDirectory)
+  try {
+    if (!fs.existsSync(contentDirectory)) {
+      return []
+    }
+
+    const files = fs.readdirSync(contentDirectory)
+
+    if (files.length === 0) {
+      return []
+    }
 
   const projects = await Promise.all(
     files
@@ -34,6 +44,9 @@ export const getAllProjects = cache(async (): Promise<Project[]> => {
 
   // Sort by date (newest first)
   return projects.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+} catch {
+    return []
+  }
 })
 
 export const getFeaturedProjects = cache(async (): Promise<Project[]> => {

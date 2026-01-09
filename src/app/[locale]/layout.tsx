@@ -1,4 +1,3 @@
-// FILE: src/app/[locale]/layout.tsx
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
 import { ThemeProvider } from 'next-themes'
@@ -45,12 +44,13 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
-  params: { locale }
+  params
 }: {
   children: React.ReactNode
   params: { locale: string }
 }) {
-  const messages = await getMessages()
+  const { locale } = await params
+  const messages = await getMessages({ locale })
 
   return (
     <html lang={locale} className={inter.variable} suppressHydrationWarning>

@@ -97,7 +97,7 @@ export function Contact() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <Button asChild variant="outline" className="w-full justify-start">
-                  <a href="mailto:fernando.rios@example.com">
+                  <a href="mailto:fer.riosalcantara@gmail.com">
                     <Mail className="mr-2 h-4 w-4" />
                     {t('direct.email')}
                   </a>

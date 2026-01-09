@@ -1,4 +1,3 @@
-// FILE: src/components/sections/hero.tsx
 "use client"
 
 import { useTranslations } from 'next-intl'
@@ -63,7 +62,7 @@ export function Hero() {
             <div className="mt-16 flex gap-6">
               <Button variant="ghost" size="icon" asChild>
                 <a
-                  href="https://github.com/fernandorios"
+                  href="https://github.com/fermx3"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="GitHub"
@@ -73,7 +72,7 @@ export function Hero() {
               </Button>
               <Button variant="ghost" size="icon" asChild>
                 <a
-                  href="https://linkedin.com/in/fernandorios"
+                  href="https://www.linkedin.com/in/riosafernando/"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="LinkedIn"
@@ -83,7 +82,7 @@ export function Hero() {
               </Button>
               <Button variant="ghost" size="icon" asChild>
                 <a
-                  href="mailto:fernando.rios@example.com"
+                  href="mailto:fer.riosalcantara@gmail.com"
                   aria-label="Email"
                 >
                   <Mail className="h-5 w-5" />

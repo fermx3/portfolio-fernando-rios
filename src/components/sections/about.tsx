@@ -8,6 +8,12 @@ import { Section } from '@/components/layout/section'
 import { FadeIn } from '@/components/motion/fade-in'
 import { StaggerContainer, StaggerItem } from '@/components/motion/stagger-container'
 
+interface EducationItem {
+  institution: string
+  program: string
+  date: string
+}
+
 const techStack = {
   frontend: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Vue.js'],
   backend: ['Node.js', 'Python', 'FastAPI', 'PostgreSQL', 'MongoDB'],
@@ -41,7 +47,7 @@ export function About() {
                 <div className="flex gap-4">
                   <Button variant="outline" size="sm" asChild>
                     <a
-                      href="https://github.com/fernandorios"
+                      href="https://github.com/fermx3"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -51,7 +57,7 @@ export function About() {
                   </Button>
                   <Button variant="outline" size="sm" asChild>
                     <a
-                      href="https://linkedin.com/in/fernandorios"
+                      href="https://www.linkedin.com/in/riosafernando/"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -60,7 +66,7 @@ export function About() {
                     </a>
                   </Button>
                   <Button variant="outline" size="sm" asChild>
-                    <a href="mailto:fernando.rios@example.com">
+                    <a href="mailto:fer.riosalcantara@gmail.com">
                       <Mail className="mr-2 h-4 w-4" />
                       Email
                     </a>
@@ -68,16 +74,22 @@ export function About() {
                 </div>
               </div>
 
-              {/* Education Placeholder */}
+              {/* Education */}
               <div>
                 <h3 className="mb-4 text-lg font-semibold">{t('education.title')}</h3>
-                <Card>
-                  <CardContent className="pt-6">
-                    <p className="text-muted-foreground italic">
-                      {t('education.placeholder')}
-                    </p>
-                  </CardContent>
-                </Card>
+                <div className="space-y-4">
+                  {t.raw('education.items').map((item: EducationItem, index: number) => (
+                    <Card key={index}>
+                      <CardContent className="pt-6">
+                        <div className="space-y-2">
+                          <h4 className="font-semibold text-foreground">{item.institution}</h4>
+                          <p className="text-muted-foreground">{item.program}</p>
+                          <p className="text-sm text-muted-foreground">{item.date}</p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
               </div>
             </div>
           </FadeIn>

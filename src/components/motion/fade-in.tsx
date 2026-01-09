@@ -1,4 +1,3 @@
-// FILE: src/components/motion/fade-in.tsx
 "use client"
 
 import { motion, MotionProps } from 'framer-motion'

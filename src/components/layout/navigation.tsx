@@ -1,4 +1,3 @@
-// FILE: src/components/layout/navigation.tsx
 "use client"
 
 import { useState } from 'react'

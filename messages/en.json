@@ -20,12 +20,15 @@
     "viewMore": "View All Projects",
     "filters": {
       "all": "All",
-      "dataScience": "Data Science",
-      "fullStack": "Full-Stack",
+      "data-science": "Data Science",
+      "full-stack": "Full-Stack",
       "ml": "Machine Learning",
-      "visualization": "Visualization"
+      "visualization": "Visualization",
+      "dataScience": "Data Science",
+      "fullStack": "Full-Stack"
     },
-    "empty": "No projects found matching your criteria.",
+    "empty": "No Featured Projects",
+    "emptyDescription": "There are currently no featured projects to display. Check back later for exciting new developments!",
     "search": {
       "placeholder": "Search projects...",
       "clear": "Clear search"
@@ -53,7 +56,14 @@
     },
     "education": {
       "title": "Education & Certifications",
-      "placeholder": "Coming soon - Coding bootcamps, certifications, and continuous learning journey"
+      "items": [
+      {
+        "institution": "Le Wagon",
+        "program": "Data Science & AI Bootcamp",
+        "date": "Graduated November 15, 2025"
+      }
+      ]
+
     },
     "social": {
       "title": "Connect With Me"
