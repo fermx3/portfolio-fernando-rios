@@ -203,9 +203,9 @@ This project is open source and available under the [MIT License](LICENSE).
 ## 📞 Contact
 
 **Fernando Ríos**
-- Portfolio: [https://www.fernandorios.dev/]
+- Portfolio: [https://www.fernandorios.dev/](fernandorios.dev)
 - GitHub: [@fermx3](https://github.com/fermx3)
-- LinkedIn: [[https://www.linkedin.com/in/riosafernando](https://www.linkedin.com/in/riosafernando)
+- LinkedIn: [https://www.linkedin.com/in/riosafernando](https://www.linkedin.com/in/riosafernando)
 - Email: fer.riosalcantara@gmail.com
 
 ---
