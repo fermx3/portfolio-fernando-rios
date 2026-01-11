@@ -1,4 +1,4 @@
-import { useTranslations } from 'next-intl'
+import { getTranslations } from 'next-intl/server'
 import { Github, Linkedin, Mail } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -15,6 +15,10 @@ interface EducationItem {
   date: string
 }
 
+interface AboutProps {
+  locale: string
+}
+
 const techStack = {
   frontend: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS'],
   backend: ['Node.js', 'Python', 'FastAPI', 'PostgreSQL', 'MongoDB'],
@@ -22,8 +26,8 @@ const techStack = {
   tools: ['Git', 'Docker', 'AWS', 'Vercel', 'VS Code', 'Google Colab', 'GCP']
 }
 
-export function About() {
-  const t = useTranslations('about')
+export async function About({ locale }: AboutProps) {
+  const t = await getTranslations({ locale, namespace: 'about' })
 
   return (
     <Section id="about" variant="muted">
@@ -34,7 +38,7 @@ export function About() {
           </h2>
         </FadeIn>
 
-<div className="mt-16 grid gap-8 lg:grid-cols-2 lg:gap-16">
+        <div className="mt-16 grid gap-8 lg:grid-cols-2 lg:gap-16">
           {/* Profile Card - Solo */}
           <FadeIn direction="left" delay={0.1}>
             <div>
@@ -48,7 +52,7 @@ export function About() {
                     </div>
                   </div>
                   <h3 className="font-bold text-xl mb-2">Fernando Rios</h3>
-                  <p className="text-muted-foreground text-sm">Data Scientist & Full-Stack Developer</p>
+                  <p className="text-muted-foreground text-sm">{t('role')}</p>
 
                   {/* Social Links - Compact horizontal */}
                   <div className="mt-6">
@@ -87,7 +91,7 @@ export function About() {
           <FadeIn direction="up" delay={0.2}>
             <div className="space-y-6">
               <div>
-                <h3 className="mb-4 text-lg font-semibold">About Me</h3>
+                <h3 className="mb-4 text-lg font-semibold">{t('aboutMe')}</h3>
                 <p className="text-lg text-muted-foreground leading-relaxed">
                   {t('bio')}
                 </p>

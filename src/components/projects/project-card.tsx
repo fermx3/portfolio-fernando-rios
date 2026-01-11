@@ -69,14 +69,14 @@ export function ProjectCard({ project }: ProjectCardProps) {
         <div className="space-y-2">
           <div>
             <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-              Objective
+              {t('card.objective')}
             </span>
             <p className="text-sm">{project.objective}</p>
           </div>
 
           <div>
             <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-              Theme
+              {t('card.theme')}
             </span>
             <p className="text-sm">{project.theme}</p>
           </div>

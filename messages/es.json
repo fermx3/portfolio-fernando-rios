@@ -26,7 +26,10 @@
       "visualization": "Visualización",
       "web-development": "Desarrollo Web",
       "dataScience": "Ciencia de Datos",
-      "fullStack": "Full-Stack"
+      "fullStack": "Full-Stack",
+      "categories": "Categorías",
+      "tags": "Etiquetas",
+      "activeFilters": "Filtros activos"
     },
     "empty": "No Hay Proyectos Destacados",
     "emptyDescription": "Actualmente no hay proyectos destacados para mostrar. ¡Vuelve pronto para ver nuevos desarrollos emocionantes!",
@@ -43,10 +46,35 @@
       "demo": "Ver Demo",
       "repo": "Ver Código",
       "details": "Leer Más"
+    },
+    "page": {
+      "backToHome": "Volver al Inicio",
+      "backToProjects": "Volver a Proyectos",
+      "allProjects": "Todos los Proyectos",
+      "allProjectsDescription": "Explora mi portafolio completo de ciencia de datos y proyectos de desarrollo.",
+      "projectsFound": "proyectos encontrados",
+      "projectFound": "proyecto encontrado",
+      "clearAllFilters": "Limpiar todos los filtros"
+    },
+    "project": {
+      "viewDemo": "Ver Demo",
+      "viewCode": "Ver Código",
+      "details": "Detalles del Proyecto",
+      "objective": "Objetivo",
+      "theme": "Tema",
+      "date": "Fecha",
+      "category": "Categoría",
+      "technologies": "Tecnologías"
+    },
+    "card": {
+      "objective": "Objetivo",
+      "theme": "Tema"
     }
   },
   "about": {
     "title": "Acerca de Mí",
+    "aboutMe": "Sobre mí",
+    "role": "Científico de Datos y Desarrollador Full-Stack",
     "bio": "Soy un científico de datos y desarrollador full-stack con pasión por crear soluciones innovadoras que conectan el análisis complejo de datos con aplicaciones fáciles de usar. Con experiencia en machine learning, modelado estadístico y desarrollo web moderno, ayudo a las organizaciones a descubrir insights de sus datos y construir productos digitales escalables.",
     "techStack": {
       "title": "Stack Tecnológico",
@@ -73,6 +101,7 @@
     "title": "Contacto",
     "subtitle": "Hablemos sobre tu próximo proyecto u oportunidad de colaboración",
     "form": {
+      "title": "Envíame un mensaje",
       "name": "Nombre",
       "email": "Email",
       "message": "Mensaje",
@@ -81,8 +110,12 @@
     },
     "direct": {
       "title": "O contáctame directamente:",
-      "email": "Enviar Email"
+      "email": "Enviar Email",
+      "note": {
+        "title": "Respuesta Rápida",
+        "description": "Normalmente respondo los correos electrónicos en un plazo de 24 horas. ¡Hablemos sobre cómo podemos trabajar juntos!"
     }
+  }
   },
   "footer": {
     "copyright": "Construido con Next.js, TypeScript y Tailwind CSS"

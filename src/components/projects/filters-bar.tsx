@@ -56,7 +56,7 @@ export function FiltersBar({
 
       {/* Categories */}
       <div>
-        <h3 className="mb-3 text-sm font-medium">Categories</h3>
+        <h3 className="mb-3 text-sm font-medium">{t('filters.categories')}</h3>
         <div className="flex flex-wrap gap-2">
           {categories.map((category) => (
             <Button
@@ -75,7 +75,7 @@ export function FiltersBar({
       {/* Tags */}
       {tags.length > 0 && (
         <div>
-          <h3 className="mb-3 text-sm font-medium">Tags</h3>
+          <h3 className="mb-3 text-sm font-medium">{t('filters.tags')}</h3>
           <div className="flex flex-wrap gap-2">
             {tags.map((tag) => (
               <Badge
@@ -94,7 +94,7 @@ export function FiltersBar({
       {/* Active filters count */}
       {(selectedCategory !== 'all' || searchQuery || selectedTags.length > 0) && (
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <span>Active filters:</span>
+          <span>{t('filters.activeFilters')}:</span>
           {selectedCategory !== 'all' && (
             <Badge variant="secondary">{t(`filters.${selectedCategory}`)}</Badge>
           )}

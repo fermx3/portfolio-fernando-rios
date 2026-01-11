@@ -47,7 +47,7 @@ export function Contact() {
           <FadeIn direction="left" delay={0.1}>
             <Card>
               <CardHeader>
-                <CardTitle>Send a Message</CardTitle>
+                <CardTitle>{t('form.title')}</CardTitle>
                 <CardDescription>
                   {t('form.note')}
                 </CardDescription>
@@ -103,9 +103,9 @@ export function Contact() {
                   </a>
                 </Button>
                 <div className="rounded-lg bg-muted p-4">
-                  <h4 className="font-medium mb-2">Quick Response</h4>
+                  <h4 className="font-medium mb-2">{t('direct.note.title')}</h4>
                   <p className="text-sm text-muted-foreground">
-                    I typically respond to emails within 24 hours. Let&apos;s discuss how we can work together!
+                    {t('direct.note.description')}
                   </p>
                 </div>
               </CardContent>

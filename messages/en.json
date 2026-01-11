@@ -26,7 +26,10 @@
       "visualization": "Visualization",
       "web-development": "Web Development",
       "dataScience": "Data Science",
-      "fullStack": "Full-Stack"
+      "fullStack": "Full-Stack",
+      "categories": "Categories",
+      "tags": "Tags",
+      "activeFilters": "Active filters"
     },
     "empty": "No Featured Projects",
     "emptyDescription": "There are currently no featured projects to display. Check back later for exciting new developments!",
@@ -43,10 +46,35 @@
       "demo": "View Demo",
       "repo": "View Code",
       "details": "Read More"
+    },
+    "page": {
+      "backToHome": "Back to Home",
+      "backToProjects": "Back to Projects",
+      "allProjects": "All Projects",
+      "allProjectsDescription": "Explore my complete portfolio of data science and development projects.",
+      "projectsFound": "projects found",
+      "projectFound": "project found",
+      "clearAllFilters": "Clear all filters"
+    },
+    "project": {
+      "viewDemo": "View Demo",
+      "viewCode": "View Code",
+      "details": "Project Details",
+      "objective": "Objective",
+      "theme": "Theme",
+      "date": "Date",
+      "category": "Category",
+      "technologies": "Technologies"
+    },
+    "card": {
+      "objective": "Objective",
+      "theme": "Theme"
     }
   },
   "about": {
     "title": "About Me",
+    "aboutMe": "About Me",
+    "role": "Data Scientist & Full-Stack Developer",
     "bio": "I'm a data scientist and full-stack developer with a passion for creating innovative solutions that bridge the gap between complex data analysis and user-friendly applications. With expertise in machine learning, statistical modeling, and modern web development, I help organizations unlock insights from their data and build scalable digital products.",
     "techStack": {
       "title": "Tech Stack",
@@ -74,6 +102,7 @@
     "title": "Get In Touch",
     "subtitle": "Let's discuss your next project or collaboration opportunity",
     "form": {
+      "title": "Send a Message",
       "name": "Name",
       "email": "Email",
       "message": "Message",
@@ -82,7 +111,11 @@
     },
     "direct": {
       "title": "Or reach out directly:",
-      "email": "Send Email"
+      "email": "Send Email",
+      "note": {
+        "title": "Quick Response",
+        "description": "I typically respond to emails within 24 hours. Let's discuss how we can work together!"
+      }
     }
   },
   "footer": {

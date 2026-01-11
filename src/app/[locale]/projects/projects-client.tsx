@@ -87,17 +87,17 @@ export function ProjectsPageClient({ projects, tags }: ProjectsPageClientProps) 
             <Button variant="ghost" asChild className="mb-6">
               <Link href="/">
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to Home
+                {t('page.backToHome')}
               </Link>
             </Button>
           </FadeIn>
 
           <FadeIn direction="up" delay={0.1}>
             <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              All Projects
+              {t('page.allProjects')}
             </h1>
             <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
-              Explore my complete portfolio of data science and development projects.
+              {t('page.allProjectsDescription')}
             </p>
           </FadeIn>
         </div>
@@ -123,7 +123,7 @@ export function ProjectsPageClient({ projects, tags }: ProjectsPageClientProps) 
             <FadeIn direction="left" delay={0.3}>
               <div className="mb-6 flex items-center justify-between">
                 <p className="text-sm text-muted-foreground">
-                  {filteredProjects.length} {filteredProjects.length === 1 ? 'project' : 'projects'} found
+                  {filteredProjects.length} {filteredProjects.length === 1 ? t('page.projectFound') : t('page.projectsFound')}
                 </p>
 
                 <select
@@ -151,7 +151,7 @@ export function ProjectsPageClient({ projects, tags }: ProjectsPageClientProps) 
                       setSelectedTags([])
                     }}
                   >
-                    Clear all filters
+                    {t('page.clearAllFilters')}
                   </Button>
                 </div>
               )}
