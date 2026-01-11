@@ -1,0 +1,172 @@
+---
+title: "Portfolio Website"
+summary: "Modern, multilingual portfolio showcasing data science, machine learning, and full-stack development projects with a focus on clean design and performance."
+description: "Professional portfolio website built with Next.js 16, featuring multilingual support (English/Spanish), MDX content management, type-safe development with TypeScript, and modern UI/UX design. Showcases projects in data science, machine learning, and full-stack development with interactive project filtering, dark/light theme support, and optimized performance."
+objective: "Create a professional, performant portfolio website that effectively showcases technical projects, skills, and experience while providing an excellent user experience across devices and languages."
+theme: "Modern, clean design with smooth animations and professional presentation."
+date: "2026-01-08"
+status: "production"
+featured: true
+category: "web-development"
+tags: ["Next.js", "React", "TypeScript", "Tailwind CSS", "MDX", "Internationalization", "Responsive Design", "Performance"]
+technologies:
+  - "Next.js 16 (App Router)"
+  - "React 19"
+  - "TypeScript 5"
+  - "Tailwind CSS 4"
+  - "MDX Content Management"
+  - "next-intl (i18n)"
+  - "Framer Motion"
+  - "Radix UI"
+  - "Zod Validation"
+  - "Vercel Deployment"
+liveUrl: "https://www.fernandorios.dev/"
+repoUrl: "https://github.com/fermx3/portfolio-fernando-rios"
+coverImage: "/images/projects/portfolio-website/cover.jpg"
+images:
+  - "/images/projects/portfolio-website/homepage.jpg"
+  - "/images/projects/portfolio-website/projects-page.jpg"
+  - "/images/projects/portfolio-website/project-detail.jpg"
+  - "/images/projects/portfolio-website/dark-theme.jpg"
+challenges:
+  - "Implementing type-safe MDX content management with dynamic routing"
+  - "Creating seamless multilingual experience with proper SEO optimization"
+  - "Balancing rich animations with optimal performance across devices"
+  - "Designing consistent UI/UX while maintaining accessibility standards"
+solutions:
+  - "Custom MDX pipeline with Zod validation for type-safe content management"
+  - "next-intl integration with locale-based routing and SEO-optimized metadata"
+  - "Framer Motion animations with performance-conscious loading and transitions"
+  - "Radix UI component library ensuring accessibility and consistent design"
+  - "Tailwind CSS 4 with custom design system for maintainable styling"
+  - "Next.js App Router with SSG for optimal performance and SEO"
+results:
+  - "Lighthouse score of 95+ across all performance metrics"
+  - "Fully responsive design optimized for mobile, tablet, and desktop"
+  - "Seamless English/Spanish language switching with localized content"
+  - "Dynamic project filtering and categorization system"
+  - "Type-safe content management enabling easy project additions"
+  - "Professional showcase of technical skills and project portfolio"
+---
+
+## Project Overview
+
+The Portfolio Website is a **modern, high-performance showcase** built with cutting-edge web technologies to present my work in data science, machine learning, and full-stack development. Designed with a focus on clean aesthetics, smooth user experience, and technical excellence.
+
+This project demonstrates proficiency in modern React development, TypeScript implementation, and performance optimization while serving as a professional platform to highlight technical capabilities and project achievements.
+
+## Key Features
+
+### 🌍 Multilingual Architecture
+- **Complete i18n support** with English and Spanish locales
+- **Dynamic content translation** for projects, UI, and metadata
+- **SEO-optimized** with proper hreflang and localized URLs
+- **Automatic locale detection** with manual override capability
+
+### 📝 Advanced Content Management
+- **MDX-powered project documentation** with rich formatting
+- **Type-safe frontmatter** validation using Zod schemas
+- **Dynamic route generation** from content files
+- **Automatic project categorization** and filtering
+
+### 🎨 Modern UI/UX Design
+- **Clean, professional aesthetic** with careful typography
+- **Smooth Framer Motion animations** throughout the interface
+- **Dark/Light theme switching** with system preference detection
+- **Responsive design** optimized for all screen sizes
+
+### ⚡ Performance & SEO
+- **Next.js 16 App Router** with Static Site Generation
+- **Optimized image loading** with Next.js Image component
+- **Lazy loading** and code splitting for faster initial loads
+- **Comprehensive meta tags** and Open Graph optimization
+
+## Technical Architecture
+
+### Frontend Framework
+- **Next.js 16** with App Router for modern React patterns
+- **React 19** leveraging concurrent features and Suspense
+- **TypeScript 5** for comprehensive type safety
+- **Component-driven architecture** with reusable UI elements
+
+### Styling & Animation
+- **Tailwind CSS 4** with utility-first approach
+- **Custom design system** with consistent spacing and colors
+- **Framer Motion** for smooth page transitions and interactions
+- **CSS-in-JS** optimization for critical path rendering
+
+### Content & Data
+- **MDX processing** with custom plugins for enhanced functionality
+- **Gray Matter** for frontmatter parsing and validation
+- **Zod schemas** ensuring data integrity and type safety
+- **File-based routing** for automatic page generation
+
+### Internationalization
+- **next-intl** for comprehensive localization support
+- **Locale-based routing** with `/en` and `/es` paths
+- **Translation management** with JSON-based message files
+- **Dynamic content switching** without page reloads
+
+## Project Structure
+
+The codebase follows modern Next.js conventions with clear separation of concerns:
+
+```
+src/
+├── app/                    # App Router pages and layouts
+├── components/            # Reusable React components
+│   ├── layout/           # Navigation, footer, containers
+│   ├── sections/         # Page-specific sections
+│   ├── projects/         # Project showcase components
+│   └── ui/               # Base UI components
+├── lib/                  # Utility functions and configurations
+├── types/                # TypeScript type definitions
+└── i18n/                 # Internationalization setup
+```
+
+## Development Highlights
+
+### Type Safety Implementation
+- **Comprehensive TypeScript coverage** across all components
+- **Zod validation schemas** for runtime type checking
+- **Strict ESLint configuration** ensuring code quality
+- **Type-safe routing** and parameter handling
+
+### Performance Optimizations
+- **Bundle analysis** and code splitting strategies
+- **Image optimization** with WebP format and lazy loading
+- **Font optimization** with next/font integration
+- **Lighthouse auditing** for continuous performance monitoring
+
+### Accessibility Standards
+- **WCAG 2.1 compliance** with semantic HTML structure
+- **Keyboard navigation** support throughout the interface
+- **Screen reader optimization** with proper ARIA labels
+- **Color contrast** meeting accessibility guidelines
+
+## Content Management Workflow
+
+The portfolio uses a sophisticated MDX-based content system:
+
+1. **Project Creation**: New projects are added as MDX files with structured frontmatter
+2. **Type Validation**: Zod schemas ensure data consistency and catch errors early
+3. **Dynamic Generation**: Pages are automatically created from content files
+4. **SEO Optimization**: Metadata is generated from frontmatter for optimal search visibility
+
+## Deployment & Infrastructure
+
+- **Vercel Platform** for seamless CI/CD and global edge deployment
+- **Automatic deployments** from GitHub repository updates
+- **Environment optimization** for production performance
+- **Custom domain** with SSL certificate management
+
+## Project Impact
+
+- ✅ **Professional presence** showcasing technical expertise
+- ✅ **International accessibility** with bilingual support
+- ✅ **Optimal performance** with 95+ Lighthouse scores
+- ✅ **Scalable architecture** for easy content additions
+- ✅ **Modern development practices** demonstrating current skills
+- ✅ **SEO optimization** for improved discoverability
+
+This portfolio website serves as both a professional showcase and a demonstration of modern web development capabilities, highlighting proficiency in React ecosystems, performance optimization, and user experience design.

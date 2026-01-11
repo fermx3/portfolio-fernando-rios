@@ -1,0 +1,172 @@
+---
+title: "Sitio Web de Portfolio"
+summary: "Portfolio moderno y multiidioma que muestra proyectos de ciencia de datos, machine learning y desarrollo full-stack con enfoque en diseño limpio y rendimiento."
+description: "Sitio web de portfolio profesional construido con Next.js 16, con soporte multiidioma (Inglés/Español), gestión de contenido MDX, desarrollo type-safe con TypeScript, y diseño UI/UX moderno. Muestra proyectos de ciencia de datos, machine learning y desarrollo full-stack con filtrado interactivo de proyectos, soporte de tema claro/oscuro y rendimiento optimizado."
+objective: "Crear un sitio web de portfolio profesional y eficiente que muestre efectivamente proyectos técnicos, habilidades y experiencia mientras proporciona una excelente experiencia de usuario en todos los dispositivos e idiomas."
+theme: "Diseño moderno y limpio con animaciones fluidas y presentación profesional."
+date: "2026-01-08"
+status: "producción"
+featured: true
+category: "web-development"
+tags: ["Next.js", "React", "TypeScript", "Tailwind CSS", "MDX", "Internacionalización", "Diseño Responsivo", "Rendimiento"]
+technologies:
+  - "Next.js 16 (App Router)"
+  - "React 19"
+  - "TypeScript 5"
+  - "Tailwind CSS 4"
+  - "Gestión de Contenido MDX"
+  - "next-intl (i18n)"
+  - "Framer Motion"
+  - "Radix UI"
+  - "Validación Zod"
+  - "Despliegue Vercel"
+liveUrl: "https://www.fernandorios.dev/"
+repoUrl: "https://github.com/fermx3/portfolio-fernando-rios"
+coverImage: "/images/projects/portfolio-website/cover.jpg"
+images:
+  - "/images/projects/portfolio-website/homepage.jpg"
+  - "/images/projects/portfolio-website/projects-page.jpg"
+  - "/images/projects/portfolio-website/project-detail.jpg"
+  - "/images/projects/portfolio-website/dark-theme.jpg"
+challenges:
+  - "Implementar gestión de contenido MDX type-safe con enrutamiento dinámico"
+  - "Crear experiencia multiidioma fluida con optimización SEO adecuada"
+  - "Equilibrar animaciones ricas con rendimiento óptimo en todos los dispositivos"
+  - "Diseñar UI/UX consistente manteniendo estándares de accesibilidad"
+solutions:
+  - "Pipeline MDX personalizado con validación Zod para gestión de contenido type-safe"
+  - "Integración next-intl con enrutamiento basado en locale y metadatos optimizados para SEO"
+  - "Animaciones Framer Motion con carga y transiciones conscientes del rendimiento"
+  - "Biblioteca de componentes Radix UI asegurando accesibilidad y diseño consistente"
+  - "Tailwind CSS 4 con sistema de diseño personalizado para estilizado mantenible"
+  - "Next.js App Router con SSG para rendimiento óptimo y SEO"
+results:
+  - "Puntuación Lighthouse de 95+ en todas las métricas de rendimiento"
+  - "Diseño completamente responsivo optimizado para móvil, tablet y escritorio"
+  - "Cambio fluido de idioma Inglés/Español con contenido localizado"
+  - "Sistema dinámico de filtrado y categorización de proyectos"
+  - "Gestión de contenido type-safe permitiendo agregar proyectos fácilmente"
+  - "Showcase profesional de habilidades técnicas y portfolio de proyectos"
+---
+
+## Resumen del Proyecto
+
+El Sitio Web de Portfolio es un **showcase moderno y de alto rendimiento** construido con tecnologías web de vanguardia para presentar mi trabajo en ciencia de datos, machine learning y desarrollo full-stack. Diseñado con enfoque en estética limpia, experiencia de usuario fluida y excelencia técnica.
+
+Este proyecto demuestra competencia en desarrollo React moderno, implementación TypeScript y optimización de rendimiento mientras sirve como plataforma profesional para destacar capacidades técnicas y logros de proyectos.
+
+## Características Clave
+
+### 🌍 Arquitectura Multiidioma
+- **Soporte i18n completo** con locales en inglés y español
+- **Traducción dinámica de contenido** para proyectos, UI y metadatos
+- **Optimizado para SEO** con hreflang apropiado y URLs localizadas
+- **Detección automática de locale** con capacidad de override manual
+
+### 📝 Gestión Avanzada de Contenido
+- **Documentación de proyectos powered by MDX** con formato rico
+- **Validación type-safe de frontmatter** usando esquemas Zod
+- **Generación dinámica de rutas** desde archivos de contenido
+- **Categorización y filtrado automático** de proyectos
+
+### 🎨 Diseño UI/UX Moderno
+- **Estética limpia y profesional** con tipografía cuidadosa
+- **Animaciones fluidas Framer Motion** a lo largo de la interfaz
+- **Cambio de tema claro/oscuro** con detección de preferencia del sistema
+- **Diseño responsivo** optimizado para todos los tamaños de pantalla
+
+### ⚡ Rendimiento y SEO
+- **Next.js 16 App Router** con Static Site Generation
+- **Carga optimizada de imágenes** con componente Next.js Image
+- **Lazy loading** y code splitting para cargas iniciales más rápidas
+- **Meta tags comprensivos** y optimización Open Graph
+
+## Arquitectura Técnica
+
+### Framework Frontend
+- **Next.js 16** con App Router para patrones React modernos
+- **React 19** aprovechando características concurrentes y Suspense
+- **TypeScript 5** para seguridad de tipos comprehensiva
+- **Arquitectura impulsada por componentes** con elementos UI reutilizables
+
+### Estilizado y Animación
+- **Tailwind CSS 4** con enfoque utility-first
+- **Sistema de diseño personalizado** con spacing y colores consistentes
+- **Framer Motion** para transiciones de página suaves e interacciones
+- **Optimización CSS-in-JS** para renderizado de ruta crítica
+
+### Contenido y Datos
+- **Procesamiento MDX** con plugins personalizados para funcionalidad mejorada
+- **Gray Matter** para parsing y validación de frontmatter
+- **Esquemas Zod** asegurando integridad de datos y type safety
+- **Enrutamiento basado en archivos** para generación automática de páginas
+
+### Internacionalización
+- **next-intl** para soporte de localización comprehensivo
+- **Enrutamiento basado en locale** con paths `/en` y `/es`
+- **Gestión de traducciones** con archivos de mensajes basados en JSON
+- **Cambio dinámico de contenido** sin recargas de página
+
+## Estructura del Proyecto
+
+El código sigue convenciones modernas de Next.js con clara separación de responsabilidades:
+
+```
+src/
+├── app/                    # Páginas y layouts de App Router
+├── components/            # Componentes React reutilizables
+│   ├── layout/           # Navegación, footer, containers
+│   ├── sections/         # Secciones específicas de página
+│   ├── projects/         # Componentes de showcase de proyectos
+│   └── ui/               # Componentes UI base
+├── lib/                  # Funciones utilitarias y configuraciones
+├── types/                # Definiciones de tipos TypeScript
+└── i18n/                 # Configuración de internacionalización
+```
+
+## Highlights de Desarrollo
+
+### Implementación Type Safety
+- **Cobertura TypeScript comprehensiva** a través de todos los componentes
+- **Esquemas de validación Zod** para verificación de tipos en runtime
+- **Configuración ESLint estricta** asegurando calidad de código
+- **Enrutamiento type-safe** y manejo de parámetros
+
+### Optimizaciones de Rendimiento
+- **Análisis de bundle** y estrategias de code splitting
+- **Optimización de imágenes** con formato WebP y lazy loading
+- **Optimización de fuentes** con integración next/font
+- **Auditoría Lighthouse** para monitoreo continuo de rendimiento
+
+### Estándares de Accesibilidad
+- **Cumplimiento WCAG 2.1** con estructura HTML semántica
+- **Soporte de navegación por teclado** a lo largo de la interfaz
+- **Optimización para lectores de pantalla** con etiquetas ARIA apropiadas
+- **Contraste de color** cumpliendo guías de accesibilidad
+
+## Flujo de Trabajo de Gestión de Contenido
+
+El portfolio usa un sistema sofisticado de contenido basado en MDX:
+
+1. **Creación de Proyectos**: Nuevos proyectos se agregan como archivos MDX con frontmatter estructurado
+2. **Validación de Tipos**: Esquemas Zod aseguran consistencia de datos y detectan errores temprano
+3. **Generación Dinámica**: Las páginas se crean automáticamente desde archivos de contenido
+4. **Optimización SEO**: Los metadatos se generan desde frontmatter para visibilidad óptima en búsquedas
+
+## Despliegue e Infraestructura
+
+- **Plataforma Vercel** para CI/CD fluido y despliegue global edge
+- **Despliegues automáticos** desde actualizaciones del repositorio GitHub
+- **Optimización de entorno** para rendimiento de producción
+- **Dominio personalizado** con gestión de certificados SSL
+
+## Impacto del Proyecto
+
+- ✅ **Presencia profesional** mostrando experticia técnica
+- ✅ **Accesibilidad internacional** con soporte bilingüe
+- ✅ **Rendimiento óptimo** con puntuaciones Lighthouse 95+
+- ✅ **Arquitectura escalable** para agregar contenido fácilmente
+- ✅ **Prácticas de desarrollo modernas** demostrando habilidades actuales
+- ✅ **Optimización SEO** para mejor descubribilidad
+
+Este sitio web de portfolio sirve tanto como showcase profesional como demostración de capacidades modernas de desarrollo web, destacando competencia en ecosistemas React, optimización de rendimiento y diseño de experiencia de usuario.
