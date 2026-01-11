@@ -48,13 +48,13 @@ export function ProjectCard({ project }: ProjectCardProps) {
       </Link>
 
       <CardHeader>
-        <div className="flex items-start justify-between gap-4">
-          <CardTitle className="line-clamp-2 text-lg group-hover:text-primary transition-colors">
+        <div className="flex items-baseline justify-between gap-2">
+          <CardTitle className="line-clamp-2 text-lg group-hover:text-primary transition-colors flex-1 min-w-0">
             {project.title}
           </CardTitle>
           <Badge
             variant="outline"
-            className={getCategoryColor(project.category)}
+            className={`${getCategoryColor(project.category)} flex-shrink-0 whitespace-nowrap`}
           >
             {t(`filters.${project.category}`)}
           </Badge>
@@ -96,24 +96,28 @@ export function ProjectCard({ project }: ProjectCardProps) {
         </div>
       </CardContent>
 
-      <CardFooter className="gap-2">
-        {(project.liveUrl || project.demoUrl) && (
-          <Button variant="outline" size="sm" asChild className="flex-1">
-            <a href={project.liveUrl || project.demoUrl} target="_blank" rel="noopener noreferrer">
-              <ExternalLink className="mr-1 h-3 w-3" />
-              {t('links.demo')}
-            </a>
-          </Button>
+      <CardFooter className="flex-col gap-2">
+        {(project.liveUrl || project.demoUrl || project.repoUrl) && (
+          <div className="flex gap-2 w-full">
+            {(project.liveUrl || project.demoUrl) && (
+              <Button variant="outline" size="sm" asChild className="flex-1">
+                <a href={project.liveUrl || project.demoUrl} target="_blank" rel="noopener noreferrer">
+                  <ExternalLink className="mr-1 h-3 w-3" />
+                  {t('links.demo')}
+                </a>
+              </Button>
+            )}
+            {project.repoUrl && (
+              <Button variant="outline" size="sm" asChild className="flex-1">
+                <a href={project.repoUrl} target="_blank" rel="noopener noreferrer">
+                  <Github className="mr-1 h-3 w-3" />
+                  {t('links.repo')}
+                </a>
+              </Button>
+            )}
+          </div>
         )}
-        {project.repoUrl && (
-          <Button variant="outline" size="sm" asChild className="flex-1">
-            <a href={project.repoUrl} target="_blank" rel="noopener noreferrer">
-              <Github className="mr-1 h-3 w-3" />
-              {t('links.repo')}
-            </a>
-          </Button>
-        )}
-        <Button size="sm" asChild>
+        <Button size="sm" asChild className="w-full">
           <Link href={`/${getCurrentLocale()}/projects/${project.slug}`}>
             {t('links.details')}
           </Link>
