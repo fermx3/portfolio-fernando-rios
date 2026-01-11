@@ -1,0 +1,150 @@
+---
+title: "Coffee Disease Detection"
+summary: "Sistema de visión computacional para detectar enfermedades en plantas de café usando modelos de deep learning."
+description: "Sistema avanzado de machine learning que identifica enfermedades de plantas de café (Cercospora, Roya, Minador, Phoma) a partir de imágenes de hojas usando múltiples arquitecturas CNN incluyendo VGG16, EfficientNet y modelos CNN personalizados."
+objective: "Construir un sistema preciso y confiable para ayudar a los caficultores a identificar enfermedades de plantas tempranamente, permitiendo tratamiento oportuno y protección de cultivos."
+theme: "IA aplicada a agricultura de precisión y detección temprana de enfermedades."
+date: "2025-11-15"
+status: "producción"
+featured: true
+category: "ml"
+tags: ["Machine Learning", "Visión Computacional", "Deep Learning", "Agricultura", "CNN", "TensorFlow", "FastAPI", "Streamlit"]
+technologies:
+  - "TensorFlow/Keras"
+  - "VGG16 Transfer Learning"
+  - "EfficientNetB0"
+  - "FastAPI"
+  - "Streamlit"
+  - "MLflow"
+  - "Docker"
+  - "Python"
+liveUrl: "https://coffeedd-web-lewagon.streamlit.app/"
+repoUrl: "https://github.com/fermx3/coffee-disease-detection"
+coverImage: "/images/projects/coffee-disease-detection/cover.jpg"
+images:
+  - "/images/projects/coffee-disease-detection/model-training.jpg"
+  - "/images/projects/coffee-disease-detection/api-interface.jpg"
+  - "/images/projects/coffee-disease-detection/disease-classification.jpg"
+  - "/images/projects/coffee-disease-detection/streamlit-app.jpg"
+challenges:
+  - "Distinguir entre enfermedades de hojas de café con apariencia similar"
+  - "Manejar dataset desbalanceado con frecuencias variables de enfermedades"
+  - "Optimizar rendimiento del modelo para minimizar falsos negativos (enfermedades no detectadas)"
+  - "Crear pipeline robusto de preprocesamiento para condiciones de campo"
+solutions:
+  - "Sistema personalizado de pesos de clase priorizando la detección de enfermedades sobre clasificación saludable"
+  - "Enfoque multi-arquitectura con modelos VGG16, EfficientNet y CNN personalizados"
+  - "Aumento de datos avanzado preservando características visuales específicas de enfermedades"
+  - "Métricas personalizadas enfocadas en recall de enfermedades para minimizar falsos negativos"
+  - "Arquitectura de paquete Python modular para despliegue escalable de modelos"
+  - "Despliegue en Google Cloud con API Dockerizada para inferencia basada en la nube"
+results:
+  - "Sistema de detección de enfermedades de alta precisión con >90% de recall en clases de enfermedad"
+  - "API lista para producción para clasificación de imágenes en tiempo real"
+  - "Seguimiento integral con MLflow para versionado y monitoreo de modelos"
+  - "Despliegue con Docker para fácil escalabilidad y distribución"
+  - "Liderazgo exitoso de equipo de desarrollo de cuatro personas desde concepto hasta producción"
+  - "Despliegue escalable en Google Cloud Platform"
+---
+
+## Resumen del Proyecto
+
+Coffee Disease Detection es un **sistema avanzado de visión computacional** diseñado para identificar enfermedades en plantas de café a partir de imágenes de hojas. Originalmente presentado como una idea ganadora para el bootcamp de Data Science & AI de Le Wagon, este proyecto fue seleccionado como uno de los dos proyectos finales para ser desarrollado por un equipo de cuatro estudiantes.
+
+Como **líder del proyecto**, coordiné el equipo de desarrollo y guié la creación de una solución integral que puede detectar cinco clases diferentes: hojas saludables y cuatro enfermedades comunes (Cercospora, Roya, Minador y Phoma) que impactan significativamente el rendimiento de cultivos de café.
+
+## Características Clave
+
+### 🧠 Múltiples Arquitecturas de Modelo
+- **VGG16 Transfer Learning** - Rendimiento estable con medidas anti-overfitting
+- **EfficientNetB0** - Optimizado para precisión y eficiencia
+- **CNN Personalizado** - Modelo ligero para datasets pequeños
+- **Detección automática de arquitectura** y carga de modelos
+
+### 🎯 Optimización Enfocada en Enfermedades
+- **Pesos de clase personalizados** priorizando detección de enfermedades
+- **Métricas de recall específicas para enfermedades** para minimizar falsos negativos
+- **Herramientas de análisis de falsos negativos** para mejora del modelo
+- **Entrenamiento balanceado** con tasas de aprendizaje adaptativas
+
+### 🚀 Despliegue Listo para Producción
+- **Backend FastAPI** con documentación integral de API
+- **Aplicación web Streamlit** para fácil carga de imágenes y predicción
+- **Despliegue en Google Cloud** con API Dockerizada para inferencia escalable
+- **Integración MLflow** para seguimiento de experimentos y versionado de modelos
+- **Estructura de paquete Python modular** para código base mantenible
+
+## Arquitectura Técnica
+
+### Pipeline de Entrenamiento de Modelos
+- **Entrenamiento multi-fase** con extracción inicial de características y fine-tuning
+- **Callbacks personalizados** para monitoreo de recall de enfermedades
+- **Tasas de aprendizaje adaptativas** basadas en tamaño de dataset
+- **Evaluación comprensiva** con matrices de confusión y métricas detalladas
+
+### Procesamiento de Datos
+- **Aumento de datos inteligente** preservando características de enfermedades
+- **Preprocesamiento letterboxing** a resolución 224x224
+- **División automática** train/validation/test
+- **Análisis de distribución de clases** y balanceo
+
+### API y Despliegue
+- **API RESTful** con endpoints de carga de imágenes y predicción
+- **Soporte Base64 y carga de archivos** para integración flexible
+- **Manejo integral de errores** y validación
+- **Sistema de caché de producción** para optimización de carga de modelos
+- **Despliegue en Google Cloud Platform** para inferencia escalable basada en la nube
+
+## Liderazgo de Proyecto y Coordinación de Equipo
+
+### Gestión de Equipo
+- **Lideré un equipo de desarrollo de cuatro personas** a través del ciclo completo del proyecto
+- **Coordiné tareas y cronogramas** asegurando entrega oportuna de hitos
+- **Apliqué mejores prácticas de ingeniería de software** incluyendo control de versiones y documentación
+- **Mantuve repositorio integral de GitHub** con estructura clara y documentación técnica
+
+### Logro en Bootcamp Le Wagon
+- **Selección de proyecto ganador** entre múltiples ideas propuestas en el bootcamp de Data Science & AI de Le Wagon
+- **Uno de dos proyectos finales** elegidos para desarrollo por la clase
+- **Entrega de proyecto de extremo a extremo** desde concepto inicial hasta despliegue en producción
+
+## Clasificación de Enfermedades
+
+El sistema detecta estas condiciones de plantas de café:
+
+1. **Saludable** - Hojas de café normales, libres de enfermedad
+2. **Cercospora** - Enfermedad fúngica causando manchas marrones en hojas
+3. **Roya** - Pústulas naranjas/amarillas en el envés de las hojas
+4. **Minador** - Daño de insecto creando túneles en las hojas
+5. **Phoma** - Enfermedad fúngica causando tizón de hojas
+
+## Destacados Técnicos
+
+### Pesos de Clase Inteligentes
+Sistema de pesos personalizado que penaliza la mala clasificación saludable mientras potencia la detección de enfermedades raras:
+
+- **Hojas saludables**: Peso reducido para prevenir falsos negativos
+- **Enfermedades raras**: Peso aumentado para mejor detección
+- **Pesos adaptativos**: Basados en tamaño y distribución del dataset
+
+### Métricas Avanzadas
+- **Métrica de Recall de Enfermedades**: Métrica personalizada de TensorFlow enfocada en detección de enfermedades
+- **Análisis de clasificación binaria**: Rendimiento saludable vs. cualquier enfermedad
+- **Matrices de confusión detalladas** con insights específicos por clase
+- **Análisis de falsos negativos** para mejora continua
+
+### Gestión de Modelos
+- **Seguimiento MLflow** para gestión de experimentos
+- **Registro automático de modelos** con versionado
+- **Despliegue de modelo de producción** con capacidad de pruebas A/B
+- **Detección de arquitectura de modelo** para carga sin problemas
+
+## Impacto y Aplicaciones
+
+- ✅ **Detección temprana de enfermedades** habilitando tratamiento oportuno
+- ✅ **Pérdidas reducidas de cultivos** a través de identificación precisa
+- ✅ **Accesibilidad para agricultores** vía interfaz web simple
+- ✅ **Despliegue escalable** para organizaciones agrícolas
+- ✅ **Fundación de investigación** para desarrollo de IA agrícola
+
+El sistema representa un avance significativo en agricultura de precisión, proporcionando a los caficultores herramientas impulsadas por IA para proteger sus cultivos y optimizar rendimientos a través de la detección temprana de enfermedades.
