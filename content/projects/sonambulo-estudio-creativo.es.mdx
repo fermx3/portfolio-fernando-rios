@@ -1,8 +1,8 @@
 ---
 title: "Sonámbulo Estudio Creativo"
-summary: "Sitio web corporativo para un estudio creativo especializado en branding, ruta al mercado y experiencias digitales"
-description: "Desarrollo completo de sitio web para Sonámbulo Estudio Creativo, un 'super grupo' de creativos que aseguran marcas desde su construcción hasta el consumidor final. El proyecto incluyó diseño y desarrollo de una experiencia web inmersiva con animaciones avanzadas y navegación fluida."
-objective: "Diseñar un sitio web inmersivo que muestre los servicios de Sonámbulo, destaque casos de estudio clave y eleve la marca a través de interacciones atractivas y narrativa clara."
+summary: "Sitio web corporativo para un estudio creativo con animaciones accionadas por scroll, showcases interactivos de capacidades y portfolio dinámico de casos de estudio."
+description: "Diseño y desarrollo completo del sitio web corporativo de Sonámbulo Estudio Creativo, un estudio creativo multidisciplinario especializado en branding, estrategia de ruta al mercado y productos digitales. El sitio usa animaciones activadas por scroll, secciones sticky e interacciones responsivas para comunicar las capacidades del estudio."
+objective: "Diseñar un sitio web inmersivo que comunique la propuesta de valor del estudio a través de movimiento, estructura y narrativa, convirtiendo un sitio corporativo en una experiencia."
 theme: "Corporativo moderno con acentos lima audaces y animaciones fluidas."
 date: "2025-11-13"
 status: "completed"
@@ -25,95 +25,73 @@ images:
   - "/images/projects/sonambulo/capabilities.jpg"
   - "/images/projects/sonambulo/portfolio.jpg"
 challenges:
-  - "Crear una experiencia de navegación fluida con animaciones complejas"
-  - "Implementar un sistema avanzado de scroll sticky para secciones About"
-  - "Desarrollar componentes reutilizables con interacciones táctiles y hover"
-  - "Optimizar el rendimiento con múltiples elementos animados"
+  - "Orquestar animaciones complejas accionadas por scroll sin sacrificar rendimiento"
+  - "Construir un sistema de scroll sticky donde el contenido se transforma mientras el usuario navega"
+  - "Soportar interacciones tanto táctiles como hover en distintos dispositivos"
+  - "Mantener 60fps con múltiples elementos animados concurrentes"
 solutions:
-  - "Implementación de Framer Motion para animaciones performantes"
-  - "Sistema personalizado de progreso de scroll para controlar animaciones"
-  - "Detección inteligente de dispositivos para interacciones táctiles vs hover"
-  - "Carga diferida y optimización de imágenes con Next.js Image"
+  - "Framer Motion con hooks personalizados de progreso de scroll para animaciones aceleradas por GPU"
+  - "Sistema de secciones sticky personalizado con seguimiento de progreso y transformación de contenido"
+  - "Capa de detección de dispositivos que intercambia modelos de interacción entre touch y pointer"
+  - "Carga diferida, optimización de imágenes Next.js y agrupación de animaciones"
 results:
-  - "Experiencia web inmersiva con animaciones fluidas"
-  - "Navegación intuitiva adaptada a diferentes dispositivos"
-  - "Carga rápida y optimizado para SEO"
-  - "Sistema de portafolio dinámico para casos de estudio"
+  - "Experiencia web inmersiva funcionando a 60fps en todos los dispositivos"
+  - "Puntuaciones altas de Lighthouse en rendimiento, accesibilidad y SEO"
+  - "Sistema de portfolio dinámico para presentar casos de estudio de clientes"
+  - "Diseño mobile-first con soporte nativo de gestos táctiles"
 ---
 
-## Descripción del Proyecto
+## Resumen del Proyecto
 
-Sonámbulo Estudio Creativo se define como un **"super grupo de creativos, publicitarios, mercadólogos y nerds de ideas"** que se especializa en asegurar marcas desde su construcción hasta el consumidor final. El sitio web refleja esta filosofía a través de una experiencia digital innovadora e inmersiva.
+Sonámbulo Estudio Creativo es un **estudio creativo multidisciplinario** que se autodefine como un "super grupo de creativos, publicitarios, mercadólogos y nerds de ideas." Trabajan en branding, estrategia de ruta al mercado y productos digitales. El sitio web necesitaba reflejar esa energía: no un folleto corporativo estándar, sino una experiencia que comunica lo que el estudio hace a través de cómo el sitio mismo se comporta.
 
-## Características Principales
+## Arquitectura de Animación
 
-### 🎨 Diseño y Experiencia Visual
-- **Identidad visual cohesiva** con colores característicos (lima, azul, tinta)
-- **Tipografía personalizada** Montserrat y Darker Grotesque
-- **Sistema de iconografía** con asteriscos como elementos distintivos
-- **Navegación fluida** con scroll suave y transiciones sin interrupciones
+El sitio está construido alrededor de interacciones accionadas por scroll. En lugar de transiciones decorativas, las animaciones cumplen un propósito estructural: controlan cómo se revela el contenido, cómo se conectan las secciones y cómo el usuario descubre las capacidades del estudio.
 
-### ⚡ Animaciones Avanzadas
-- **Animaciones activadas por scroll** con Framer Motion
-- **Efectos parallax** y transformaciones 3D
-- **Animaciones de texto** con revelado carácter por carácter
-- **Partículas interactivas** y efectos de cursor personalizado
+### Sistema de Progreso de Scroll
+Un hook personalizado rastrea la posición del scroll en el viewport y la mapea a valores de progreso de animación. Esto impulsa secciones sticky donde el contenido se transforma mientras el usuario hace scroll: el texto se transforma, las imágenes se deslizan y la propuesta de valor se despliega paso a paso sin requerir clicks ni navegación.
 
-### 📱 Responsivo e Interactivo
-- **Diseño completamente responsivo** para todos los dispositivos
-- **Detección inteligente táctil vs hover** para optimizar interacciones
-- **Menú móvil animado** con transiciones de transformación
-- **Gestos táctiles optimizados** para móvil
-
-## Arquitectura Técnica
-
-### Frontend
-- **Next.js 14** con App Router y React Server Components
-- **TypeScript** para seguridad de tipos
-- **Framer Motion** para animaciones performantes
-- **Hooks personalizados** para seguimiento de scroll y detección de dispositivos
-
-### Componentes Clave
-- **Secciones de scroll sticky** con seguimiento de progreso
-- **Sistema de portafolio dinámico** para casos de estudio
-- **Tarjetas de capacidades interactivas** con expandir/colapsar
-- **Animaciones multicapa** para efectos de profundidad
-
-### Optimizaciones
-- **Optimización de imágenes** con Next.js Image y carga diferida
-- **Monitoreo de rendimiento** con Core Web Vitals
-- **Optimización SEO** con metadatos dinámicos
-- **Mejora progresiva** para mejor accesibilidad
+### Estrategia de Rendimiento
+Múltiples elementos animados corriendo concurrentemente pueden fácilmente perder frames. El sitio mantiene 60fps mediante:
+- Transforms acelerados por GPU vía los componentes `motion` de Framer Motion
+- Agrupación de animaciones para evitar layout thrashing
+- Activación basada en Intersection Observer para que los elementos fuera de pantalla no consuman recursos
+- Next.js Image con carga diferida para assets visuales pesados
 
 ## Secciones Principales
 
-### 1. Hero y Acerca de
-Implementación de un sistema innovador de scroll sticky donde el contenido se transforma mientras el usuario navega, revelando la propuesta de valor del estudio paso a paso.
+### Hero y Acerca de
+Una sección de scroll sticky donde el posicionamiento del estudio se revela progresivamente. Mientras el usuario hace scroll, los bloques de texto se transforman y las imágenes transicionan, contando la historia desde "quiénes somos" hasta "en qué creemos" sin una sola navegación de página.
 
-### 2. Proceso y Metodología
-Visualización interactiva del flujo de trabajo del estudio, desde la construcción de marca hasta el consumidor final, con tarjetas expandibles y animaciones hover.
-
-### 3. Capacidades
-Tres áreas principales de especialización:
-- **SNMBL Channel Development** - Estrategia de Negocio y Trade Marketing
+### Capacidades
+Tres áreas de especialización presentadas como tarjetas interactivas:
+- **SNMBL Channel Development** - Estrategia de negocio y trade marketing
 - **SNMBL Data & Intelligence Center** - Dashboards y desarrollo web/móvil
-- **SNMBL Ideas Lab** - Estrategia Creativa y Construcción de Marca
+- **SNMBL Ideas Lab** - Estrategia creativa y construcción de marca
 
-### 4. Portafolio Dinámico
-Sistema de casos de estudio con:
-- **Secciones hero personalizadas** por cliente
-- **Carrusel de imágenes responsivo**
-- **Tarjetas de insights** con diferentes layouts
-- **Navegación fluida** entre proyectos
+Cada tarjeta se expande al hacer hover (desktop) o tap (móvil) para revelar descripciones detalladas de servicios.
 
-## Logros Técnicos
+### Portfolio Dinámico
+Un sistema de casos de estudio con secciones hero por cliente, carruseles de imágenes responsivos, tarjetas de insights con layouts variados y navegación fluida entre proyectos.
 
-- ✅ **Experiencia inmersiva** con animaciones fluidas a 60fps
-- ✅ **Rendimiento optimizado** con altos puntajes de Lighthouse
-- ✅ **Accesibilidad mejorada** con navegación por teclado y lectores de pantalla
-- ✅ **Optimizado para SEO** con metadatos dinámicos y datos estructurados
-- ✅ **Mobile-first** con interacciones táctiles nativas
+## Detalles Técnicos
+
+### Frontend
+- **Next.js 14** con App Router y React Server Components
+- **TypeScript** para seguridad de tipos en todo el árbol de componentes
+- **Framer Motion** como motor de animación, con hooks `useScroll`, `useTransform` y `useInView`
+- **Hooks personalizados** para seguimiento de scroll, detección de dispositivos y observación de intersección
+
+### Capa de Interacción Responsiva
+El sitio detecta el tipo de input (touch vs. pointer) y ajusta los patrones de interacción. En desktop, las tarjetas responden al hover con transformaciones de perspectiva 3D. En móvil, las mismas tarjetas usan tap-to-expand con manejo optimizado de gestos táctiles. Un solo codebase de componentes sirve ambas experiencias a través de hooks de interacción condicionales.
+
+### Sistema de Diseño
+- Identidad visual cohesiva usando los colores de marca del estudio (lima, azul, tinta)
+- Tipografía Montserrat y Darker Grotesque
+- Iconografía basada en asteriscos como motivo visual recurrente
+- SCSS con módulos a nivel de componente y variables compartidas
 
 ## Impacto
 
-El sitio web de Sonámbulo Estudio Creativo establece un nuevo estándar para sitios corporativos en la industria creativa, combinando narrativa visual, tecnología avanzada y experiencia de usuario excepcional para comunicar efectivamente la propuesta de valor única del estudio.
+El sitio reemplaza una versión anterior que no reflejaba las capacidades creativas del estudio. La nueva versión comunica el posicionamiento de Sonámbulo a través de movimiento e interacción en lugar de copy estático, estableciendo un estándar más alto para cómo las agencias creativas se presentan en línea.

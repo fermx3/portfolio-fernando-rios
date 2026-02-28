@@ -1,8 +1,8 @@
 ---
 title: "Coffee Disease Detection"
-summary: "Computer vision system for detecting diseases in coffee plants using deep learning models."
-description: "Advanced machine learning system that identifies coffee plant diseases (Cercospora, Leaf Rust, Miner, Phoma) from leaf images using multiple CNN architectures including VGG16, EfficientNet, and custom CNN models. The project consists of two repositories: the main API and models repository, and a separate web frontend repository available at https://github.com/fermx3/coffeedd-web."
-objective: "Build an accurate and reliable system to help coffee farmers identify plant diseases early, enabling timely treatment and crop protection."
+summary: "Computer vision system that identifies diseases in coffee plants from leaf images using CNN architectures, deployed as a production API."
+description: "Machine learning system that classifies coffee leaf images into five categories (healthy, Cercospora, Leaf Rust, Miner, Phoma) using VGG16, EfficientNet, and custom CNN models. Built as a Le Wagon bootcamp final project, led by a four-person team from concept to cloud deployment."
+objective: "Build a reliable classification system that prioritizes disease detection recall, helping coffee farmers identify plant diseases early enough to act."
 theme: "Agricultural AI with focus on precision farming and disease prevention."
 date: "2025-11-15"
 status: "production"
@@ -27,125 +27,87 @@ images:
   - "/images/projects/coffee-disease-detection/disease-classification.jpg"
   - "/images/projects/coffee-disease-detection/streamlit-app.jpg"
 challenges:
-  - "Distinguishing between similar-looking coffee leaf diseases"
-  - "Handling imbalanced dataset with varying disease frequencies"
-  - "Optimizing model performance to minimize false negatives (missing diseases)"
-  - "Creating robust preprocessing pipeline for field conditions"
+  - "Distinguishing between visually similar coffee leaf diseases"
+  - "Handling an imbalanced dataset where some diseases are underrepresented"
+  - "Minimizing false negatives, since a missed disease is worse than a false alarm"
+  - "Creating a preprocessing pipeline robust enough for field-captured images"
 solutions:
-  - "Custom class weighting system prioritizing disease detection over healthy classification"
-  - "Multi-architecture approach with VGG16, EfficientNet, and custom CNN models"
-  - "Advanced data augmentation preserving disease-specific visual characteristics"
-  - "Custom metrics focusing on disease recall to minimize false negatives"
-  - "Modular Python package architecture for scalable model deployment"
-  - "Google Cloud deployment with Dockerized API for cloud-based inference"
+  - "Custom class weighting that penalizes healthy misclassification and boosts rare disease detection"
+  - "Multi-architecture approach comparing VGG16, EfficientNet, and a custom lightweight CNN"
+  - "Data augmentation that preserves disease-specific visual characteristics"
+  - "Disease-focused recall metric as the primary optimization target"
 results:
-  - "High accuracy disease detection system with >90% recall on disease classes"
-  - "Production-ready API for real-time image classification"
-  - "Comprehensive MLflow tracking for model versioning and monitoring"
-  - "Docker deployment for easy scalability and distribution"
-  - "Successfully led four-person development team from concept to production"
-  - "Scalable cloud deployment on Google Cloud Platform"
+  - "Greater than 90% recall on disease classes, minimizing missed detections"
+  - "Production API deployed on Google Cloud Platform via Docker"
+  - "MLflow experiment tracking for model versioning and performance comparison"
+  - "Led a four-person team from idea pitch to production deployment"
 ---
 
 ## Project Overview
 
-Coffee Disease Detection is an advanced **computer vision system** designed to identify diseases in coffee plants from leaf images. Originally presented as a winning idea for Le Wagon's Data Science & AI bootcamp, this project was selected as one of two final projects to be developed by a team of four students.
+Coffee Disease Detection is a **computer vision system** that classifies coffee leaf images into five categories: healthy leaves and four diseases (Cercospora, Leaf Rust, Miner, and Phoma) that can significantly reduce crop yields if left untreated.
 
-As **project leader**, I coordinated the development team and guided the creation of a comprehensive solution that can detect five different classes: healthy leaves and four common diseases (Cercospora, Leaf Rust, Miner, and Phoma) that significantly impact coffee crop yields.
+The project started as an idea I pitched during Le Wagon's Data Science & AI bootcamp. It was selected as one of two final projects, and I led a team of four through the full lifecycle: dataset preparation, model training, API development, and cloud deployment.
 
-## Key Features
+## The Problem
 
-### 🧠 Multiple Model Architectures
-- **VGG16 Transfer Learning** - Stable performance with anti-overfitting measures
-- **EfficientNetB0** - Optimized for accuracy and efficiency
-- **Custom CNN** - Lightweight model for smaller datasets
-- **Automatic architecture detection** and model loading
+Coffee farmers often identify diseases too late, when visible damage is already extensive. The four target diseases present differently:
 
-### 🎯 Disease-Focused Optimization
-- **Custom class weighting** prioritizing disease detection
-- **Disease-specific recall metrics** to minimize false negatives
-- **False negative analysis** tools for model improvement
-- **Balanced training** with adaptive learning rates
+1. **Cercospora** - fungal disease causing brown spots on leaves
+2. **Leaf Rust (Roya)** - orange/yellow pustules on leaf undersides
+3. **Miner** - insect larvae creating visible tunnels through leaf tissue
+4. **Phoma** - fungal blight causing leaf necrosis
 
-### 🚀 Production-Ready Deployment
-- **FastAPI backend** with comprehensive API documentation
-- **Streamlit web application** for easy image upload and prediction
-- **Google Cloud deployment** with Dockerized API for scalable inference
-- **MLflow integration** for experiment tracking and model versioning
-- **Modular Python package** structure for maintainable codebase
+Some of these look similar in early stages. The system needs to catch diseases early, which means optimizing for recall over precision. A false alarm is preferable to a missed infection.
 
-## Technical Architecture
+## Model Architecture
 
-### Model Training Pipeline
-- **Multi-phase training** with initial feature extraction and fine-tuning
-- **Custom callbacks** for disease recall monitoring
-- **Adaptive learning rates** based on dataset size
-- **Comprehensive evaluation** with confusion matrices and detailed metrics
+### Multi-Architecture Comparison
+Rather than committing to a single model, the project trains and compares three architectures:
 
-### Data Processing
-- **Smart data augmentation** preserving disease characteristics
-- **Letterboxing preprocessing** to 224x224 resolution
-- **Automatic train/validation/test splitting**
-- **Class distribution analysis** and balancing
+- **VGG16 Transfer Learning** - pre-trained on ImageNet, fine-tuned with anti-overfitting measures (dropout, early stopping). Provides stable baseline performance.
+- **EfficientNetB0** - optimized for the accuracy-efficiency tradeoff. Smaller model with competitive performance.
+- **Custom CNN** - lightweight architecture designed for smaller datasets. Useful as a benchmark and for resource-constrained deployment.
 
-### API and Deployment
-- **RESTful API** with image upload and prediction endpoints
-- **Base64 and file upload support** for flexible integration
-- **Comprehensive error handling** and validation
-- **Production caching system** for model loading optimization
-- **Google Cloud Platform deployment** for scalable cloud-based inference
-- **Separate web frontend repository** available at [https://github.com/fermx3/coffeedd-web](https://github.com/fermx3/coffeedd-web) for the Streamlit application
+Each model uses automatic architecture detection for seamless loading at inference time.
 
-## Project Leadership & Team Coordination
+### Disease-Focused Optimization
 
-### Team Management
-- **Led a four-person development team** through the complete project lifecycle
-- **Coordinated tasks and timelines** ensuring timely delivery of milestones
-- **Applied software engineering best practices** including version control and documentation
-- **Maintained comprehensive GitHub repository** with clear structure and technical documentation
+The key insight: in a medical/agricultural classification task, the cost of errors is asymmetric. Missing a disease (false negative) is far worse than flagging a healthy leaf (false positive). The training pipeline reflects this:
 
-### Le Wagon Bootcamp Achievement
-- **Winning project selection** from multiple proposed ideas in Le Wagon's Data Science & AI bootcamp
-- **One of two final projects** chosen for development by the class
-- **End-to-end project delivery** from initial concept to production deployment
+- **Custom class weights** reduce the weight of the healthy class and increase weights for rare diseases, forcing the model to learn disease features more aggressively.
+- **Disease recall metric** - a custom TensorFlow metric that measures recall exclusively across disease classes, ignoring healthy classification accuracy.
+- **Adaptive learning rates** based on dataset size, with multi-phase training (frozen feature extraction, then full fine-tuning).
 
-## Disease Classification
+### Data Pipeline
+- Letterboxing preprocessing to 224x224 maintaining aspect ratio
+- Augmentation (rotation, flip, brightness, contrast) that preserves disease-specific patterns
+- Automatic train/validation/test splitting with stratification
+- Class distribution analysis to inform weighting strategy
 
-The system detects these coffee plant conditions:
+## Deployment
 
-1. **Healthy** - Normal, disease-free coffee leaves
-2. **Cercospora** - Fungal disease causing brown leaf spots
-3. **Leaf Rust** - Orange/yellow pustules on leaf undersides
-4. **Miner** - Insect damage creating tunnels in leaves
-5. **Phoma** - Fungal disease causing leaf blight
+### FastAPI Backend
+A RESTful API accepts images via file upload or base64 encoding, runs inference, and returns the predicted class with confidence scores. The API includes production caching for model loading optimization and comprehensive error handling.
 
-## Technical Highlights
+### Streamlit Frontend
+A separate [web application](https://github.com/fermx3/coffeedd-web) provides a simple upload-and-predict interface, making the system accessible to users without technical knowledge.
 
-### Smart Class Weighting
-Custom weighting system that penalizes healthy misclassification while boosting rare disease detection:
+### Infrastructure
+- **Docker** containerization for reproducible deployment
+- **Google Cloud Platform** for scalable cloud-based inference
+- **MLflow** for experiment tracking, model registry, and versioning
 
-- **Healthy leaves**: Reduced weight to prevent false negatives
-- **Rare diseases**: Increased weight for better detection
-- **Adaptive weighting**: Based on dataset size and distribution
+## Team Leadership
 
-### Advanced Metrics
-- **Disease Recall Metric**: Custom TensorFlow metric focusing on disease detection
-- **Binary classification analysis**: Healthy vs. any disease performance
-- **Detailed confusion matrices** with class-specific insights
-- **False negative analysis** for continuous improvement
+As project lead, I was responsible for:
+- Defining the project scope and technical approach
+- Coordinating task distribution across four team members
+- Maintaining the GitHub repository with clear structure and documentation
+- Presenting the final project to the bootcamp cohort
 
-### Model Management
-- **MLflow tracking** for experiment management
-- **Automatic model registry** with versioning
-- **Production model deployment** with A/B testing capability
-- **Model architecture detection** for seamless loading
+The project was delivered end-to-end: from the initial pitch through data collection, model experimentation, API development, and production deployment.
 
-## Impact and Applications
+## Impact
 
-- ✅ **Early disease detection** enabling timely treatment
-- ✅ **Reduced crop losses** through accurate identification
-- ✅ **Farmer accessibility** via simple web interface
-- ✅ **Scalable deployment** for agricultural organizations
-- ✅ **Research foundation** for agricultural AI development
-
-The system represents a significant advancement in precision agriculture, providing coffee farmers with AI-powered tools to protect their crops and optimize yields through early disease detection.
+The system demonstrates that affordable computer vision can help smallholder farmers protect their crops. By catching diseases early through a simple photo upload, farmers can apply targeted treatment before significant yield loss occurs. The modular architecture (separate API, model registry, web frontend) makes it straightforward to integrate into existing agricultural extension programs.

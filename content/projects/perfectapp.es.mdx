@@ -1,21 +1,24 @@
 ---
 title: "PerfectApp"
-summary: "Centro de Datos Inteligente que centraliza información de retail y ruta al mercado para mejores decisiones."
-description: "PerfectApp es una plataforma que centraliza la información de equipos de campo, distribuidores y puntos de venta en un tablero único. Ofrece insights accionables, segmentación y eficiencias operativas para la ejecución comercial."
-objective: "Centralizar datos y entregar insights oportunos para mejorar la toma de decisiones en equipos de trade, ventas y marketing."
-theme: "Dashboard orientado a datos con métricas claras y visualizaciones modulares."
+summary: "Plataforma B2B de automatización de fuerza de ventas y lealtad para la industria CPG con dashboards multi-rol, seguimiento de visitas en campo y sistema de recompensas por puntos."
+description: "PerfectApp es una plataforma SaaS multi-tenant que digitaliza las operaciones de ruta al mercado para empresas de consumo masivo. Conecta representantes de campo, coordinadores, administradores y clientes de retail a través de dashboards por rol, un flujo de visitas estructurado, validación de órdenes, seguimiento de puntos de lealtad y exportación automatizada de datos."
+objective: "Reemplazar flujos de trabajo fragmentados basados en hojas de cálculo con una plataforma centralizada que rastrea la ejecución en campo, automatiza la validación de órdenes e incentiva a clientes de retail mediante un programa de lealtad."
+theme: "Plataforma operativa orientada a datos con acceso por roles y seguimiento de ejecución en campo en tiempo real."
 date: "2024-07-01"
 status: "producción"
 featured: true
 category: "full-stack"
-tags: ["Next.js", "React", "Datos", "Dashboards", "SaaS", "Ruta al Mercado"]
+tags: ["Next.js", "React", "MongoDB", "SaaS", "B2B", "Automatización de Ventas", "Programa de Lealtad", "Ruta al Mercado"]
 technologies:
-  - "Next.js"
+  - "Next.js 14"
   - "React"
   - "JavaScript"
-  - "SCSS"
+  - "MongoDB"
   - "Prisma"
+  - "NextAuth.js"
+  - "Redux Toolkit"
   - "Node.js"
+  - "SCSS Modules"
 liveUrl: "https://www.ruta-perfectapp.com/"
 repoUrl: "https://github.com/fermx3/perfectapp"
 coverImage: "/images/projects/perfectapp/cover.jpg"
@@ -24,54 +27,105 @@ images:
   - "/images/projects/perfectapp/dashboard.jpg"
   - "/images/projects/perfectapp/insights.jpg"
 challenges:
-  - "Fuentes de datos dispersas entre equipos de campo, distribuidores y canales"
-  - "Ciclos de decisión lentos por reportes fragmentados"
-  - "Dificultad para identificar oportunidades y riesgos en tiempo casi real"
+  - "Digitalizar una operación de campo basada en papel y hojas de cálculo con múltiples roles de stakeholders"
+  - "Diseñar un sistema de puntos de lealtad que recompense el comportamiento de compra de forma justa"
+  - "Construir consultas complejas de base de datos para seguimiento de cuotas y consolidación de ventas por SKU, zona y nivel de cliente"
+  - "Manejar formularios de visita multi-paso que deben sobrevivir recargas de página en condiciones de campo poco confiables"
 solutions:
-  - "Centro de Datos Inteligente que consolida la información en dashboards contextuales"
-  - "Módulos de segmentación e insights personalizados para estrategias de ruta al mercado"
-  - "Reportes y visualizaciones automatizadas para acelerar la toma de decisiones"
+  - "Arquitectura basada en roles con tipos de usuario distintos, cada uno con dashboards y permisos dedicados"
+  - "Sistema de puntos configurable con flujo de validación de órdenes por admin y bonos por cuota"
+  - "Pipelines de agregación optimizados para cálculos de cuota en tiempo real y exportaciones de datos"
+  - "Wizard de visita multi-paso persistente que preserva el estado del formulario a través de 3 etapas de recolección de datos en campo"
 results:
-  - "Toma de decisiones más rápida y basada en datos para trade y marketing"
-  - "Eficiencias operativas gracias a reportes consolidados"
-  - "Mejor capacidad para detectar oportunidades y amenazas en el mercado"
+  - "Plataforma completamente operativa sirviendo equipos de campo CPG en múltiples zonas de México"
+  - "Validación automatizada de órdenes reemplazando la reconciliación manual en hojas de cálculo"
+  - "Programa de lealtad impulsando compras repetidas medibles de clientes de retail"
+  - "Exportaciones de datos CSV habilitando analítica downstream para equipos de trade y marketing"
 ---
 
 ## Resumen del Proyecto
 
-PerfectApp es un Centro de Datos Inteligente pensado para centralizar la información de actores clave en la ejecución comercial — equipos de campo, distribuidores, puntos de venta y consumidores — y presentarla como inteligencia accionable.
+PerfectApp es una **plataforma B2B de automatización de fuerza de ventas y lealtad de clientes** construida para empresas de consumo masivo (CPG) que operan en México. La landing page pública presenta el producto, pero detrás de la autenticación existe un sistema operativo completo que conecta representantes de ventas de campo, coordinadores, administradores y dueños de tiendas de retail a través de interfaces específicas por rol.
 
-## Características Clave
+La plataforma digitaliza todo el flujo de ruta al mercado: los representantes de campo visitan clientes de retail, registran datos de competencia e inventario, generan órdenes de compra y recopilan evidencia fotográfica a través de un formulario estructurado multi-paso. Los administradores validan órdenes, otorgan puntos de lealtad y gestionan el calendario promocional. Los clientes de retail siguen su progreso de compras, acumulan puntos y canjean recompensas.
 
-### Dashboards Centralizados
-- Tableros de control que agregan KPIs por canal, SKU y geografía.
+## Arquitectura del Sistema
 
-### Insights y Segmentación
-- Módulos integrados para identificar segmentos de mercado, oportunidades de crecimiento y señales de riesgo.
+### Control de Acceso Multi-Rol
 
-### Ciencia de Datos y Metodología MUTE
-- Modelos de datos y una metodología repetible (MUTE) para convertir datos crudos en acciones estratégicas.
+La plataforma sirve múltiples roles de usuario, cada uno con su propia sección de la aplicación y control de acceso del lado del servidor:
 
-### Reportes y Automatización
-- Exportes programados, alertas y resúmenes automáticos para los stakeholders.
+- **Admin** - Panel de gestión back-office con módulos operativos para validación de prospectos, aprobación de órdenes, gestión de puntos, calendario promocional y exportación de datos.
+- **Representante de Campo** - Dashboard con progreso de cuota mensual, métricas de efectividad por cliente y un wizard de registro de visitas multi-paso para registrar datos de campo.
+- **Coordinador** - Vista de supervisión para monitorear el desempeño, cuotas y actividad de representantes de campo individuales.
+- **Cliente Retail** - Portal de lealtad mostrando progreso de compras contra cuota, balance de puntos, banners promocionales y catálogo de recompensas.
+- **Analista** - Acceso de solo lectura a dashboards de resumen y exportaciones de datos CSV.
 
-## Cómo Ayuda
+### Diseño Multi-Tenant
 
-- **Decisiones Informadas:** Datos oportunos, claros y precisos para apoyar decisiones estratégicas.
-- **Identificación de Oportunidades y Amenazas:** Detectar tendencias y anomalías con mayor rapidez.
-- **Optimización de Recursos:** Priorizar acciones para reducir desperdicios y mejorar la eficiencia.
+El sistema soporta múltiples empresas desde un solo despliegue. El aislamiento de datos entre tenants se maneja en la capa de aplicación a través de consultas con scope de sesión, de modo que cada empresa ve solo sus propios datos sin necesidad de infraestructura separada.
 
-## Arquitectura Técnica
+## Funcionalidades Clave
 
-### Frontend
-- **Next.js** para páginas rápidas SSR/SSG y dashboards interactivos.
-- **React** con componentes modulares para gráficos y tablas.
+### Flujo de Visitas en Campo
 
-### Backend y Datos
-- **Prisma** y Node.js para acceso a datos e integraciones.
-- Pipelines ETL para normalizar orígenes de datos múltiples.
+El ciclo operativo central de la plataforma. Los representantes de campo completan un formulario de 3 etapas durante cada visita a cliente:
+
+1. **Evaluación** - productos de competencia, precios y evidencia fotográfica.
+2. **Inventario y Órdenes** - revisión de inventario, creación de orden de compra con selección de SKU y aplicación de promociones, o motivo de no compra.
+3. **Comunicación** - estado de ejecución del plan de comunicación, revisión de materiales y fotos de evidencia.
+
+El estado del formulario persiste entre recargas de página usando Redux Toolkit con persistencia local, lo cual es crítico para representantes de campo trabajando en dispositivos móviles con conectividad irregular. Al enviar, el sistema crea un registro de visita y una orden pendiente, y envía una notificación de resumen a los stakeholders relevantes.
+
+### Sistema de Puntos de Lealtad
+
+El programa de lealtad incentiva a los clientes de retail a mantener volúmenes de compra consistentes:
+
+- Los puntos se otorgan cuando los administradores validan órdenes de compra.
+- Los valores de puntos son configurables por producto y nivel de cliente.
+- Los clientes que exceden su cuota mensual de compras pueden ganar multiplicadores de bonificación.
+- Los puntos se canjean por recompensas físicas a través de un catálogo en el portal del cliente.
+- El flujo de validación asegura que los puntos solo se acreditan después de que las órdenes son revisadas y aprobadas.
+
+### Operaciones de Admin
+
+El panel de admin centraliza las tareas de back-office:
+
+- Revisar y aprobar órdenes pendientes para activar la asignación de puntos.
+- Validar nuevos prospectos de clientes enviados por representantes de campo e incorporarlos al sistema.
+- Configurar calendarios promocionales, valores de puntos y banners para clientes.
+- Exportar datos de ventas, precios e inventario como archivos CSV para análisis offline.
+- Monitorear cumplimiento de cuotas por zona y señalar clientes que excedieron objetivos.
+
+## Decisiones Técnicas
+
+### Capa de Base de Datos
+
+El proyecto usa MongoDB con Prisma para definición de esquema y generación de tipos. Las consultas de negocio complejas (cálculos de cuota, consolidación de ventas en múltiples dimensiones, joins entre colecciones) se manejan a través de pipelines de agregación optimizados que serían difíciles de expresar con una API de consultas ORM estándar.
+
+### Gestión de Estado
+
+Redux Toolkit maneja el estado de la aplicación, con persistencia local para el wizard de visitas. Esto resuelve un problema real: los representantes de campo en zonas rurales pierden conectividad a mitad de visita, y el formulario necesita sobrevivir una recarga de página sin perder datos.
+
+### Renderizado del Lado del Servidor
+
+Cada página autenticada carga datos en el servidor y los pasa como props. Esto asegura que los usuarios siempre vean datos frescos y que el control de acceso por roles se aplique antes de que cualquier contenido llegue al cliente.
+
+## Stack Técnico
+
+| Capa | Tecnología |
+|---|---|
+| Framework | Next.js 14 (SSR) |
+| Base de Datos | MongoDB + Prisma |
+| Auth | NextAuth.js |
+| Estado | Redux Toolkit |
+| Formularios | React Hook Form + Zod |
+| Estilos | SCSS Modules |
+| Deploy | Vercel |
 
 ## Impacto
 
-- La consolidación del reporting reduce el tiempo hasta el insight y mejora la ejecución en campo.
-- Los equipos disponen de una fuente de verdad compartida para la planificación y la toma de decisiones.
+- Reemplazó flujos de trabajo manuales en hojas de cálculo con un proceso digital estructurado y auditable para operaciones de campo.
+- El programa de lealtad crea un ciclo de incentivos medible entre la marca CPG y los dueños de tiendas de retail.
+- Los administradores obtienen visibilidad en tiempo real sobre la ejecución en campo, cumplimiento de cuotas y pipelines de órdenes por zona.
+- Las exportaciones CSV alimentan analítica downstream, permitiendo a los equipos de trade y marketing tomar decisiones basadas en datos.

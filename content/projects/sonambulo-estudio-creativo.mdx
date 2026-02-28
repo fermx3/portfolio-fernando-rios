@@ -1,8 +1,8 @@
 ---
 title: "Sonámbulo Estudio Creativo"
-summary: "Corporate website for a creative studio specialized in branding, route to market, and digital experiences"
-description: "Complete website development for Sonámbulo Estudio Creativo, a 'super group' of creatives who secure brands from construction to final consumer. The project included design and development of an immersive web experience with advanced animations and fluid navigation."
-objective: "Design an immersive website that showcases Sonámbulo's services, highlights key case studies, and elevates the brand through engaging interaction and clear storytelling."
+summary: "Corporate website for a creative studio with scroll-driven animations, interactive capability showcases, and a dynamic case study portfolio."
+description: "Full design and development of the corporate website for Sonámbulo Estudio Creativo, a multidisciplinary creative studio specializing in branding, route-to-market strategy, and digital products. The site uses scroll-triggered animations, sticky sections, and responsive interactions to communicate the studio's capabilities."
+objective: "Design an immersive website that communicates the studio's value proposition through motion, structure, and storytelling, turning a corporate site into an experience."
 theme: "Modern corporate with bold lime accents and fluid animations."
 date: "2025-11-13"
 status: "completed"
@@ -25,95 +25,73 @@ images:
   - "/images/projects/sonambulo/capabilities.jpg"
   - "/images/projects/sonambulo/portfolio.jpg"
 challenges:
-  - "Create a fluid navigation experience with complex animations"
-  - "Implement an advanced sticky scroll system for About sections"
-  - "Develop reusable components with touch and hover interactions"
-  - "Optimize performance with multiple animated elements"
+  - "Orchestrating complex scroll-driven animations without sacrificing performance"
+  - "Building a sticky scroll system where content transforms as the user navigates"
+  - "Supporting both touch and hover interactions across devices"
+  - "Keeping 60fps with multiple concurrent animated elements"
 solutions:
-  - "Framer Motion implementation for performant animations"
-  - "Custom scroll progress system to control animations"
-  - "Smart device detection for touch vs hover interactions"
-  - "Lazy loading and image optimization with Next.js Image"
+  - "Framer Motion with custom scroll progress hooks for GPU-accelerated animations"
+  - "Custom sticky section system with progress tracking and content morphing"
+  - "Device detection layer that swaps interaction models between touch and pointer"
+  - "Lazy loading, Next.js Image optimization, and animation batching"
 results:
-  - "Immersive web experience with fluid animations"
-  - "Intuitive navigation adapted to different devices"
-  - "Fast loading and SEO optimized"
-  - "Dynamic portfolio system for case studies"
+  - "Immersive web experience running at 60fps across devices"
+  - "High Lighthouse scores for performance, accessibility, and SEO"
+  - "Dynamic portfolio system for presenting client case studies"
+  - "Mobile-first design with native touch gesture support"
 ---
 
 ## Project Overview
 
-Sonámbulo Estudio Creativo defines itself as a **"super group of creatives, advertisers, marketers and idea nerds"** that specializes in securing brands from construction to final consumer. The website reflects this philosophy through an innovative and immersive digital experience.
+Sonámbulo Estudio Creativo is a **multidisciplinary creative studio** that calls itself a "super group of creatives, advertisers, marketers and idea nerds." They work across branding, route-to-market strategy, and digital products. The website needed to reflect that energy: not a standard corporate brochure, but an experience that communicates what the studio does through how the site itself behaves.
 
-## Key Features
+## Animation Architecture
 
-### 🎨 Design and Visual Experience
-- **Cohesive visual identity** with characteristic colors (lime, blue, ink)
-- **Custom typography** Montserrat and Darker Grotesque
-- **Iconography system** with asterisks as distinctive elements
-- **Fluid navigation** with smooth scrolling and seamless transitions
+The site is built around scroll-driven interactions. Rather than decorative transitions, animations serve a structural purpose: they control how content reveals, how sections connect, and how the user discovers the studio's capabilities.
 
-### ⚡ Advanced Animations
-- **Scroll-triggered animations** with Framer Motion
-- **Parallax effects** and 3D transformations
-- **Text animations** with character-by-character reveal
-- **Interactive particles** and custom cursor effects
+### Scroll Progress System
+A custom hook tracks viewport scroll position and maps it to animation progress values. This drives sticky sections where content transforms as the user scrolls: text morphs, images slide in, and the value proposition unfolds step by step without requiring clicks or navigation.
 
-### 📱 Responsive & Interactive
-- **Fully responsive design** for all devices
-- **Smart touch vs hover detection** to optimize interactions
-- **Animated mobile menu** with morphing transitions
-- **Optimized touch gestures** for mobile
+### Performance Strategy
+Multiple animated elements running concurrently can easily drop frames. The site maintains 60fps through:
+- GPU-accelerated transforms via Framer Motion's `motion` components
+- Animation batching to avoid layout thrashing
+- Intersection Observer-based activation so off-screen elements don't consume resources
+- Next.js Image with lazy loading for heavy visual assets
 
-## Technical Architecture
+## Key Sections
+
+### Hero and About
+A sticky scroll section where the studio's positioning reveals progressively. As the user scrolls, text blocks transform and images transition, telling the story from "who we are" to "what we believe" without a single page navigation.
+
+### Capabilities
+Three areas of specialization presented as interactive cards:
+- **SNMBL Channel Development** - Business strategy and trade marketing
+- **SNMBL Data & Intelligence Center** - Dashboards and web/mobile development
+- **SNMBL Ideas Lab** - Creative strategy and brand building
+
+Each card expands on hover (desktop) or tap (mobile) to reveal detailed service descriptions.
+
+### Dynamic Portfolio
+A case study system with per-client hero sections, responsive image carousels, insight cards with varied layouts, and fluid navigation between projects.
+
+## Technical Details
 
 ### Frontend
 - **Next.js 14** with App Router and React Server Components
-- **TypeScript** for type safety
-- **Framer Motion** for performant animations
-- **Custom hooks** for scroll tracking and device detection
+- **TypeScript** for type safety across the component tree
+- **Framer Motion** as the animation engine, with `useScroll`, `useTransform`, and `useInView` hooks
+- **Custom hooks** for scroll tracking, device detection, and intersection observation
 
-### Key Components
-- **Sticky scroll sections** with progress tracking
-- **Dynamic portfolio system** for case studies
-- **Interactive capability cards** with expand/collapse
-- **Multi-layer animations** for depth effects
+### Responsive Interaction Layer
+The site detects input type (touch vs. pointer) and adjusts interaction patterns accordingly. On desktop, cards respond to hover with 3D perspective transforms. On mobile, the same cards use tap-to-expand with optimized touch gesture handling. A single component codebase serves both experiences through conditional interaction hooks.
 
-### Optimizations
-- **Image optimization** with Next.js Image and lazy loading
-- **Performance monitoring** with Core Web Vitals
-- **SEO optimization** with dynamic metadata
-- **Progressive enhancement** for better accessibility
-
-## Main Sections
-
-### 1. Hero & About
-Implementation of an innovative sticky scroll system where content transforms as the user navigates, revealing the studio's value proposition step by step.
-
-### 2. Process and Methodology
-Interactive visualization of the studio's workflow, from brand construction to final consumer, with expandable cards and hover animations.
-
-### 3. Capabilities
-Three main areas of specialization:
-- **SNMBL Channel Development** - Business Strategy and Trade Marketing
-- **SNMBL Data & Intelligence Center** - Dashboards and web/mobile development
-- **SNMBL Ideas Lab** - Creative Strategy and Brand Building
-
-### 4. Dynamic Portfolio
-Case study system with:
-- **Custom hero sections** per client
-- **Responsive image carousel**
-- **Insight cards** with different layouts
-- **Fluid navigation** between projects
-
-## Technical Achievements
-
-- ✅ **Immersive experience** with fluid 60fps animations
-- ✅ **Optimized performance** with high Lighthouse scores
-- ✅ **Enhanced accessibility** with keyboard navigation and screen readers
-- ✅ **SEO optimized** with dynamic metadata and structured data
-- ✅ **Mobile-first** with native touch interactions
+### Design System
+- Cohesive visual identity using the studio's brand colors (lime, blue, ink)
+- Montserrat and Darker Grotesque typography
+- Asterisk-based iconography as a recurring visual motif
+- SCSS with component-scoped modules and shared variables
 
 ## Impact
 
-The Sonámbulo Estudio Creativo website sets a new standard for corporate sites in the creative industry, combining visual storytelling, advanced technology, and exceptional user experience to effectively communicate the studio's unique value proposition.
+The site replaces a previous version that didn't reflect the studio's creative capabilities. The new version communicates Sonámbulo's positioning through motion and interaction rather than static copy, setting a higher bar for how creative agencies present themselves online.

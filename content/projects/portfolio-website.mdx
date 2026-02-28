@@ -1,8 +1,8 @@
 ---
 title: "Portfolio Website"
-summary: "Modern, multilingual portfolio showcasing data science, machine learning, and full-stack development projects with a focus on clean design and performance."
-description: "Professional portfolio website built with Next.js 16, featuring multilingual support (English/Spanish), MDX content management, type-safe development with TypeScript, and modern UI/UX design. Showcases projects in data science, machine learning, and full-stack development with interactive project filtering, dark/light theme support, and optimized performance."
-objective: "Create a professional, performant portfolio website that effectively showcases technical projects, skills, and experience while providing an excellent user experience across devices and languages."
+summary: "Bilingual portfolio site built with Next.js 16, MDX content management, and type-safe architecture for showcasing data science and full-stack projects."
+description: "Professional portfolio website with English/Spanish support, MDX-powered project pages, dark/light theming, and interactive project filtering. Built with Next.js 16, React 19, TypeScript, and Tailwind CSS 4, deployed on Vercel with static generation for performance."
+objective: "Create a maintainable, bilingual portfolio that makes it easy to add new projects and presents technical work clearly across devices and languages."
 theme: "Modern, clean design with smooth animations and professional presentation."
 date: "2026-01-08"
 status: "production"
@@ -29,144 +29,70 @@ images:
   - "/images/projects/portfolio-website/project-detail.jpg"
   - "/images/projects/portfolio-website/dark-theme.jpg"
 challenges:
-  - "Implementing type-safe MDX content management with dynamic routing"
-  - "Creating seamless multilingual experience with proper SEO optimization"
-  - "Balancing rich animations with optimal performance across devices"
-  - "Designing consistent UI/UX while maintaining accessibility standards"
+  - "Building a content system where adding a new project requires only an MDX file, not code changes"
+  - "Supporting two languages without duplicating layout logic or component code"
+  - "Balancing animation richness with fast load times across devices"
+  - "Maintaining accessibility standards alongside custom interactive components"
 solutions:
-  - "Custom MDX pipeline with Zod validation for type-safe content management"
-  - "next-intl integration with locale-based routing and SEO-optimized metadata"
-  - "Framer Motion animations with performance-conscious loading and transitions"
-  - "Radix UI component library ensuring accessibility and consistent design"
-  - "Tailwind CSS 4 with custom design system for maintainable styling"
-  - "Next.js App Router with SSG for optimal performance and SEO"
+  - "MDX pipeline with Zod-validated frontmatter for type-safe, file-based content management"
+  - "next-intl with locale-based routing, keeping a single component tree for both languages"
+  - "Framer Motion animations with Intersection Observer-based activation and code splitting"
+  - "Radix UI primitives for accessible interactive components (dialogs, dropdowns, toggles)"
 results:
-  - "Lighthouse score of 95+ across all performance metrics"
-  - "Fully responsive design optimized for mobile, tablet, and desktop"
-  - "Seamless English/Spanish language switching with localized content"
-  - "Dynamic project filtering and categorization system"
-  - "Type-safe content management enabling easy project additions"
-  - "Professional showcase of technical skills and project portfolio"
+  - "95+ Lighthouse scores across performance, accessibility, SEO, and best practices"
+  - "Adding a new project takes one MDX file per language, no deployment configuration needed"
+  - "Seamless English/Spanish switching with localized content, metadata, and URLs"
+  - "Responsive design tested across mobile, tablet, and desktop breakpoints"
 ---
 
 ## Project Overview
 
-The Portfolio Website is a **modern, high-performance showcase** built with cutting-edge web technologies to present my work in data science, machine learning, and full-stack development. Designed with a focus on clean aesthetics, smooth user experience, and technical excellence.
+This is the site you're looking at. It's a **bilingual portfolio** that presents my work in data science, machine learning, and full-stack development. The technical goal was straightforward: build a site where adding a new project means writing an MDX file, not touching application code.
 
-This project demonstrates proficiency in modern React development, TypeScript implementation, and performance optimization while serving as a professional platform to highlight technical capabilities and project achievements.
+## Content Architecture
 
-## Key Features
+### MDX-Based Project Pages
+Each project lives as a pair of `.mdx` files (one per language) in the `content/projects/` directory. The frontmatter is validated against a Zod schema at build time, so type errors and missing fields are caught before deployment, not in production.
 
-### 🌍 Multilingual Architecture
-- **Complete i18n support** with English and Spanish locales
-- **Dynamic content translation** for projects, UI, and metadata
-- **SEO-optimized** with proper hreflang and localized URLs
-- **Automatic locale detection** with manual override capability
+The MDX body supports rich formatting, code blocks, and custom components, giving each project page the flexibility of a blog post with the structure of a typed data model.
 
-### 📝 Advanced Content Management
-- **MDX-powered project documentation** with rich formatting
-- **Type-safe frontmatter** validation using Zod schemas
-- **Dynamic route generation** from content files
-- **Automatic project categorization** and filtering
+### Automatic Route Generation
+Next.js App Router generates project pages dynamically from the content directory. Adding a new project creates its route, adds it to the project listing, and makes it available in both languages, all from the file system.
 
-### 🎨 Modern UI/UX Design
-- **Clean, professional aesthetic** with careful typography
-- **Smooth Framer Motion animations** throughout the interface
-- **Dark/Light theme switching** with system preference detection
-- **Responsive design** optimized for all screen sizes
+## Internationalization
 
-### ⚡ Performance & SEO
-- **Next.js 16 App Router** with Static Site Generation
-- **Optimized image loading** with Next.js Image component
-- **Lazy loading** and code splitting for faster initial loads
-- **Comprehensive meta tags** and Open Graph optimization
+The site uses **next-intl** for localization with `/en` and `/es` route prefixes. A single component tree serves both languages. Translations live in JSON message files, and content-level translation happens through the paired MDX files. SEO metadata (titles, descriptions, Open Graph tags) is generated per-locale with proper `hreflang` attributes.
 
-## Technical Architecture
+## Technical Stack
 
-### Frontend Framework
-- **Next.js 16** with App Router for modern React patterns
-- **React 19** leveraging concurrent features and Suspense
-- **TypeScript 5** for comprehensive type safety
-- **Component-driven architecture** with reusable UI elements
+### Frontend
+- **Next.js 16** with App Router and Static Site Generation
+- **React 19** with concurrent features and Suspense boundaries
+- **TypeScript 5** across the entire codebase
+- **Tailwind CSS 4** with a custom design system (spacing, colors, typography)
 
-### Styling & Animation
-- **Tailwind CSS 4** with utility-first approach
-- **Custom design system** with consistent spacing and colors
-- **Framer Motion** for smooth page transitions and interactions
-- **CSS-in-JS** optimization for critical path rendering
+### Interactive Layer
+- **Framer Motion** for page transitions, scroll animations, and hover interactions
+- **Radix UI** for accessible primitives (theme toggle, navigation menu, dialog)
+- **Dark/light theming** with system preference detection and manual override
 
-### Content & Data
-- **MDX processing** with custom plugins for enhanced functionality
-- **Gray Matter** for frontmatter parsing and validation
-- **Zod schemas** ensuring data integrity and type safety
-- **File-based routing** for automatic page generation
+### Content Pipeline
+- **MDX** processing with custom plugins
+- **Gray Matter** for frontmatter extraction
+- **Zod schemas** for build-time validation of project metadata
+- File-based routing for zero-configuration page generation
 
-### Internationalization
-- **next-intl** for comprehensive localization support
-- **Locale-based routing** with `/en` and `/es` paths
-- **Translation management** with JSON-based message files
-- **Dynamic content switching** without page reloads
+## Deployment
 
-## Project Structure
+The site runs on **Vercel** with automatic deployments from the GitHub repository. Static Site Generation means pages are pre-rendered at build time, resulting in fast load times and strong SEO without a runtime server.
 
-The codebase follows modern Next.js conventions with clear separation of concerns:
+## Design Decisions
 
-```
-src/
-├── app/                    # App Router pages and layouts
-├── components/            # Reusable React components
-│   ├── layout/           # Navigation, footer, containers
-│   ├── sections/         # Page-specific sections
-│   ├── projects/         # Project showcase components
-│   └── ui/               # Base UI components
-├── lib/                  # Utility functions and configurations
-├── types/                # TypeScript type definitions
-└── i18n/                 # Internationalization setup
-```
+- **No CMS**: MDX files in the repo are the content source. This keeps the stack simple and version-controlled.
+- **Radix UI over custom components**: accessibility is built-in rather than bolted on.
+- **Tailwind over CSS Modules**: utility-first approach keeps styling colocated and consistent.
+- **SSG over SSR**: portfolio content changes infrequently, so static generation is the right tradeoff.
 
-## Development Highlights
+## Impact
 
-### Type Safety Implementation
-- **Comprehensive TypeScript coverage** across all components
-- **Zod validation schemas** for runtime type checking
-- **Strict ESLint configuration** ensuring code quality
-- **Type-safe routing** and parameter handling
-
-### Performance Optimizations
-- **Bundle analysis** and code splitting strategies
-- **Image optimization** with WebP format and lazy loading
-- **Font optimization** with next/font integration
-- **Lighthouse auditing** for continuous performance monitoring
-
-### Accessibility Standards
-- **WCAG 2.1 compliance** with semantic HTML structure
-- **Keyboard navigation** support throughout the interface
-- **Screen reader optimization** with proper ARIA labels
-- **Color contrast** meeting accessibility guidelines
-
-## Content Management Workflow
-
-The portfolio uses a sophisticated MDX-based content system:
-
-1. **Project Creation**: New projects are added as MDX files with structured frontmatter
-2. **Type Validation**: Zod schemas ensure data consistency and catch errors early
-3. **Dynamic Generation**: Pages are automatically created from content files
-4. **SEO Optimization**: Metadata is generated from frontmatter for optimal search visibility
-
-## Deployment & Infrastructure
-
-- **Vercel Platform** for seamless CI/CD and global edge deployment
-- **Automatic deployments** from GitHub repository updates
-- **Environment optimization** for production performance
-- **Custom domain** with SSL certificate management
-
-## Project Impact
-
-- ✅ **Professional presence** showcasing technical expertise
-- ✅ **International accessibility** with bilingual support
-- ✅ **Optimal performance** with 95+ Lighthouse scores
-- ✅ **Scalable architecture** for easy content additions
-- ✅ **Modern development practices** demonstrating current skills
-- ✅ **SEO optimization** for improved discoverability
-
-This portfolio website serves as both a professional showcase and a demonstration of modern web development capabilities, highlighting proficiency in React ecosystems, performance optimization, and user experience design.
+The site serves as both a professional showcase and a demonstration of modern web development practices. The content system is designed to scale: as new projects are completed, they're documented and published through the same MDX workflow without touching the application code.

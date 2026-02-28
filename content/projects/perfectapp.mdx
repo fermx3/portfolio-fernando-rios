@@ -1,21 +1,24 @@
 ---
 title: "PerfectApp"
-summary: "Smart Data Center platform that centralizes retail and route-to-market data for better decisions."
-description: "PerfectApp is a data-driven platform that centralizes information from field teams, retailers and sales channels into a single dashboard. It provides actionable insights, segmentation, and operational efficiencies for route-to-market and retail execution."
-objective: "Centralize data and deliver timely insights to improve decision-making across trade, sales and marketing teams."
-theme: "Data-first dashboard with clear metrics and modular visualizations."
+summary: "B2B sales force automation and customer loyalty platform for the CPG industry with multi-role dashboards, field visit tracking, and a points-based rewards system."
+description: "PerfectApp is a multi-tenant SaaS platform that digitizes route-to-market operations for consumer packaged goods companies. It connects field sales reps, coordinators, administrators, and retail clients through role-specific dashboards, a structured visit workflow, order validation, loyalty point tracking, and automated data exports."
+objective: "Replace fragmented spreadsheet-based workflows with a centralized platform that tracks field execution, automates order validation, and incentivizes retail clients through a loyalty program."
+theme: "Data-driven operational platform with role-based access and real-time field execution tracking."
 date: "2024-07-01"
 status: "production"
 featured: true
 category: "full-stack"
-tags: ["Next.js", "React", "Data", "Dashboards", "SaaS", "Route to Market"]
+tags: ["Next.js", "React", "MongoDB", "SaaS", "B2B", "Sales Force Automation", "Loyalty Program", "Route to Market"]
 technologies:
-  - "Next.js"
+  - "Next.js 14"
   - "React"
   - "JavaScript"
-  - "SCSS"
+  - "MongoDB"
   - "Prisma"
+  - "NextAuth.js"
+  - "Redux Toolkit"
   - "Node.js"
+  - "SCSS Modules"
 liveUrl: "https://www.ruta-perfectapp.com/"
 repoUrl: "https://github.com/fermx3/perfectapp"
 coverImage: "/images/projects/perfectapp/cover.jpg"
@@ -24,54 +27,105 @@ images:
   - "/images/projects/perfectapp/dashboard.jpg"
   - "/images/projects/perfectapp/insights.jpg"
 challenges:
-  - "Disparate data sources across field teams, retailers and channels"
-  - "Slow decision cycles due to fragmented reporting"
-  - "Difficulty identifying opportunities and risks in near real-time"
+  - "Digitizing a paper and spreadsheet-based field operation with multiple stakeholder roles"
+  - "Designing a loyalty points system that rewards purchase behavior fairly"
+  - "Building complex database queries for quota tracking and sales rollups across SKUs, zones, and client tiers"
+  - "Handling multi-step visit forms that must survive page refreshes in unreliable field conditions"
 solutions:
-  - "Unified Smart Data Center consolidating data into contextual dashboards"
-  - "Custom segmentation and insight modules for route-to-market strategies"
-  - "Automated reports and visualizations for faster decisions"
+  - "Role-based architecture with distinct user types, each with dedicated dashboards and permissions"
+  - "Configurable points system with admin-validated order flow and quota-based bonuses"
+  - "Optimized database aggregation pipelines for real-time quota calculations and data exports"
+  - "Persistent multi-step visit wizard that preserves form state across 3 stages of field data collection"
 results:
-  - "Faster, data-driven decision making for trade and marketing"
-  - "Operational efficiencies from consolidated reporting"
-  - "Improved ability to detect opportunities and threats in the market"
+  - "Fully operational platform serving CPG field teams across multiple zones in Mexico"
+  - "Automated order validation replacing manual spreadsheet reconciliation"
+  - "Loyalty program driving measurable repeat purchases from retail clients"
+  - "CSV data exports enabling downstream analytics for trade and marketing teams"
 ---
 
 ## Project Overview
 
-PerfectApp is a Smart Data Center designed to centralize information from different actors in the commercial execution chain — field teams, distributors, retailers and shoppers — and present it as actionable intelligence.
+PerfectApp is a **B2B sales force automation and customer loyalty platform** built for consumer packaged goods (CPG) companies operating in Mexico. The public-facing landing page introduces the product, but behind authentication lies a full operational system that connects field sales representatives, coordinators, administrators, and retail store owners through role-specific interfaces.
+
+The platform digitizes the entire route-to-market workflow: field reps visit retail clients, log competitor data and inventory, place purchase orders, and collect photographic evidence through a structured multi-step form. Administrators validate orders, award loyalty points, and manage the promotional calendar. Retail clients track their purchase progress, accumulate points, and redeem rewards.
+
+## System Architecture
+
+### Multi-Role Access Control
+
+The platform serves multiple user roles, each with its own section of the application and server-side access enforcement:
+
+- **Admin** - Back-office management panel with operational modules for prospect validation, order approval, point management, promotional calendar, and data exports.
+- **Field Rep** - Dashboard with monthly quota progress, client effectiveness metrics, and a multi-step visit registration wizard for logging field data.
+- **Coordinator** - Supervisor view for monitoring individual field reps' performance, quotas, and activity.
+- **Retail Client** - Loyalty portal showing purchase progress against quota, points balance, promotional banners, and a rewards catalog.
+- **Analyst** - Read-only access to summary dashboards and CSV data exports.
+
+### Multi-Tenant Design
+
+The system supports multiple companies from a single deployment. Data isolation between tenants is handled at the application layer through session-scoped queries, so each company sees only its own data without needing separate infrastructure.
 
 ## Key Features
 
-### Centralized Dashboards
-- Single-pane dashboards that aggregate KPIs across channels, SKUs and geographies.
+### Field Visit Workflow
 
-### Insights & Segmentation
-- Built-in modules to identify market segments, growth opportunities and risk signals.
+The core operational loop of the platform. Field reps complete a 3-stage form during each client visit:
 
-### Data Science & MUTE Methodology
-- Data models and a repeatable methodology (MUTE) to convert raw data into strategic actions.
+1. **Assessment** - competitor products, pricing, and photographic evidence.
+2. **Inventory and Orders** - inventory check, purchase order creation with SKU selection and promotion application, or reason for no purchase.
+3. **Communication** - communication plan execution status, materials check, and evidence photos.
 
-### Reporting & Automation
-- Scheduled exports, alerts and automated summaries for stakeholders.
+The form state persists across page refreshes using Redux Toolkit with local persistence, which is critical for field reps working on mobile devices with spotty connectivity. On submission, the system creates a visit record and a pending order, and sends a summary notification to relevant stakeholders.
 
-## How It Helps
+### Loyalty Points System
 
-- **Decisions Informed:** Timely, clear and precise data to support strategic choices.
-- **Identify Opportunities & Threats:** Detect trends and anomalies faster.
-- **Optimize Resources:** Convert data into prioritized actions to reduce waste.
+The loyalty program incentivizes retail clients to maintain consistent purchase volumes:
 
-## Technical Architecture
+- Points are awarded when administrators validate purchase orders.
+- Point values are configurable per product and client tier.
+- Clients who exceed their monthly purchase quota can earn bonus multipliers.
+- Points can be redeemed for physical rewards through a catalog in the client portal.
+- The validation flow ensures that points are only credited after orders are reviewed and approved.
 
-### Frontend
-- **Next.js** for fast SSR/SSG pages and interactive dashboards.
-- **React** with modular components for charts and tables.
+### Admin Operations
 
-### Backend & Data
-- **Prisma** and Node.js for data access and integrations.
-- ETL pipelines to normalize data from multiple sources.
+The admin panel centralizes back-office tasks:
+
+- Review and approve pending orders to trigger point awards.
+- Validate new client prospects submitted by field reps and onboard them into the system.
+- Configure promotional calendars, point values, and client-facing banners.
+- Export sales, pricing, and inventory data as CSV files for offline analysis.
+- Monitor quota attainment across zones and flag clients who exceeded targets.
+
+## Technical Decisions
+
+### Database Layer
+
+The project uses MongoDB with Prisma for schema definition and type generation. Complex business queries (quota calculations, sales rollups across multiple dimensions, cross-collection joins) are handled through optimized aggregation pipelines that would be hard to express through a standard ORM query API.
+
+### State Management
+
+Redux Toolkit manages application state, with local persistence for the visit wizard. This solves a real problem: field reps in rural areas lose connectivity mid-visit, and the form needs to survive a page refresh without losing data.
+
+### Server-Side Rendering
+
+Every authenticated page loads data on the server and passes it as props. This ensures that users always see fresh data and that role-based access is enforced before any content reaches the client.
+
+## Technical Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 14 (SSR) |
+| Database | MongoDB + Prisma |
+| Auth | NextAuth.js |
+| State | Redux Toolkit |
+| Forms | React Hook Form + Zod |
+| Styling | SCSS Modules |
+| Deploy | Vercel |
 
 ## Impact
 
-- Centralized reporting reduces time-to-insight and improves field execution.
-- Teams gain a shared source of truth for decisions and planning.
+- Replaced manual spreadsheet workflows with a structured, auditable digital process for field operations.
+- The loyalty program creates a measurable incentive loop between the CPG brand and retail store owners.
+- Administrators gain real-time visibility into field execution, quota attainment, and order pipelines across zones.
+- CSV exports feed downstream analytics, enabling trade and marketing teams to make data-driven decisions.
