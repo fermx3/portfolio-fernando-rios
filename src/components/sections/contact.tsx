@@ -1,32 +1,15 @@
 "use client"
 
-import { useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { Mail, Send } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Container } from '@/components/layout/container'
 import { Section } from '@/components/layout/section'
 import { FadeIn } from '@/components/motion/fade-in'
 
 export function Contact() {
   const t = useTranslations('contact')
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: ''
-  })
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Client-side only for now
-    alert('Form submission not implemented yet. Please use email directly.')
-  }
-
-  const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }))
-  }
 
   return (
     <Section id="contact">
@@ -43,48 +26,22 @@ export function Contact() {
         </FadeIn>
 
         <div className="mt-16 grid gap-8 lg:grid-cols-2">
-          {/* Contact Form */}
+          {/* Contact Form Placeholder */}
           <FadeIn direction="left" delay={0.1}>
-            <Card>
+            <Card className="flex flex-col h-full bg-card/50 backdrop-blur-sm border-dashed">
               <CardHeader>
                 <CardTitle>{t('form.title')}</CardTitle>
-                <CardDescription>
-                  {t('form.note')}
-                </CardDescription>
               </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div>
-                    <Input
-                      placeholder={t('form.name')}
-                      value={formData.name}
-                      onChange={(e) => handleInputChange('name', e.target.value)}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <Input
-                      type="email"
-                      placeholder={t('form.email')}
-                      value={formData.email}
-                      onChange={(e) => handleInputChange('email', e.target.value)}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <textarea
-                      placeholder={t('form.message')}
-                      value={formData.message}
-                      onChange={(e) => handleInputChange('message', e.target.value)}
-                      className="min-h-30 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                      required
-                    />
-                  </div>
-                  <Button type="submit" className="w-full">
-                    <Send className="mr-2 h-4 w-4" />
-                    {t('form.send')}
-                  </Button>
-                </form>
+              <CardContent className="flex-1 flex flex-col items-center justify-center text-center p-8 space-y-4">
+                <div className="rounded-full bg-primary/10 p-4">
+                  <Send className="h-8 w-8 text-primary animate-pulse" />
+                </div>
+                <div className="space-y-2">
+                  <p className="text-xl font-semibold">{t('form.comingSoon')}</p>
+                  <p className="text-muted-foreground">
+                    {t('form.note')}
+                  </p>
+                </div>
               </CardContent>
             </Card>
           </FadeIn>

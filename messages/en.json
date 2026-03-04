@@ -86,13 +86,12 @@
     "education": {
       "title": "Education & Certifications",
       "items": [
-      {
-        "institution": "Le Wagon",
-        "program": "Data Science & AI Bootcamp",
-        "date": "Graduated November 15, 2025"
-      }
+        {
+          "institution": "Le Wagon",
+          "program": "Data Science & AI Bootcamp",
+          "date": "Graduated November 15, 2025"
+        }
       ]
-
     },
     "social": {
       "title": "Connect With Me"
@@ -107,7 +106,8 @@
       "email": "Email",
       "message": "Message",
       "send": "Send Message",
-      "note": "Form integration coming soon. For now, please reach out directly via email."
+      "note": "For now, please reach out directly via email.",
+      "comingSoon": "New contact experience coming soon!"
     },
     "direct": {
       "title": "Or reach out directly:",
