@@ -1,0 +1,35 @@
+---
+title: "Tattoo Kim"
+date: "2026-03-11"
+summary: "A premium, bilingual tattoo and piercing studio website with a dark minimal aesthetic and WhatsApp-first lead capture."
+category: "web-development"
+featured: false
+tags: ["Next.js", "Tailwind CSS", "next-intl", "MDX", "SEO"]
+objective: "Create a high-performance, bilingual platform to showcase artist portfolios and streamline bookings via WhatsApp."
+theme: "Minimalist Dark Aesthetic"
+repoUrl: "https://github.com/fermx3/tattoo-kim"
+liveUrl: "https://www.tattookim.com.mx"
+coverImage: "/images/projects/tattoo-kim/cover.png"
+---
+
+## Project Overview
+
+**Tattoo Kim** is a high-end digital identity for one of Mexico's most prominent tattoo and piercing studios, with locations in Playa del Carmen and Cancún. The project focuses on providing a seamless, bilingual experience that prioritizes visual storytelling through artist portfolios while maintaining exceptional performance.
+
+## Key Features
+
+- **Bilingual Architecture**: Built from the ground up to support Spanish and English locales using `next-intl`, ensuring a native feel for both local and international clients.
+- **WhatsApp-First Conversion**: Instead of traditional forms, the site uses a context-aware WhatsApp integration that pre-fills messages based on the service or artist being viewed.
+- **Performance Optimized**: Achieved Lighthouse scores of 90+ across all metrics by utilizing Static Site Generation (SSG) and aggressive image optimization.
+- **MDX-Driven Content**: Blog posts and artist profiles are managed via MDX, allowing for rich content layouts without the overhead of a heavy CMS.
+
+## Technical Implementation
+
+### Frontend Stack
+The site is built with **Next.js (App Router)** and **Tailwind CSS**. A dark-themed design system was implemented to match the studio's brand, using modern typography and high-contrast elements for a premium feel.
+
+### Internationalization
+The routing system handles locale prefixes (/es, /en) and automatically detects the user's preferred language. Static segments are mapped to ensure semantic URLs in both languages.
+
+### Image Strategy
+Given the visual nature of the business, I implemented a strict image strategy using `next/image` with WebP format and lazy loading, keeping initial page weight under 500KB despite the high number of portfolio images.

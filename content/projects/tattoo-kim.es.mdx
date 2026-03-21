@@ -1,0 +1,35 @@
+---
+title: "Tattoo Kim"
+date: "2026-03-11"
+summary: "Sitio web premium y bilingüe para un estudio de tatuajes y piercings, con estética minimalista oscura y captura de leads vía WhatsApp."
+category: "web-development"
+featured: false
+tags: ["Next.js", "Tailwind CSS", "next-intl", "MDX", "SEO"]
+objective: "Crear una plataforma bilingüe de alto rendimiento para mostrar portafolios de artistas y agilizar reservas vía WhatsApp."
+theme: "Estética Minimalista Oscura"
+repoUrl: "https://github.com/fermx3/tattoo-kim"
+liveUrl: "https://www.tattookim.com.mx"
+coverImage: "/images/projects/tattoo-kim/cover.png"
+---
+
+## Descripción del Proyecto
+
+**Tattoo Kim** es la identidad digital de alto nivel para uno de los estudios de tatuajes y piercings más destacados de México, con ubicaciones en Playa del Carmen y Cancún. El proyecto se centra en ofrecer una experiencia bilingüe fluida que prioriza la narrativa visual a través de los portafolios de los artistas, manteniendo un rendimiento excepcional.
+
+## Características Principales
+
+- **Arquitectura Bilingüe**: Construido desde cero para soportar locales en español e inglés usando `next-intl`, asegurando una sensación nativa tanto para clientes locales como internacionales.
+- **Conversión vía WhatsApp**: En lugar de formularios tradicionales, el sitio utiliza una integración de WhatsApp consciente del contexto que pre-llena mensajes basados en el servicio o artista que se está consultando.
+- **Rendimiento Optimizado**: Se alcanzaron puntuaciones de Lighthouse superiores a 90 en todas las métricas mediante el uso de Generación de Sitios Estáticos (SSG) y una optimización agresiva de imágenes.
+- **Contenido basado en MDX**: Las publicaciones del blog y los perfiles de los artistas se gestionan a través de MDX, lo que permite layouts de contenido enriquecido sin la sobrecarga de un CMS pesado.
+
+## Implementación Técnica
+
+### Stack de Frontend
+El sitio está construido con **Next.js (App Router)** y **Tailwind CSS**. Se implementó un sistema de diseño con tema oscuro para coincidir con la marca del estudio, utilizando tipografía moderna y elementos de alto contraste para una sensación premium.
+
+### Internacionalización
+El sistema de enrutamiento maneja prefijos de locale (/es, /en) y detecta automáticamente el idioma preferido del usuario. Los segmentos estáticos están mapeados para asegurar URLs semánticas en ambos idiomas.
+
+### Estrategia de Imágenes
+Dada la naturaleza visual del negocio, implementé una estrategia estricta de imágenes usando `next/image` con formato WebP y carga diferida (lazy loading), manteniendo el peso inicial de la página por debajo de 500KB a pesar de la gran cantidad de imágenes de portafolio.

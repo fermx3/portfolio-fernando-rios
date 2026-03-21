@@ -1,0 +1,35 @@
+---
+title: "Compañeros en Ruta"
+date: "2026-03-15"
+summary: "A production-grade, multi-tenant SaaS platform for logistics and distribution management, built with a strict database-driven architecture."
+category: "full-stack"
+featured: false
+tags: ["Next.js 15", "Supabase", "React 19", "Tailwind CSS 4", "PostgreSQL", "RLS"]
+objective: "Develop a scalable SaaS solution for distribution networks with strict data isolation and real-time operational metrics."
+theme: "Enterprise Modern SaaS"
+repoUrl: "https://github.com/fermx3/companeros-en-ruta"
+liveUrl: "https://companeros-en-ruta.vercel.app"
+coverImage: "/images/projects/companeros-en-ruta/cover.png"
+---
+
+## Project Overview
+
+**Compañeros en Ruta** is a comprehensive SaaS platform designed for high-scale logistics and brand distribution. Unlike typical web applications, it is built with a **local-first, schema-truth** philosophy, where the database structure dictates the application's capabilities and security boundaries.
+
+## Technical Excellence
+
+### Multi-Tenancy & Security
+The core of the application lies in its **Row Level Security (RLS)** implementation within Supabase. Every single table is strictly governed by policies that ensure absolute data isolation between different tenants (brands, distributors, and zones), preventing any risk of cross-tenant leakage.
+
+### Modern Stack
+Leveraging the latest technologies, the platform uses **Next.js 15 (Turbopack)** and **React 19**, combined with **Tailwind CSS 4** and **shadcn/ui** for a fast, responsive, and aesthetically pleasing enterprise interface.
+
+### Database-Driven Design
+The project maintains a 1:1 mapping between the PostgreSQL schema and TypeScript types, ensuring full type safety across the entire application. Complex operational flows—from visit stage assessments to order management—are handled with transactional integrity.
+
+## Key Functionalities
+
+- **Real-Time Dashboards**: Interactive KPIs for volume, reach, and market share, powered by real-time database views.
+- **Operational Auditing**: Detailed tracking of sales rep visits, inventory audits, and point-of-sale execution.
+- **SaaS Infrastructure**: Built-in support for multiple organizational roles, hierarchical structures (Tenants > Brands > Zones), and complex notification systems.
+- **Field Reporting**: Optimized mobile-first screens for promoters to capture data in the field, including offline synchronization capabilities.

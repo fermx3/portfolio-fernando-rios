@@ -1,0 +1,35 @@
+---
+title: "Compañeros en Ruta"
+date: "2026-03-15"
+summary: "Plataforma SaaS multi-tenant de grado de producción para la gestión de logística y distribución, construida con una arquitectura estricta orientada a base de datos."
+category: "full-stack"
+featured: false
+tags: ["Next.js 15", "Supabase", "React 19", "Tailwind CSS 4", "PostgreSQL", "RLS"]
+objective: "Desarrollar una solución SaaS escalable para redes de distribución con aislamiento estricto de datos y métricas operativas en tiempo real."
+theme: "Enterprise Modern SaaS"
+repoUrl: "https://github.com/fermx3/companeros-en-ruta"
+liveUrl: "https://companeros-en-ruta.vercel.app"
+coverImage: "/images/projects/companeros-en-ruta/cover.png"
+---
+
+## Descripción del Proyecto
+
+**Compañeros en Ruta** es una plataforma SaaS integral diseñada para logística a gran escala y distribución de marcas. A diferencia de las aplicaciones web típicas, está construida con una filosofía de **local-first y verdad basada en el esquema**, donde la estructura de la base de datos dicta las capacidades y los límites de seguridad de la aplicación.
+
+## Excelencia Técnica
+
+### Multi-Tenancy y Seguridad
+El núcleo de la aplicación reside en su implementación de **Row Level Security (RLS)** dentro de Supabase. Cada tabla está estrictamente gobernada por políticas que aseguran un aislamiento absoluto de datos entre diferentes inquilinos (marcas, distribuidores y zonas), eliminando cualquier riesgo de filtración de datos.
+
+### Stack Moderno
+Aprovechando las últimas tecnologías, la plataforma utiliza **Next.js 15 (Turbopack)** y **React 19**, combinados con **Tailwind CSS 4** y **shadcn/ui** para una interfaz empresarial rápida, responsiva y estéticamente atractiva.
+
+### Diseño Orientado a Base de Datos
+El proyecto mantiene un mapeo 1:1 entre el esquema de PostgreSQL y los tipos de TypeScript, asegurando seguridad de tipos completa en toda la aplicación. Los flujos operativos complejos —desde evaluaciones de etapas de visita hasta gestión de pedidos— se manejan con integridad transaccional.
+
+## Funcionalidades Clave
+
+- **Dashboards en Tiempo Real**: KPIs interactivos de volumen, alcance y participación de mercado, impulsados por vistas de base de datos en tiempo real.
+- **Auditoría Operativa**: Seguimiento detallado de las visitas de los representantes de ventas, auditorías de inventario y ejecución en punto de venta.
+- **Infraestructura SaaS**: Soporte nativo para múltiples roles organizacionales, estructuras jerárquicas (Inquilinos > Marcas > Zonas) y sistemas de notificación complejos.
+- **Reporteo en Campo**: Pantallas optimizadas para móviles para que los promotores capturen datos en el campo, incluyendo capacidades de sincronización offline.
