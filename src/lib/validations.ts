@@ -7,7 +7,7 @@ export const projectSchema = z.object({
   description: z.string().optional(),
   objective: z.string().optional(),
   theme: z.string().optional(),
-  category: z.enum(['data-science', 'full-stack', 'ml', 'visualization', 'web-development']),
+  category: z.enum(['data-science', 'full-stack', 'ml', 'visualization', 'web-development', 'backend-development']),
   tags: z.array(z.string()),
   technologies: z.array(z.string()).optional(),
   featured: z.boolean(),

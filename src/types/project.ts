@@ -5,7 +5,7 @@ export interface Project {
   description?: string
   objective?: string
   theme?: string
-  category: 'data-science' | 'full-stack' | 'ml' | 'visualization' | 'web-development'
+  category: 'data-science' | 'full-stack' | 'ml' | 'visualization' | 'web-development' | 'backend-development'
   tags: string[]
   technologies?: string[]
   featured: boolean
