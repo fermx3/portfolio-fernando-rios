@@ -1,0 +1,70 @@
+---
+title: "Log Analyser"
+summary: "Modular Python CLI tool for parsing and analyzing large-scale log files with high-performance regex and structured reporting."
+description: "A robust Command Line Interface (CLI) tool designed to process and analyze server log files. It demonstrates high-performance text processing using Python's standard library, providing a modular architecture that separates parsing logic from data analysis and reporting."
+objective: "Create a lightweight, dependency-free utility to help developers quickly identify error patterns and log statistics from large text files."
+theme: "Technical and minimalist CLI tool aesthetic."
+date: "2026-03-19"
+status: "completed"
+featured: false
+category: "backend-development"
+tags: ["Python", "CLI", "Regex", "Log Analysis", "Automation", "Software Design"]
+technologies:
+  - "Python 3.10+"
+  - "Regex (re module)"
+  - "Collections (Counter)"
+  - "Argparse"
+  - "F-strings (formatted output)"
+liveUrl: ""
+repoUrl: "https://github.com/fermx3/log_analyser"
+coverImage: "/images/projects/log-analyser/cover.jpg"
+images:
+  - "/images/projects/log-analyser/terminal.png"
+challenges:
+  - "Efficiently processing potentially massive log files without loading the entire content into memory"
+  - "Creating a flexible regex pattern that can handle variations in log formatting (timestamps, multi-word messages)"
+  - "Implementing a modular design using only the Python standard library to ensure zero external dependencies"
+solutions:
+  - "Implemented line-by-line reading with pre-compiled regular expressions using named capture groups for high-speed parsing"
+  - "Utilized Python's `collections.Counter` for rapid frequency analysis of log levels and error messages"
+  - "Designed a decoupled architecture (Parser -> Analyzer -> Reporter) to allow for independent testing and extensibility"
+results:
+  - "A fast and reliable CLI tool that generates structured reports in seconds"
+  - "Demonstrated proficiency in core Python engineering and software architecture principles"
+  - "Provides a reusable utility for DevOps and backend debugging tasks"
+---
+
+## Project Overview
+
+**Log Analyser** is a specialized CLI utility built to solve a common developer problem: extracting meaningful insights from messy, high-volume log files. Instead of manually searching through thousands of lines, this tool provides a structured summary of log levels and the most frequent error messages.
+
+## Technical Implementation
+
+The project is built with a focus on **clean code** and **performance**, using a modular approach that follows the Single Responsibility Principle.
+
+### High-Performance Parsing
+The heart of the tool is a robust parser that uses **pre-compiled regular expressions**. By using **named capture groups** (e.g., `(?P<level>...)`), the parser efficiently extracts:
+- **Timestamps**
+- **Severity Levels** (INFO, WARNING, ERROR, CRITICAL)
+- **Message Content**
+
+The use of generators (line-by-line processing) ensures that the tool can handle files much larger than the available RAM without performance degradation.
+
+### Data Analysis
+For statistical analysis, I leveraged Python's `collections.Counter`. This allowed for near-instantaneous counting of log occurrences and efficient identification of the `n` most frequent error messages using the `.most_common()` method.
+
+### Modular Architecture
+The codebase is strictly organized into four key modules:
+1.  **`parser.py`**: Handles text extraction and regex matching.
+2.  **`analyzer.py`**: Performs statistical computations on the parsed data.
+3.  **`reporter.py`**: Formats and prints the final report using advanced f-string alignment.
+4.  **`main.py`**: Acts as the orchestrator and handles CLI arguments via `argparse`.
+
+## Why this project?
+
+While many log analysis tools exist, this project serves as a testament to my ability to:
+- Build **dependency-free** tools that work out of the box.
+- Apply **Software Design Patterns** (Separation of Concerns) in a scripting context.
+- Write **optimized Python** for text processing tasks.
+
+It’s a practical example of creating custom tooling to improve developer workflows.
