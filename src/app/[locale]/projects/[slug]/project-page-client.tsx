@@ -65,18 +65,22 @@ export function ProjectPageClient({ project }: ProjectPageClientProps) {
                 </div>
 
                 <div className="flex gap-4">
-                  <Button asChild>
-                    <a href={project.liveUrl || project.demoUrl} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="mr-2 h-4 w-4" />
-                      {t('project.viewDemo')}
-                    </a>
-                  </Button>
-                  <Button variant="outline" asChild>
-                    <a href={project.repoUrl} target="_blank" rel="noopener noreferrer">
-                      <Github className="mr-2 h-4 w-4" />
-                      {t('project.viewCode')}
-                    </a>
-                  </Button>
+                  {(project.liveUrl || project.demoUrl) && (
+                    <Button asChild>
+                      <a href={project.liveUrl || project.demoUrl} target="_blank" rel="noopener noreferrer">
+                        <ExternalLink className="mr-2 h-4 w-4" />
+                        {t('project.viewDemo')}
+                      </a>
+                    </Button>
+                  )}
+                  {project.repoUrl && (
+                    <Button variant="outline" asChild>
+                      <a href={project.repoUrl} target="_blank" rel="noopener noreferrer">
+                        <Github className="mr-2 h-4 w-4" />
+                        {t('project.viewCode')}
+                      </a>
+                    </Button>
+                  )}
                 </div>
               </div>
             </FadeIn>
