@@ -48,7 +48,7 @@ export function ProjectPageClient({ project }: ProjectPageClientProps) {
                     variant="outline"
                     className={getCategoryColor(project.category)}
                   >
-                    {project.category}
+                    {t(`filters.${project.category}`)}
                   </Badge>
                 </div>
 
@@ -181,7 +181,7 @@ export function ProjectPageClient({ project }: ProjectPageClientProps) {
                         variant="outline"
                         className={getCategoryColor(project.category)}
                       >
-                        {project.category}
+                        {t(`filters.${project.category}`)}
                       </Badge>
                     </div>
                   </CardContent>
