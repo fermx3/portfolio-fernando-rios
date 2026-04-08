@@ -1,0 +1,60 @@
+---
+title: "CLI Task Manager"
+summary: "Herramienta CLI en Python para agregar, categorizar, completar y eliminar tareas con almacenamiento persistente en JSON local."
+description: "Una aplicación de interfaz de línea de comandos que permite a los usuarios gestionar tareas directamente desde la terminal. Soporta agregar tareas con categorías, listar todas las tareas, marcar tareas como completadas y eliminarlas. Los datos persisten entre sesiones mediante un archivo JSON local."
+objective: "Construir una utilidad CLI práctica y ligera para la gestión personal de tareas que demuestre scripting limpio en Python y persistencia de datos."
+theme: "Estética técnica y minimalista de herramienta CLI."
+date: "2026-04-03"
+status: "completed"
+featured: false
+category: "backend-development"
+tags: ["Python", "CLI", "JSON", "Gestión de Tareas", "Argparse", "Automatización"]
+technologies:
+  - "Python 3.12"
+  - "Argparse"
+  - "JSON (persistencia local)"
+  - "UUID"
+liveUrl: ""
+repoUrl: "https://github.com/fermx3/cli_task_manager"
+coverImage: "/images/projects/cli-task-manager/cover.png"
+images:
+  - "/images/projects/cli-task-manager/cover.png"
+challenges:
+  - "Diseñar un modelo de datos simple pero flexible para tareas que soporte categorías y estado de completado"
+  - "Implementar persistencia de datos confiable entre sesiones usando un archivo JSON local"
+  - "Crear una interfaz CLI intuitiva con subcomandos claros para cada operación"
+solutions:
+  - "Uso de diccionarios de Python con identificadores basados en UUID almacenados en un archivo JSON para persistencia ligera"
+  - "Aprovechamiento de subcomandos de argparse para crear una interfaz CLI limpia al estilo Unix"
+  - "Implementación de soporte de categorías como metadatos opcionales para mantener la creación de tareas simple pero flexible"
+results:
+  - "Un gestor de tareas CLI funcional que trabaja completamente offline sin dependencias externas"
+  - "Salida limpia en terminal con indicadores visuales del estado de completado de tareas"
+  - "Demostración de competencia en scripting de Python y diseño de aplicaciones CLI"
+---
+
+## Descripción del Proyecto
+
+**CLI Task Manager** es una aplicación de línea de comandos construida en Python que permite gestionar tu lista de tareas directamente desde la terminal. Soporta el ciclo de vida completo de las tareas: agregar, listar, completar y eliminar, todo persistido localmente en un archivo JSON.
+
+## Implementación Técnica
+
+### Operaciones de Tareas
+La herramienta proporciona cuatro subcomandos principales:
+- **`add`**: Crear una nueva tarea con una categoría opcional
+- **`list`**: Mostrar todas las tareas con su estado, fecha, categoría e ID
+- **`complete`**: Marcar una tarea como completada usando su UUID
+- **`delete`**: Eliminar una tarea permanentemente por su UUID
+
+### Persistencia de Datos
+Las tareas se almacenan en un archivo JSON local, haciendo que la herramienta sea completamente autónoma sin necesidad de una base de datos o servicio externo. Cada tarea se identifica con un UUID, garantizando identificación única incluso entre sesiones.
+
+### Diseño CLI
+La interfaz utiliza el módulo `argparse` de Python con subcomandos, siguiendo las convenciones CLI de Unix. La salida es limpia y legible, mostrando el estado de completado con indicadores `[X]` y `[ ]`.
+
+## ¿Por qué este proyecto?
+
+Este proyecto demuestra la capacidad de:
+- Construir **herramientas CLI prácticas** que resuelven problemas reales del día a día.
+- Implementar **persistencia de datos** con elecciones tecnológicas simples y apropiadas.
+- Escribir **Python limpio y mantenible** con enfoque en la experiencia del usuario.

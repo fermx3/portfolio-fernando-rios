@@ -1,0 +1,60 @@
+---
+title: "CLI Task Manager"
+summary: "A Python CLI tool to add, categorize, complete, and delete tasks with persistent local JSON storage."
+description: "A command-line interface application that allows users to manage tasks directly from the terminal. It supports adding tasks with categories, listing all tasks, marking tasks as completed, and deleting them. Data persists between sessions using a local JSON file."
+objective: "Build a practical, lightweight CLI utility for personal task management that demonstrates clean Python scripting and data persistence."
+theme: "Technical and minimalist CLI tool aesthetic."
+date: "2026-04-03"
+status: "completed"
+featured: false
+category: "backend-development"
+tags: ["Python", "CLI", "JSON", "Task Management", "Argparse", "Automation"]
+technologies:
+  - "Python 3.12"
+  - "Argparse"
+  - "JSON (local persistence)"
+  - "UUID"
+liveUrl: ""
+repoUrl: "https://github.com/fermx3/cli_task_manager"
+coverImage: "/images/projects/cli-task-manager/cover.png"
+images:
+  - "/images/projects/cli-task-manager/cover.png"
+challenges:
+  - "Designing a simple yet flexible data model for tasks that supports categories and completion status"
+  - "Implementing reliable data persistence between sessions using a local JSON file"
+  - "Creating an intuitive CLI interface with clear subcommands for each operation"
+solutions:
+  - "Used Python dictionaries with UUID-based identifiers stored in a JSON file for lightweight persistence"
+  - "Leveraged argparse subcommands to create a clean, Unix-style CLI interface"
+  - "Implemented category support as optional metadata to keep task creation simple yet flexible"
+results:
+  - "A functional CLI task manager that works entirely offline with zero external dependencies"
+  - "Clean terminal output with visual indicators for task completion status"
+  - "Demonstrated proficiency in Python scripting and CLI application design"
+---
+
+## Project Overview
+
+**CLI Task Manager** is a command-line application built in Python that lets you manage your to-do list directly from the terminal. It supports the full task lifecycle: adding, listing, completing, and deleting tasks, all persisted locally in a JSON file.
+
+## Technical Implementation
+
+### Task Operations
+The tool provides four core subcommands:
+- **`add`**: Create a new task with an optional category
+- **`list`**: Display all tasks with their status, date, category, and ID
+- **`complete`**: Mark a task as done using its UUID
+- **`delete`**: Remove a task permanently by its UUID
+
+### Data Persistence
+Tasks are stored in a local JSON file, making the tool completely self-contained with no need for a database or external service. Each task is identified by a UUID, ensuring unique identification even across sessions.
+
+### CLI Design
+The interface uses Python's `argparse` module with subcommands, following Unix CLI conventions. The output is clean and readable, showing completion status with `[X]` and `[ ]` indicators.
+
+## Why this project?
+
+This project demonstrates the ability to:
+- Build **practical CLI tools** that solve real everyday problems.
+- Implement **data persistence** with simple, appropriate technology choices.
+- Write **clean, maintainable Python** with a focus on user experience.
