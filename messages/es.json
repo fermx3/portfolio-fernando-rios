@@ -46,6 +46,7 @@
     "links": {
       "demo": "Ver Demo",
       "repo": "Ver Código",
+      "repoPrivate": "Repo Privado",
       "details": "Leer Más"
     },
     "page": {
@@ -60,6 +61,7 @@
     "project": {
       "viewDemo": "Ver Demo",
       "viewCode": "Ver Código",
+      "viewCodePrivate": "Repositorio Privado",
       "details": "Detalles del Proyecto",
       "objective": "Objetivo",
       "theme": "Tema",

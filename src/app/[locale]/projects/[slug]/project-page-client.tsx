@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useTranslations, useLocale } from 'next-intl'
-import { ArrowLeft, ExternalLink, Github } from 'lucide-react'
+import { ArrowLeft, ExternalLink, Github, Lock } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -75,12 +75,19 @@ export function ProjectPageClient({ project }: ProjectPageClientProps) {
                     </Button>
                   )}
                   {project.repoUrl && (
-                    <Button variant="outline" asChild>
-                      <a href={project.repoUrl} target="_blank" rel="noopener noreferrer">
-                        <Github className="mr-2 h-4 w-4" />
-                        {t('project.viewCode')}
-                      </a>
-                    </Button>
+                    project.repoPrivate ? (
+                      <Button variant="outline" disabled title={t('project.viewCodePrivate')}>
+                        <Lock className="mr-2 h-4 w-4" />
+                        {t('project.viewCodePrivate')}
+                      </Button>
+                    ) : (
+                      <Button variant="outline" asChild>
+                        <a href={project.repoUrl} target="_blank" rel="noopener noreferrer">
+                          <Github className="mr-2 h-4 w-4" />
+                          {t('project.viewCode')}
+                        </a>
+                      </Button>
+                    )
                   )}
                 </div>
               </div>

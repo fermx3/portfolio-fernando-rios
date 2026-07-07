@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 import { usePathname } from 'next/navigation'
-import { ExternalLink, Github } from 'lucide-react'
+import { ExternalLink, Github, Lock } from 'lucide-react'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -108,12 +108,19 @@ export function ProjectCard({ project }: ProjectCardProps) {
               </Button>
             )}
             {project.repoUrl && (
-              <Button variant="outline" size="sm" asChild className="flex-1">
-                <a href={project.repoUrl} target="_blank" rel="noopener noreferrer">
-                  <Github className="mr-1 h-3 w-3" />
-                  {t('links.repo')}
-                </a>
-              </Button>
+              project.repoPrivate ? (
+                <Button variant="outline" size="sm" disabled className="flex-1" title={t('links.repoPrivate')}>
+                  <Lock className="mr-1 h-3 w-3" />
+                  {t('links.repoPrivate')}
+                </Button>
+              ) : (
+                <Button variant="outline" size="sm" asChild className="flex-1">
+                  <a href={project.repoUrl} target="_blank" rel="noopener noreferrer">
+                    <Github className="mr-1 h-3 w-3" />
+                    {t('links.repo')}
+                  </a>
+                </Button>
+              )
             )}
           </div>
         )}

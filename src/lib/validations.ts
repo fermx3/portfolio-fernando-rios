@@ -25,6 +25,7 @@ export const projectSchema = z.object({
   status: z.string().optional(),
   date: z.string(),
   repoUrl: z.string(),
+  repoPrivate: z.boolean().optional(),
   liveUrl: z.string().optional(),
   demoUrl: z.string().optional(),
   coverImage: z.string(),

@@ -46,6 +46,7 @@
     "links": {
       "demo": "View Demo",
       "repo": "View Code",
+      "repoPrivate": "Private Repo",
       "details": "Read More"
     },
     "page": {
@@ -60,6 +61,7 @@
     "project": {
       "viewDemo": "View Demo",
       "viewCode": "View Code",
+      "viewCodePrivate": "Private Repository",
       "details": "Project Details",
       "objective": "Objective",
       "theme": "Theme",

@@ -16,6 +16,7 @@ export interface Project {
   status?: string
   date: string
   repoUrl: string
+  repoPrivate?: boolean
   liveUrl?: string
   demoUrl?: string
   coverImage: string
