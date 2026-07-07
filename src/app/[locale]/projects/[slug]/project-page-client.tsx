@@ -11,6 +11,7 @@ import { Separator } from '@/components/ui/separator'
 import { Container } from '@/components/layout/container'
 import { Section } from '@/components/layout/section'
 import { FadeIn } from '@/components/motion/fade-in'
+import { ProjectGallery } from '@/components/projects/project-gallery'
 import { getCategoryColor, formatDate, generatePlaceholderGradient } from '@/lib/utils'
 
 import { Project } from '@/types/project'
@@ -105,6 +106,13 @@ export function ProjectPageClient({ project }: ProjectPageClientProps) {
                 )}
               </div>
             </FadeIn>
+
+            {/* Project Gallery */}
+            {project.images && project.images.length > 0 && (
+              <FadeIn direction="up" delay={0.25}>
+                <ProjectGallery images={project.images} title={project.title} />
+              </FadeIn>
+            )}
 
             {/* Project Content */}
             <FadeIn direction="up" delay={0.3}>

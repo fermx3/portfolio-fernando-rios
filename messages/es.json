@@ -65,7 +65,12 @@
       "theme": "Tema",
       "date": "Fecha",
       "category": "Categoría",
-      "technologies": "Tecnologías"
+      "technologies": "Tecnologías",
+      "gallery": "Galería",
+      "galleryClose": "Cerrar",
+      "galleryPrevious": "Imagen anterior",
+      "galleryNext": "Imagen siguiente",
+      "galleryImageLabel": "Imagen {current} de {total}"
     },
     "card": {
       "objective": "Objetivo",

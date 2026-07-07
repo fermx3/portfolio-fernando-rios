@@ -1,3 +1,7 @@
+export type ProjectImage =
+  | string
+  | { src: string; type?: 'mobile' | 'web'; alt?: string }
+
 export interface Project {
   slug: string
   title: string
@@ -15,7 +19,7 @@ export interface Project {
   liveUrl?: string
   demoUrl?: string
   coverImage: string
-  images?: string[]
+  images?: ProjectImage[]
   challenges?: string[]
   solutions?: string[]
   results?: string[]
