@@ -1,11 +1,11 @@
 ---
 title: "Compañeros en Ruta"
-date: "2026-03-15"
-summary: "A production-grade, multi-tenant SaaS platform for logistics and distribution management, built with a strict database-driven architecture."
+date: "2026-07-06"
+summary: "A production-grade, multi-tenant SaaS for logistics and brand distribution — a Next.js web app plus native iOS/Android apps — sharing a QR-driven loyalty engine and a strict PostgreSQL + RLS security core."
 category: "full-stack"
 featured: true
-tags: ["Next.js 15", "Supabase", "React 19", "Tailwind CSS 4", "PostgreSQL", "RLS"]
-objective: "Develop a scalable SaaS solution for distribution networks with strict data isolation and real-time operational metrics."
+tags: ["Next.js 16", "React 19", "Expo", "React Native", "Supabase", "PostgreSQL", "RLS", "TypeScript", "Tailwind CSS 4"]
+objective: "Deliver a scalable, cross-platform SaaS for distribution networks — web and native mobile — with strict multi-tenant isolation, field operations tooling, and real-time operational metrics across six distinct user roles."
 theme: "Enterprise Modern SaaS"
 repoUrl: "https://github.com/fermx3/companeros-en-ruta"
 liveUrl: "https://companeros-en-ruta.vercel.app"
@@ -14,22 +14,31 @@ coverImage: "/images/projects/companeros-en-ruta/cover.png"
 
 ## Project Overview
 
-**Compañeros en Ruta** is a comprehensive SaaS platform designed for high-scale logistics and brand distribution. Unlike typical web applications, it is built with a **local-first, schema-truth** philosophy, where the database structure dictates the application's capabilities and security boundaries.
+**Compañeros en Ruta** is a comprehensive, multi-tenant SaaS platform for high-scale logistics and brand distribution. It is built on a **schema-truth** philosophy, where the PostgreSQL database structure dictates the application's capabilities and security boundaries. The platform serves six distinct roles — Admin, Brand Manager, Supervisor, Promotor, Asesor de Ventas, and Client — each with its own guarded experience. It ships as a **Turborepo monorepo**: a Next.js web app plus native iOS and Android apps, all sharing typed logic and a single Supabase backend.
 
 ## Technical Excellence
 
 ### Multi-Tenancy & Security
-The core of the application lies in its **Row Level Security (RLS)** implementation within Supabase. Every single table is strictly governed by policies that ensure absolute data isolation between different tenants (brands, distributors, and zones), preventing any risk of cross-tenant leakage.
+The core of the application is its **Row Level Security (RLS)** implementation in Supabase. Every table is governed by policies that guarantee absolute data isolation between tenants (brands, distributors, and zones). The policy layer was consolidated for performance to ~135 policies powering **88 API routes**, with role guards enforced across all six dashboard layouts.
 
 ### Modern Stack
-Leveraging the latest technologies, the platform uses **Next.js 15 (Turbopack)** and **React 19**, combined with **Tailwind CSS 4** and **shadcn/ui** for a fast, responsive, and aesthetically pleasing enterprise interface.
+The platform runs on **Next.js 16 (App Router, Turbopack)** and **React 19**, styled with **Tailwind CSS 4** and **shadcn/ui** under a bespoke design system. Forms are validated end-to-end with **react-hook-form + Zod**, and dashboards visualize metrics with **Recharts**.
 
 ### Database-Driven Design
-The project maintains a 1:1 mapping between the PostgreSQL schema and TypeScript types, ensuring full type safety across the entire application. Complex operational flows—from visit stage assessments to order management—are handled with transactional integrity.
+The project maintains a 1:1 mapping between the PostgreSQL schema and TypeScript types for full type safety. Complex operational flows — from 7Ps visit assessments to QR redemption and distributor billing — are handled with transactional integrity and versioned migrations.
+
+### Cross-Platform Delivery
+Beyond the web app, the platform includes two **native mobile apps built with Expo & React Native** (SDK 54) — one for field staff and one for clients — sharing code through the monorepo. The staff app leverages the device camera for QR scanning, geolocation for GPS-tagged evidence, and push notifications. Builds are shipped to iOS and Android through **EAS Build**, and are actively tested on real devices.
+
+### Tested & Verified
+Reliability is backed by a full testing stack: **Playwright** for end-to-end flows, **Vitest / Jest + Testing Library** for units, and **MSW** for API mocking.
 
 ## Key Functionalities
 
-- **Real-Time Dashboards**: Interactive KPIs for volume, reach, and market share, powered by real-time database views.
-- **Operational Auditing**: Detailed tracking of sales rep visits, inventory audits, and point-of-sale execution.
-- **SaaS Infrastructure**: Built-in support for multiple organizational roles, hierarchical structures (Tenants > Brands > Zones), and complex notification systems.
-- **Field Reporting**: Optimized mobile-first screens for promoters to capture data in the field, including offline synchronization capabilities.
+- **Role-Based Dashboards**: Six guarded experiences (Admin, Brand, Supervisor, Promotor, Sales Advisor, Client), each with tailored workflows and real-time KPIs.
+- **QR Loyalty & Redemption**: Client-side QR generation and a full-screen scanner drive a points, tiers, and memberships loyalty engine, with redemption tracking for distributor-to-brand billing.
+- **Promotions & Surveys**: Brand-authored promotions and surveys with a 48h admin approval workflow, coupon banners, and dynamic segmentation.
+- **Audience Targeting**: JSONB `targeting_criteria` powers server-side audience filtering and reach estimation across promotions, surveys, and communication plans.
+- **Field Operations**: A 3-stage visit assessment wizard with GPS-tagged photo evidence, auto-save, and mobile-first screens for promoters in the field.
+- **Real-Time Notifications**: In-app notification bell with toast and sound alerts, wired into operational events via Supabase realtime.
+- **Data Exports**: Segmented dataset exports bundled as ZIP archives for reporting and analysis.
