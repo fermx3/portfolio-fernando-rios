@@ -5,12 +5,17 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+// Project dates are calendar dates (YYYY-MM-DD), which `new Date` parses as UTC
+// midnight. Formatting those in the runtime's local zone renders the previous day
+// anywhere west of UTC, so the date is formatted in UTC to match what was authored
+// in the frontmatter — and to stay identical between the server and the browser.
 export function formatDate(dateString: string, locale: string = 'en-US'): string {
   const date = new Date(dateString)
   return new Intl.DateTimeFormat(locale, {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
+    timeZone: 'UTC',
   }).format(date)
 }
 

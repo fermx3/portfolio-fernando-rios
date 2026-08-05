@@ -23,7 +23,8 @@ export const projectSchema = z.object({
   technologies: z.array(z.string()).optional(),
   featured: z.boolean(),
   status: z.string().optional(),
-  date: z.string(),
+  // Calendar date only — formatDate() renders it in UTC to keep the day stable.
+  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'date must be a YYYY-MM-DD string'),
   repoUrl: z.string(),
   repoPrivate: z.boolean().optional(),
   liveUrl: z.string().optional(),
