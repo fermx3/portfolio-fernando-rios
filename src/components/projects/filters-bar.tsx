@@ -1,23 +1,31 @@
-"use client"
+"use client";
 
-import { useTranslations } from 'next-intl'
-import { Search, X } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Badge } from '@/components/ui/badge'
-import { ProjectCategory } from '@/types/project'
+import { useTranslations } from "next-intl";
+import { Search, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { ProjectCategory } from "@/types/project";
 
 interface FiltersBarProps {
-  selectedCategory: string
-  onCategoryChange: (category: string) => void
-  searchQuery: string
-  onSearchChange: (query: string) => void
-  tags: string[]
-  selectedTags: string[]
-  onTagToggle: (tag: string) => void
+  selectedCategory: string;
+  onCategoryChange: (category: string) => void;
+  searchQuery: string;
+  onSearchChange: (query: string) => void;
+  tags: string[];
+  selectedTags: string[];
+  onTagToggle: (tag: string) => void;
 }
 
-const categories: (ProjectCategory | 'all')[] = ['all', 'data-science', 'full-stack', 'ml', 'visualization', 'web-development', 'backend-development']
+const categories: (ProjectCategory | "all")[] = [
+  "all",
+  "data-science",
+  "full-stack",
+  "ml",
+  "visualization",
+  "web-development",
+  "backend-development",
+];
 
 export function FiltersBar({
   selectedCategory,
@@ -28,7 +36,7 @@ export function FiltersBar({
   selectedTags,
   onTagToggle,
 }: FiltersBarProps) {
-  const t = useTranslations('projects')
+  const t = useTranslations("projects");
 
   return (
     <div className="space-y-6">
@@ -36,7 +44,7 @@ export function FiltersBar({
       <div className="relative">
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
-          placeholder={t('search.placeholder')}
+          placeholder={t("search.placeholder")}
           value={searchQuery}
           onChange={(e) => onSearchChange(e.target.value)}
           className="pl-10 pr-10"
@@ -46,8 +54,8 @@ export function FiltersBar({
             variant="ghost"
             size="icon"
             className="absolute right-1 top-1/2 h-8 w-8 -translate-y-1/2"
-            onClick={() => onSearchChange('')}
-            aria-label={t('search.clear')}
+            onClick={() => onSearchChange("")}
+            aria-label={t("search.clear")}
           >
             <X className="h-4 w-4" />
           </Button>
@@ -56,7 +64,7 @@ export function FiltersBar({
 
       {/* Categories */}
       <div>
-        <h3 className="mb-3 text-sm font-medium">{t('filters.categories')}</h3>
+        <h3 className="mb-3 text-sm font-medium">{t("filters.categories")}</h3>
         <div className="flex flex-wrap gap-2">
           {categories.map((category) => (
             <Button
@@ -75,7 +83,7 @@ export function FiltersBar({
       {/* Tags */}
       {tags.length > 0 && (
         <div>
-          <h3 className="mb-3 text-sm font-medium">{t('filters.tags')}</h3>
+          <h3 className="mb-3 text-sm font-medium">{t("filters.tags")}</h3>
           <div className="flex flex-wrap gap-2">
             {tags.map((tag) => (
               <Badge
@@ -92,20 +100,20 @@ export function FiltersBar({
       )}
 
       {/* Active filters count */}
-      {(selectedCategory !== 'all' || searchQuery || selectedTags.length > 0) && (
+      {(selectedCategory !== "all" || searchQuery || selectedTags.length > 0) && (
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <span>{t('filters.activeFilters')}:</span>
-          {selectedCategory !== 'all' && (
+          <span>{t("filters.activeFilters")}:</span>
+          {selectedCategory !== "all" && (
             <Badge variant="secondary">{t(`filters.${selectedCategory}`)}</Badge>
           )}
-          {searchQuery && (
-            <Badge variant="secondary">&quot;{searchQuery}&quot;</Badge>
-          )}
+          {searchQuery && <Badge variant="secondary">&quot;{searchQuery}&quot;</Badge>}
           {selectedTags.map((tag) => (
-            <Badge key={tag} variant="secondary">{tag}</Badge>
+            <Badge key={tag} variant="secondary">
+              {tag}
+            </Badge>
           ))}
         </div>
       )}
     </div>
-  )
+  );
 }

@@ -1,20 +1,20 @@
-"use client"
+"use client";
 
-import { motion, MotionProps } from 'framer-motion'
-import { ReactNode } from 'react'
+import { motion, MotionProps } from "framer-motion";
+import { ReactNode } from "react";
 
-interface FadeInProps extends Omit<MotionProps, 'children'> {
-  children: ReactNode
-  delay?: number
-  duration?: number
-  direction?: 'up' | 'down' | 'left' | 'right' | 'none'
+interface FadeInProps extends Omit<MotionProps, "children"> {
+  children: ReactNode;
+  delay?: number;
+  duration?: number;
+  direction?: "up" | "down" | "left" | "right" | "none";
 }
 
 export function FadeIn({
   children,
   delay = 0,
   duration = 0.5,
-  direction = 'up',
+  direction = "up",
   ...props
 }: FadeInProps) {
   const directions = {
@@ -22,29 +22,29 @@ export function FadeIn({
     down: { y: -20 },
     left: { x: 20 },
     right: { x: -20 },
-    none: {}
-  }
+    none: {},
+  };
 
   return (
     <motion.div
       initial={{
         opacity: 0,
-        ...directions[direction]
+        ...directions[direction],
       }}
       whileInView={{
         opacity: 1,
         x: 0,
-        y: 0
+        y: 0,
       }}
       viewport={{ once: true, margin: "-100px" }}
       transition={{
         duration,
         delay,
-        ease: "easeOut"
+        ease: "easeOut",
       }}
       {...props}
     >
       {children}
     </motion.div>
-  )
+  );
 }

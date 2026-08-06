@@ -23,23 +23,27 @@
 ## 🛠️ Tech Stack
 
 ### Core Framework
+
 - **Next.js 16** - React framework with App Router
 - **React 19** - Latest React with concurrent features
 - **TypeScript 5** - Type-safe development
 
 ### Styling & UI
+
 - **Tailwind CSS 4** - Utility-first CSS framework
 - **Framer Motion** - Smooth animations and transitions
 - **Radix UI** - Accessible component primitives
 - **Lucide React** - Beautiful icon library
 
 ### Content & Internationalization
+
 - **MDX** - Markdown with JSX for rich content
 - **next-intl** - Internationalization for Next.js
 - **Gray Matter** - Frontmatter parsing
 - **Zod** - Runtime type validation
 
 ### Development & Quality
+
 - **ESLint** - Code linting
 - **Class Variance Authority** - Type-safe CSS variants
 - **Tailwind Merge** - Conditional CSS class merging
@@ -47,6 +51,7 @@
 ## 🚀 Quick Start
 
 ### Prerequisites
+
 - Node.js 18+
 - pnpm (recommended) or npm
 
@@ -109,17 +114,20 @@ pnpm start
 ## 🎨 Key Components
 
 ### Project Management
+
 - **Type-safe MDX**: Project content with frontmatter validation
 - **Dynamic routing**: Automatic page generation from content
 - **Category filtering**: Smart project organization
 - **Featured projects**: Highlighted work on homepage
 
 ### Responsive Design
+
 - **Mobile-first**: Optimized for all screen sizes
 - **Progressive enhancement**: Smooth experience across devices
 - **Performance focused**: Optimized images and lazy loading
 
 ### Internationalization
+
 - **Route-based locales**: `/en` and `/es` routes
 - **Dynamic content**: Localized project descriptions
 - **SEO optimized**: Proper hreflang and meta tags
@@ -133,6 +141,7 @@ The portfolio showcases several key projects:
 - **🎨 Corazonada Tattoo** - Custom tattoo studio website with booking system
 
 Each project includes:
+
 - Detailed technical documentation
 - Live demos and repository links
 - Technology stack breakdown
@@ -144,6 +153,7 @@ Each project includes:
 ### Adding New Projects
 
 1. Create MDX files in `content/projects/`:
+
 ```bash
 # English version
 content/projects/my-project.mdx
@@ -153,6 +163,7 @@ content/projects/my-project.es.mdx
 ```
 
 2. Include required frontmatter:
+
 ```yaml
 ---
 title: "Project Title"
@@ -169,6 +180,7 @@ liveUrl: "https://project-demo.com"
 ### Theme Customization
 
 Modify `tailwind.config.ts` to customize:
+
 - Color schemes
 - Typography scales
 - Spacing systems
@@ -203,6 +215,7 @@ This project is open source and available under the [MIT License](LICENSE).
 ## 📞 Contact
 
 **Fernando Ríos**
+
 - Portfolio: [fernandorios.dev](https://www.fernandorios.dev/)
 - GitHub: [@fermx3](https://github.com/fermx3)
 - LinkedIn: [https://www.linkedin.com/in/riosafernando](https://www.linkedin.com/in/riosafernando)

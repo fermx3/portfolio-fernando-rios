@@ -1,35 +1,31 @@
-"use client"
+"use client";
 
-import { useState } from 'react'
-import Link from 'next/link'
-import { useTranslations } from 'next-intl'
-import { Menu, X } from 'lucide-react'
-import { Container } from './container'
-import { ThemeToggle } from './theme-toggle'
-import { LanguageToggle } from './language-toggle'
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
+import { useState } from "react";
+import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Menu, X } from "lucide-react";
+import { Container } from "./container";
+import { ThemeToggle } from "./theme-toggle";
+import { LanguageToggle } from "./language-toggle";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const navigation = [
-  { key: 'home', href: '#hero' },
-  { key: 'projects', href: '#projects' },
-  { key: 'about', href: '#about' },
-  { key: 'contact', href: '#contact' },
-]
+  { key: "home", href: "#hero" },
+  { key: "projects", href: "#projects" },
+  { key: "about", href: "#about" },
+  { key: "contact", href: "#contact" },
+];
 
 export function Navigation() {
-  const [isOpen, setIsOpen] = useState(false)
-  const t = useTranslations('navigation')
+  const [isOpen, setIsOpen] = useState(false);
+  const t = useTranslations("navigation");
 
   return (
     <nav className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
       <Container>
         <div className="flex h-16 items-center justify-between">
-          <Link
-            href="/"
-            className="text-xl font-bold"
-            onClick={() => setIsOpen(false)}
-          >
+          <Link href="/" className="text-xl font-bold" onClick={() => setIsOpen(false)}>
             Fernando Rios
           </Link>
 
@@ -65,12 +61,7 @@ export function Navigation() {
         </div>
 
         {/* Mobile Navigation */}
-        <div
-          className={cn(
-            "md:hidden",
-            isOpen ? "block" : "hidden"
-          )}
-        >
+        <div className={cn("md:hidden", isOpen ? "block" : "hidden")}>
           <div className="space-y-2 pb-4">
             {navigation.map((item) => (
               <Link
@@ -90,5 +81,5 @@ export function Navigation() {
         </div>
       </Container>
     </nav>
-  )
+  );
 }

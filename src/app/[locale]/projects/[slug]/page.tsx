@@ -1,39 +1,39 @@
-import { notFound } from 'next/navigation'
-import { getProjectBySlug, getAllProjects } from '@/lib/content'
-import { Metadata } from 'next'
-import { ProjectPageClient } from './project-page-client'
+import { notFound } from "next/navigation";
+import { getProjectBySlug, getAllProjects } from "@/lib/content";
+import { Metadata } from "next";
+import { ProjectPageClient } from "./project-page-client";
 
 interface ProjectPageProps {
   params: Promise<{
-    slug: string
-    locale: string
-  }>
+    slug: string;
+    locale: string;
+  }>;
 }
 
 export async function generateStaticParams() {
-  const enProjects = await getAllProjects('en')
-  const esProjects = await getAllProjects('es')
+  const enProjects = await getAllProjects("en");
+  const esProjects = await getAllProjects("es");
 
   return [
-    ...enProjects.map(project => ({
+    ...enProjects.map((project) => ({
       slug: project.slug,
-      locale: 'en'
+      locale: "en",
     })),
-    ...esProjects.map(project => ({
+    ...esProjects.map((project) => ({
       slug: project.slug,
-      locale: 'es'
-    }))
-  ]
+      locale: "es",
+    })),
+  ];
 }
 
 export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
-  const { slug, locale } = await params
-  const project = await getProjectBySlug(slug, locale)
+  const { slug, locale } = await params;
+  const project = await getProjectBySlug(slug, locale);
 
   if (!project) {
     return {
-      title: 'Project Not Found'
-    }
+      title: "Project Not Found",
+    };
   }
 
   return {
@@ -42,19 +42,19 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
     openGraph: {
       title: project.title,
       description: project.summary,
-      type: 'article',
+      type: "article",
       publishedTime: project.date,
     },
-  }
+  };
 }
 
 export default async function ProjectPage({ params }: ProjectPageProps) {
-  const { slug, locale } = await params
-  const project = await getProjectBySlug(slug, locale)
+  const { slug, locale } = await params;
+  const project = await getProjectBySlug(slug, locale);
 
   if (!project) {
-    notFound()
+    notFound();
   }
 
-  return <ProjectPageClient project={project} />
+  return <ProjectPageClient project={project} />;
 }
