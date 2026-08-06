@@ -9,7 +9,7 @@
 
 - Commits en **Conventional Commits** (`feat:`, `fix:`, `chore:`) — es la convención de todo el historial.
 - TypeScript `strict: true`. Nada de `any` ni `@ts-ignore` sin comentario que lo justifique.
-- **Paridad EN/ES obligatoria.** Todo proyecto necesita el par `<slug>.mdx` + `<slug>.es.mdx`, con `featured`, `date`, `category`, `tags` y `coverImage` idénticos. Toda clave nueva en `messages/en.json` debe existir en `messages/es.json`.
+- **Paridad EN/ES obligatoria.** Todo proyecto necesita el par `<slug>.mdx` + `<slug>.es.mdx`. Los campos estructurales deben ser **idénticos**; los de contenido se traducen (ver tabla abajo). Toda clave nueva en `messages/en.json` debe existir en `messages/es.json`.
 - **Fechas en formato `YYYY-MM-DD`**, renderizadas en UTC por `formatDate()` para que el día no se corra por zona horaria. El schema lo valida con regex.
 - No agregar dependencias sin justificarlo antes.
 - Nunca editar a mano `pnpm-lock.yaml`, `.next/` ni `node_modules/`.
@@ -24,7 +24,16 @@ Los proyectos son MDX en `content/projects/`, con frontmatter validado por Zod e
 `category` es un enum cerrado:
 `data-science` | `full-stack` | `ml` | `visualization` | `web-development` | `backend-development`
 
+**Qué se comparte y qué se traduce entre el par EN/ES:**
+
+| Idénticos (estructurales)                                                                              | Traducidos (contenido)                                                                                                                      |
+| ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `date`, `featured`, `category`, `coverImage`, `images`, `repoUrl`, `repoPrivate`, `liveUrl`, `demoUrl` | `title`, `summary`, `description`, `objective`, `theme`, `status`, `tags`, `technologies`, `challenges`, `solutions`, `results` y el cuerpo |
+
+`category` se mantiene igual porque es una clave de enum; la UI la traduce al renderizar. `tags` **sí** se traducen: `getAllTags()` es locale-aware y alimenta los filtros en el idioma activo.
+
 **Convenciones:**
+
 - `slug` NO va en el frontmatter — se deriva del nombre de archivo en `src/lib/content.ts`.
 - Sin `liveUrl`/`demoUrl` → no se renderiza el botón de demo.
 - `repoPrivate: true` → la UI muestra un botón "Private Repo" deshabilitado. `repoUrl` sigue siendo obligatorio.
