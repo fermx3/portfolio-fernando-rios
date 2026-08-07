@@ -1,21 +1,23 @@
-import Image from 'next/image'
-import * as React from 'react'
+import Image from "next/image";
+import * as React from "react";
 
 interface ProfilePictureProps {
-  src?: string
-  alt?: string
-  size?: number
-  className?: string
+  src?: string;
+  alt?: string;
+  size?: number;
+  className?: string;
 }
 
 export function ProfilePicture({
-  src = '/images/profile.png',
-  alt = 'Profile picture',
+  src = "/images/profile.png",
+  alt = "Profile picture",
   size = 160,
-  className = ''
+  className = "",
 }: ProfilePictureProps) {
   return (
-    <div className={`w-[${size}px] h-[${size}px] sm:w-[192px] sm:h-[192px] rounded-full overflow-hidden ring-4 ring-lime-400/20 ${className}`}>
+    <div
+      className={`w-[${size}px] h-[${size}px] sm:w-[192px] sm:h-[192px] rounded-full overflow-hidden ring-4 ring-lime-400/20 ${className}`}
+    >
       <Image
         src={src}
         alt={alt}
@@ -25,7 +27,7 @@ export function ProfilePicture({
         priority={false}
       />
     </div>
-  )
+  );
 }
 
-export default ProfilePicture
+export default ProfilePicture;

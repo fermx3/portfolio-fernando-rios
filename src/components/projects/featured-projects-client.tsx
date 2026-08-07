@@ -1,43 +1,39 @@
-'use client'
+"use client";
 
-import Link from 'next/link'
-import { useTranslations } from 'next-intl'
-import { usePathname } from 'next/navigation'
-import { ArrowRight } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Container } from '@/components/layout/container'
-import { Section } from '@/components/layout/section'
-import { FadeIn } from '@/components/motion/fade-in'
-import { ProjectGrid } from './project-grid'
-import type { Project } from '@/types/project'
+import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { usePathname } from "next/navigation";
+import { ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Container } from "@/components/layout/container";
+import { Section } from "@/components/layout/section";
+import { FadeIn } from "@/components/motion/fade-in";
+import { ProjectGrid } from "./project-grid";
+import type { Project } from "@/types/project";
 
 interface FeaturedProjectsClientProps {
-  projects: Project[]
+  projects: Project[];
 }
 
 export function FeaturedProjectsClient({ projects }: FeaturedProjectsClientProps) {
-  const t = useTranslations('projects')
-  const pathname = usePathname()
+  const t = useTranslations("projects");
+  const pathname = usePathname();
 
   // Get current locale from pathname
   const getCurrentLocale = () => {
-    const pathSegments = pathname.split('/').filter(Boolean)
-    return pathSegments[0] === 'es' || pathSegments[0] === 'en' ? pathSegments[0] : 'en'
-  }
+    const pathSegments = pathname.split("/").filter(Boolean);
+    return pathSegments[0] === "es" || pathSegments[0] === "en" ? pathSegments[0] : "en";
+  };
 
   return (
     <Section id="projects">
       <Container>
         <div className="text-center">
           <FadeIn direction="up">
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              {t('title')}
-            </h2>
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{t("title")}</h2>
           </FadeIn>
           <FadeIn direction="up" delay={0.1}>
-            <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
-              {t('subtitle')}
-            </p>
+            <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">{t("subtitle")}</p>
           </FadeIn>
         </div>
 
@@ -51,7 +47,7 @@ export function FeaturedProjectsClient({ projects }: FeaturedProjectsClientProps
               <div className="mt-16 text-center">
                 <Button asChild size="lg">
                   <Link href={`/${getCurrentLocale()}/projects`}>
-                    {t('viewMore')}
+                    {t("viewMore")}
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
@@ -63,17 +59,13 @@ export function FeaturedProjectsClient({ projects }: FeaturedProjectsClientProps
             <div className="mt-16 text-center">
               <div className="max-w-md mx-auto">
                 <div className="text-4xl mb-4">📁</div>
-                <h3 className="text-xl font-semibold text-muted-foreground mb-2">
-                  {t('empty')}
-                </h3>
-                <p className="text-muted-foreground">
-                  {t('emptyDescription')}
-                </p>
+                <h3 className="text-xl font-semibold text-muted-foreground mb-2">{t("empty")}</h3>
+                <p className="text-muted-foreground">{t("emptyDescription")}</p>
               </div>
             </div>
           </FadeIn>
         )}
       </Container>
     </Section>
-  )
+  );
 }

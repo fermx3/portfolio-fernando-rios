@@ -1,0 +1,11 @@
+node_modules
+.next
+out
+build
+pnpm-lock.yaml
+next-env.d.ts
+
+# Content is authored prose — Prettier reflows MDX in ways that hurt readability
+# and would churn the whole EN/ES corpus.
+content
+messages

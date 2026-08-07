@@ -1,29 +1,29 @@
-"use client"
+"use client";
 
-import Image from 'next/image'
-import Link from 'next/link'
-import { useTranslations } from 'next-intl'
-import { usePathname } from 'next/navigation'
-import { ExternalLink, Github, Lock } from 'lucide-react'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { Project } from '@/types/project'
-import { getCategoryColor, generatePlaceholderGradient } from '@/lib/utils'
+import Image from "next/image";
+import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { usePathname } from "next/navigation";
+import { ExternalLink, Github, Lock } from "lucide-react";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Project } from "@/types/project";
+import { getCategoryColor, generatePlaceholderGradient } from "@/lib/utils";
 
 interface ProjectCardProps {
-  project: Project
+  project: Project;
 }
 
 export function ProjectCard({ project }: ProjectCardProps) {
-  const t = useTranslations('projects')
-  const pathname = usePathname()
+  const t = useTranslations("projects");
+  const pathname = usePathname();
 
   // Get current locale from pathname
   const getCurrentLocale = () => {
-    const pathSegments = pathname.split('/').filter(Boolean)
-    return pathSegments[0] === 'es' || pathSegments[0] === 'en' ? pathSegments[0] : 'en'
-  }
+    const pathSegments = pathname.split("/").filter(Boolean);
+    return pathSegments[0] === "es" || pathSegments[0] === "en" ? pathSegments[0] : "en";
+  };
 
   return (
     <Card className="group h-full overflow-hidden transition-all duration-300 hover:shadow-lg">
@@ -40,7 +40,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
             <div
               className="h-full w-full"
               style={{
-                background: generatePlaceholderGradient(project.title)
+                background: generatePlaceholderGradient(project.title),
               }}
             />
           )}
@@ -62,21 +62,19 @@ export function ProjectCard({ project }: ProjectCardProps) {
       </CardHeader>
 
       <CardContent className="flex-1">
-        <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
-          {project.summary}
-        </p>
+        <p className="text-sm text-muted-foreground mb-4 line-clamp-3">{project.summary}</p>
 
         <div className="space-y-2">
           <div>
             <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-              {t('card.objective')}
+              {t("card.objective")}
             </span>
             <p className="text-sm">{project.objective}</p>
           </div>
 
           <div>
             <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-              {t('card.theme')}
+              {t("card.theme")}
             </span>
             <p className="text-sm">{project.theme}</p>
           </div>
@@ -101,35 +99,42 @@ export function ProjectCard({ project }: ProjectCardProps) {
           <div className="flex gap-2 w-full">
             {(project.liveUrl || project.demoUrl) && (
               <Button variant="outline" size="sm" asChild className="flex-1">
-                <a href={project.liveUrl || project.demoUrl} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={project.liveUrl || project.demoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <ExternalLink className="mr-1 h-3 w-3" />
-                  {t('links.demo')}
+                  {t("links.demo")}
                 </a>
               </Button>
             )}
-            {project.repoUrl && (
-              project.repoPrivate ? (
-                <Button variant="outline" size="sm" disabled className="flex-1" title={t('links.repoPrivate')}>
+            {project.repoUrl &&
+              (project.repoPrivate ? (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled
+                  className="flex-1"
+                  title={t("links.repoPrivate")}
+                >
                   <Lock className="mr-1 h-3 w-3" />
-                  {t('links.repoPrivate')}
+                  {t("links.repoPrivate")}
                 </Button>
               ) : (
                 <Button variant="outline" size="sm" asChild className="flex-1">
                   <a href={project.repoUrl} target="_blank" rel="noopener noreferrer">
                     <Github className="mr-1 h-3 w-3" />
-                    {t('links.repo')}
+                    {t("links.repo")}
                   </a>
                 </Button>
-              )
-            )}
+              ))}
           </div>
         )}
         <Button size="sm" asChild className="w-full">
-          <Link href={`/${getCurrentLocale()}/projects/${project.slug}`}>
-            {t('links.details')}
-          </Link>
+          <Link href={`/${getCurrentLocale()}/projects/${project.slug}`}>{t("links.details")}</Link>
         </Button>
       </CardFooter>
     </Card>
-  )
+  );
 }

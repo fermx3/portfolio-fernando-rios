@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import { Project } from '@/types/project'
-import { ProjectCard } from './project-card'
-import { StaggerContainer, StaggerItem } from '@/components/motion/stagger-container'
+import { Project } from "@/types/project";
+import { ProjectCard } from "./project-card";
+import { StaggerContainer, StaggerItem } from "@/components/motion/stagger-container";
 
 interface ProjectGridProps {
-  projects: Project[]
+  projects: Project[];
 }
 
 export function ProjectGrid({ projects }: ProjectGridProps) {
@@ -14,7 +14,7 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
       <div className="text-center py-12">
         <p className="text-muted-foreground">No projects found matching the selected filters.</p>
       </div>
-    )
+    );
   }
 
   return (
@@ -24,7 +24,7 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
           key={project.slug}
           style={{
             animationDelay: `${index * 0.1}s`,
-            animationFillMode: 'both'
+            animationFillMode: "both",
           }}
           className="animate-in fade-in slide-in-from-bottom-4 duration-500"
         >
@@ -32,5 +32,5 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
         </div>
       ))}
     </div>
-  )
+  );
 }

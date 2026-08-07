@@ -1,40 +1,40 @@
-import { getTranslations } from 'next-intl/server'
-import { Github, Linkedin, Mail } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Container } from '@/components/layout/container'
-import { Section } from '@/components/layout/section'
-import { FadeIn } from '@/components/motion/fade-in'
-import { StaggerContainer, StaggerItem } from '@/components/motion/stagger-container'
-import ProfilePicture from '@/components/ui/profile-picture'
+import { getTranslations } from "next-intl/server";
+import { Github, Linkedin, Mail } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Container } from "@/components/layout/container";
+import { Section } from "@/components/layout/section";
+import { FadeIn } from "@/components/motion/fade-in";
+import { StaggerContainer, StaggerItem } from "@/components/motion/stagger-container";
+import ProfilePicture from "@/components/ui/profile-picture";
 
 interface EducationItem {
-  institution: string
-  program: string
-  date: string
+  institution: string;
+  program: string;
+  date: string;
 }
 
 interface AboutProps {
-  locale: string
+  locale: string;
 }
 
 const techStack = {
-  frontend: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS'],
-  backend: ['Node.js', 'Python', 'FastAPI', 'PostgreSQL', 'MongoDB'],
-  data: ['Pandas', 'NumPy', 'Scikit-learn', 'TensorFlow', 'Jupyter'],
-  tools: ['Git', 'Docker', 'AWS', 'Vercel', 'VS Code', 'Google Colab', 'GCP']
-}
+  frontend: ["React", "Next.js", "TypeScript", "Tailwind CSS"],
+  backend: ["Node.js", "Python", "FastAPI", "PostgreSQL", "MongoDB"],
+  data: ["Pandas", "NumPy", "Scikit-learn", "TensorFlow", "Jupyter"],
+  tools: ["Git", "Docker", "AWS", "Vercel", "VS Code", "Google Colab", "GCP"],
+};
 
 export async function About({ locale }: AboutProps) {
-  const t = await getTranslations({ locale, namespace: 'about' })
+  const t = await getTranslations({ locale, namespace: "about" });
 
   return (
     <Section id="about" variant="muted">
       <Container>
         <FadeIn direction="up">
           <h2 className="text-3xl font-bold tracking-tight text-center sm:text-4xl">
-            {t('title')}
+            {t("title")}
           </h2>
         </FadeIn>
 
@@ -52,7 +52,7 @@ export async function About({ locale }: AboutProps) {
                     </div>
                   </div>
                   <h3 className="font-bold text-xl mb-2">Fernando Rios</h3>
-                  <p className="text-muted-foreground text-sm">{t('role')}</p>
+                  <p className="text-muted-foreground text-sm">{t("role")}</p>
 
                   {/* Social Links - Compact horizontal */}
                   <div className="mt-6">
@@ -91,17 +91,15 @@ export async function About({ locale }: AboutProps) {
           <FadeIn direction="up" delay={0.2}>
             <div className="space-y-6">
               <div>
-                <h3 className="mb-4 text-lg font-semibold">{t('aboutMe')}</h3>
-                <p className="text-lg text-muted-foreground leading-relaxed">
-                  {t('bio')}
-                </p>
+                <h3 className="mb-4 text-lg font-semibold">{t("aboutMe")}</h3>
+                <p className="text-lg text-muted-foreground leading-relaxed">{t("bio")}</p>
               </div>
 
               {/* Education */}
               <div>
-                <h3 className="mb-4 text-lg font-semibold">{t('education.title')}</h3>
+                <h3 className="mb-4 text-lg font-semibold">{t("education.title")}</h3>
                 <div className="space-y-4">
-                  {t.raw('education.items').map((item: EducationItem, index: number) => (
+                  {t.raw("education.items").map((item: EducationItem, index: number) => (
                     <Card key={index} className="hover:shadow-md transition-shadow">
                       <CardContent className="pt-6">
                         <div className="space-y-2">
@@ -122,16 +120,14 @@ export async function About({ locale }: AboutProps) {
         <div className="mt-16">
           <FadeIn direction="up" delay={0.3}>
             <div>
-              <h3 className="mb-8 text-lg font-semibold">{t('techStack.title')}</h3>
+              <h3 className="mb-8 text-lg font-semibold">{t("techStack.title")}</h3>
 
               <StaggerContainer className="space-y-6">
                 {Object.entries(techStack).map(([category, technologies]) => (
                   <StaggerItem key={category}>
                     <Card className="hover:shadow-md transition-shadow">
                       <CardHeader className="pb-3">
-                        <CardTitle className="text-base">
-                          {t(`techStack.${category}`)}
-                        </CardTitle>
+                        <CardTitle className="text-base">{t(`techStack.${category}`)}</CardTitle>
                       </CardHeader>
                       <CardContent>
                         <div className="flex flex-wrap gap-2">
@@ -151,5 +147,5 @@ export async function About({ locale }: AboutProps) {
         </div>
       </Container>
     </Section>
-  )
+  );
 }
