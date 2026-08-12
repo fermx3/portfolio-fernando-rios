@@ -228,11 +228,30 @@ Design tokens live in `src/app/globals.css` under `@theme inline` (Tailwind 4 is
 2. Update `src/i18n/routing.ts`
 3. Create locale-specific routes
 
-## 📈 Performance
+## 📈 Performance & Quality
+
+Lighthouse, measured 2026-08-12 on the home page, mobile and desktop emulation — same scores on both:
+
+| Category       | Score |
+| -------------- | ----- |
+| Accessibility  | 100   |
+| Best Practices | 100   |
+| SEO            | 100   |
+
+Core Web Vitals from a lab trace against production:
+
+| Metric | Value  |
+| ------ | ------ |
+| LCP    | 1.10 s |
+| CLS    | 0.00   |
+| TTFB   | 78 ms  |
+
+> Measured with Chrome DevTools without network or CPU throttling, so these are lab figures, not field data. The Lighthouse **Performance** category is not included above because the tooling used reports it separately from the other categories.
+
+Behind the numbers:
 
 - **Static generation**: every project page is prerendered at build time (SSG)
 - **Image optimization**: `next/image` serving WebP and AVIF (configured in `next.config.ts`)
-- **Core Web Vitals**: built against LCP, INP and CLS
 - **Linting**: `eslint-config-next/core-web-vitals` runs in CI
 
 ## 🤝 Contributing
