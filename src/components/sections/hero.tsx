@@ -5,7 +5,6 @@ import { ArrowDown, Github, Linkedin, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
-import { FadeIn } from "@/components/motion/fade-in";
 
 export function Hero() {
   const t = useTranslations("hero");
@@ -22,20 +21,23 @@ export function Hero() {
     <Section id="hero" className="min-h-screen flex items-center">
       <Container>
         <div className="max-w-4xl">
-          <FadeIn direction="up" delay={0.1}>
-            <h1 className="text-4xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
-              <span className="block">{t("name")}</span>
-              <span className="block text-muted-foreground mt-2">{t("role")}</span>
-            </h1>
-          </FadeIn>
+          {/* The h1 is the LCP element and is deliberately not animated. Any
+              opacity-0 entrance -- JS or CSS -- delays when it actually paints,
+              and Chrome drops such elements as LCP candidates, which flatters
+              the metric without helping the user. It renders immediately; the
+              blocks below still stagger in. */}
+          <h1 className="text-4xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
+            <span className="block">{t("name")}</span>
+            <span className="block text-muted-foreground mt-2">{t("role")}</span>
+          </h1>
 
-          <FadeIn direction="up" delay={0.2}>
+          <div className="fade-in-up" style={{ animationDelay: "0.08s" }}>
             <p className="mt-6 max-w-2xl text-xl text-muted-foreground sm:text-2xl">
               {t("description")}
             </p>
-          </FadeIn>
+          </div>
 
-          <FadeIn direction="up" delay={0.3}>
+          <div className="fade-in-up" style={{ animationDelay: "0.16s" }}>
             <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:gap-6">
               <Button size="lg" onClick={handleScrollToProjects} className="text-base">
                 {t("cta.primary")}
@@ -50,9 +52,9 @@ export function Hero() {
                 {t("cta.secondary")}
               </Button>
             </div>
-          </FadeIn>
+          </div>
 
-          <FadeIn direction="up" delay={0.4}>
+          <div className="fade-in-up" style={{ animationDelay: "0.24s" }}>
             <div className="mt-16 flex gap-6">
               <Button variant="ghost" size="icon" asChild>
                 <a
@@ -80,7 +82,7 @@ export function Hero() {
                 </a>
               </Button>
             </div>
-          </FadeIn>
+          </div>
         </div>
       </Container>
     </Section>
