@@ -45,6 +45,9 @@
 ### Development & Quality
 
 - **ESLint** - Code linting
+- **Prettier** - Code formatting, enforced in CI
+- **Husky + lint-staged** - Pre-commit formatting and autofix
+- **GitHub Actions** - Format, lint, typecheck and build on every push and PR
 - **Class Variance Authority** - Type-safe CSS variants
 - **Tailwind Merge** - Conditional CSS class merging
 
@@ -52,14 +55,14 @@
 
 ### Prerequisites
 
-- Node.js 18+
-- pnpm (recommended) or npm
+- Node.js 20.9+ (pinned in `.nvmrc`; required by Next.js 16)
+- pnpm 10+ (the only supported package manager — see `packageManager` in `package.json`)
 
 ### Installation
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/portfolio-fernando-rios.git
+git clone https://github.com/fermx3/portfolio-fernando-rios.git
 
 # Navigate to project directory
 cd portfolio-fernando-rios
@@ -83,9 +86,34 @@ pnpm build
 pnpm start
 ```
 
+### Available Scripts
+
+| Script              | What it does                                   |
+| ------------------- | ---------------------------------------------- |
+| `pnpm dev`          | Development server on port 3000                |
+| `pnpm build`        | Production build (SSG)                         |
+| `pnpm start`        | Serve the production build                     |
+| `pnpm lint`         | ESLint                                         |
+| `pnpm typecheck`    | `tsc --noEmit`                                 |
+| `pnpm format`       | Format with Prettier                           |
+| `pnpm format:check` | Verify formatting without writing (used by CI) |
+
+## 🤖 AI-Assisted Development
+
+This repo is set up for [Claude Code](https://claude.com/claude-code). See **[CLAUDE.md](CLAUDE.md)** for the stack, the non-negotiable rules, the MDX content model and the pre-push checklist.
+
+Reusable skills live in `.claude/skills/`:
+
+- **`verify`** - lint, typecheck, build and EN/ES parity checks
+- **`add-project`** - scaffolds the EN/ES MDX pair for a new project
+
 ## 📁 Project Structure
 
 ```
+├── .claude/                   # Claude Code config
+│   ├── settings.json         # Versioned permissions
+│   └── skills/               # verify, add-project
+├── .github/workflows/        # CI pipeline
 ├── src/
 │   ├── app/                    # Next.js App Router
 │   │   ├── [locale]/          # Internationalized routes
@@ -134,11 +162,16 @@ pnpm start
 
 ## 🌟 Featured Projects
 
-The portfolio showcases several key projects:
+The homepage highlights the six most recent featured projects:
 
+- **📈 Nebluna Analytics** - Demand forecasting for coffee shops with Prophet + FastAPI on GCP Cloud Run
+- **🚌 Compañeros en Ruta** - Cross-platform web and mobile app
+- **💼 Portfolio Website** - This site
 - **☕ Coffee Disease Detection** - ML system for agricultural disease detection
+- **🎭 Sonámbulo Estudio Creativo** - Creative studio website
 - **📱 PerfectApp** - Smart data center platform with VGG16 integration
-- **🎨 Corazonada Tattoo** - Custom tattoo studio website with booking system
+
+Ten projects are published in total; the rest are on the projects page.
 
 Each project includes:
 
@@ -152,39 +185,42 @@ Each project includes:
 
 ### Adding New Projects
 
-1. Create MDX files in `content/projects/`:
+Both language versions are required — a missing `.es.mdx` silently falls back to English.
+
+1. Create the MDX pair in `content/projects/`:
 
 ```bash
-# English version
-content/projects/my-project.mdx
-
-# Spanish version
-content/projects/my-project.es.mdx
+content/projects/my-project.mdx      # English
+content/projects/my-project.es.mdx   # Spanish
 ```
 
-2. Include required frontmatter:
+2. Include the required frontmatter (validated by Zod in `src/lib/validations.ts`):
 
 ```yaml
 ---
 title: "Project Title"
 summary: "Brief description"
-category: "web-development" # ml | data-science | full-stack | visualization
+# ml | data-science | full-stack | visualization | web-development | backend-development
+category: "web-development"
 featured: true
-date: "2024-01-01"
-tags: ["React", "TypeScript"]
-repoUrl: "https://github.com/username/repo"
-liveUrl: "https://project-demo.com"
+date: "2024-01-01" # YYYY-MM-DD, rendered in UTC
+tags: ["React", "TypeScript"] # translated per locale
+repoUrl: "https://github.com/username/repo" # required
+repoPrivate: true # optional: renders a disabled "Private Repo" button
+liveUrl: "https://project-demo.com" # optional
+coverImage: "/images/projects/my-project/cover.png"
 ---
 ```
 
+`slug` is derived from the filename — don't put it in the frontmatter.
+
+> Invalid frontmatter makes `getAllProjects()` return an empty list **for the whole site**, with no visible error. If the projects page goes blank after adding a project, check the frontmatter first.
+
+Or let Claude Code do it: the `add-project` skill handles the pair, the frontmatter and the verification.
+
 ### Theme Customization
 
-Modify `tailwind.config.ts` to customize:
-
-- Color schemes
-- Typography scales
-- Spacing systems
-- Animation timings
+Design tokens live in `src/app/globals.css` under `@theme inline` (Tailwind 4 is CSS-first — there is no `tailwind.config.ts`). Edit that block to change colors, radii and fonts; light and dark values are defined in the `:root` and `.dark` blocks below it.
 
 ### Adding New Locales
 
@@ -194,10 +230,10 @@ Modify `tailwind.config.ts` to customize:
 
 ## 📈 Performance
 
-- **Lighthouse Score**: 95+ across all metrics
-- **Core Web Vitals**: Optimized for LCP, FID, and CLS
-- **Image Optimization**: Next.js Image component with WebP
-- **Bundle Analysis**: Optimized chunks and tree shaking
+- **Static generation**: every project page is prerendered at build time (SSG)
+- **Image optimization**: `next/image` serving WebP and AVIF (configured in `next.config.ts`)
+- **Core Web Vitals**: built against LCP, INP and CLS
+- **Linting**: `eslint-config-next/core-web-vitals` runs in CI
 
 ## 🤝 Contributing
 
