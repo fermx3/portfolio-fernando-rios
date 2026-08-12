@@ -2,7 +2,6 @@
 
 import { Project } from "@/types/project";
 import { ProjectCard } from "./project-card";
-import { StaggerContainer, StaggerItem } from "@/components/motion/stagger-container";
 
 interface ProjectGridProps {
   projects: Project[];
