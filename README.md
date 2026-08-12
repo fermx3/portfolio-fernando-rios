@@ -230,23 +230,26 @@ Design tokens live in `src/app/globals.css` under `@theme inline` (Tailwind 4 is
 
 ## 📈 Performance & Quality
 
-Lighthouse, measured 2026-08-12 on the home page, mobile and desktop emulation — same scores on both:
+[PageSpeed Insights](https://pagespeed.web.dev/analysis/https-www-fernandorios-dev-es/a566211t3z) on the live home page, standard Lighthouse conditions:
 
-| Category       | Score |
-| -------------- | ----- |
-| Accessibility  | 100   |
-| Best Practices | 100   |
-| SEO            | 100   |
+| Category       | Mobile | Desktop |
+| -------------- | ------ | ------- |
+| Performance    | 97     | 100     |
+| Accessibility  | 100    | 100     |
+| Best Practices | 100    | 100     |
+| SEO            | 100    | 100     |
 
-Core Web Vitals from a lab trace against production:
+Lab metrics from the same run:
 
-| Metric | Value  |
-| ------ | ------ |
-| LCP    | 1.10 s |
-| CLS    | 0.00   |
-| TTFB   | 78 ms  |
+| Metric                   | Mobile | Desktop |
+| ------------------------ | ------ | ------- |
+| First Contentful Paint   | 0.9 s  | 0.3 s   |
+| Largest Contentful Paint | 2.6 s  | 0.6 s   |
+| Total Blocking Time      | 20 ms  | 0 ms    |
+| Cumulative Layout Shift  | 0      | 0       |
+| Speed Index              | 2.3 s  | 0.7 s   |
 
-> Measured with Chrome DevTools without network or CPU throttling, so these are lab figures, not field data. The Lighthouse **Performance** category is not included above because the tooling used reports it separately from the other categories.
+> Lab data under Lighthouse's simulated mobile throttling; the site has no CrUX field data yet. The audit run linked above scored Accessibility 91 — the two defects behind it (unlabelled icon links, muted text at 4.48:1) are fixed in this codebase, which is why the table reads 100.
 
 Behind the numbers:
 
