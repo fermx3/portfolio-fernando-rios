@@ -62,6 +62,7 @@ export async function About({ locale }: AboutProps) {
                           href="https://github.com/fermx3"
                           target="_blank"
                           rel="noopener noreferrer"
+                          aria-label="GitHub"
                         >
                           <Github className="h-4 w-4" />
                         </a>
@@ -71,12 +72,13 @@ export async function About({ locale }: AboutProps) {
                           href="https://www.linkedin.com/in/riosafernando/"
                           target="_blank"
                           rel="noopener noreferrer"
+                          aria-label="LinkedIn"
                         >
                           <Linkedin className="h-4 w-4" />
                         </a>
                       </Button>
                       <Button variant="outline" size="sm" asChild>
-                        <a href="mailto:fer.riosalcantara@gmail.com">
+                        <a href="mailto:fer.riosalcantara@gmail.com" aria-label="Email">
                           <Mail className="h-4 w-4" />
                         </a>
                       </Button>
