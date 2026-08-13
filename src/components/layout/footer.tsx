@@ -14,7 +14,7 @@ export function Footer() {
           <Separator className="mb-8" />
           <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
             <p className="text-sm text-muted-foreground text-center md:text-left">
-              © {year} Fernando Rios. All rights reserved.
+              {t("rights", { year })}
             </p>
             <p className="text-sm text-muted-foreground text-center md:text-right">
               {t("copyright")}

@@ -3,7 +3,8 @@
     "home": "Inicio",
     "projects": "Proyectos",
     "about": "Acerca",
-    "contact": "Contacto"
+    "contact": "Contacto",
+    "toggleMenu": "Abrir menú"
   },
   "hero": {
     "name": "Fernando Rios",
@@ -127,7 +128,8 @@
     }
   },
   "footer": {
-    "copyright": "Construido con Next.js, TypeScript y Tailwind CSS"
+    "copyright": "Construido con Next.js, TypeScript y Tailwind CSS",
+    "rights": "© {year} Fernando Ríos. Todos los derechos reservados."
   },
   "theme": {
     "toggle": "Cambiar tema",
@@ -139,5 +141,17 @@
     "toggle": "Cambiar idioma",
     "en": "English",
     "es": "Español"
+  },
+  "metadata": {
+    "title": "Fernando Ríos - Científico de Datos y Desarrollador Full-Stack",
+    "description": "Convierto datos en decisiones y construyo soluciones escalables con impacto real.",
+    "siteName": "Portafolio de Fernando Ríos",
+    "keywords": [
+      "ciencia de datos",
+      "desarrollo full-stack",
+      "machine learning",
+      "desarrollo web",
+      "Fernando Ríos"
+    ]
   }
 }

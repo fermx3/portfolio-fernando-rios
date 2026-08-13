@@ -3,7 +3,8 @@
     "home": "Home",
     "projects": "Projects",
     "about": "About",
-    "contact": "Contact"
+    "contact": "Contact",
+    "toggleMenu": "Toggle menu"
   },
   "hero": {
     "name": "Fernando Rios",
@@ -127,7 +128,8 @@
     }
   },
   "footer": {
-    "copyright": "Built with Next.js, TypeScript, and Tailwind CSS"
+    "copyright": "Built with Next.js, TypeScript, and Tailwind CSS",
+    "rights": "© {year} Fernando Rios. All rights reserved."
   },
   "theme": {
     "toggle": "Toggle theme",
@@ -139,5 +141,17 @@
     "toggle": "Change language",
     "en": "English",
     "es": "Español"
+  },
+  "metadata": {
+    "title": "Fernando Rios - Data Scientist & Full-Stack Developer",
+    "description": "Passionate about transforming data into insights and building scalable solutions that drive real-world impact.",
+    "siteName": "Fernando Rios Portfolio",
+    "keywords": [
+      "data science",
+      "full-stack development",
+      "machine learning",
+      "web development",
+      "Fernando Rios"
+    ]
   }
 }

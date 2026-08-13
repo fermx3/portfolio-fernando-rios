@@ -1,8 +1,7 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
-import { usePathname } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/layout/container";
@@ -17,14 +16,6 @@ interface FeaturedProjectsClientProps {
 
 export function FeaturedProjectsClient({ projects }: FeaturedProjectsClientProps) {
   const t = useTranslations("projects");
-  const pathname = usePathname();
-
-  // Get current locale from pathname
-  const getCurrentLocale = () => {
-    const pathSegments = pathname.split("/").filter(Boolean);
-    return pathSegments[0] === "es" || pathSegments[0] === "en" ? pathSegments[0] : "en";
-  };
-
   return (
     <Section id="projects">
       <Container>
@@ -46,7 +37,7 @@ export function FeaturedProjectsClient({ projects }: FeaturedProjectsClientProps
             <FadeIn direction="up" delay={0.3}>
               <div className="mt-16 text-center">
                 <Button asChild size="lg">
-                  <Link href={`/${getCurrentLocale()}/projects`}>
+                  <Link href="/projects">
                     {t("viewMore")}
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
