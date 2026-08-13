@@ -102,6 +102,8 @@ pnpm start
 
 This repo is set up for [Claude Code](https://claude.com/claude-code). See **[CLAUDE.md](CLAUDE.md)** for the stack, the non-negotiable rules, the MDX content model and the pre-push checklist.
 
+**[docs/product-brief.md](docs/product-brief.md)** defines the product: what ships today, what is deliberately out of scope, and the prioritised backlog.
+
 Reusable skills live in `.claude/skills/`:
 
 - **`verify`** - lint, typecheck, build and EN/ES parity checks

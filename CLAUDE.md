@@ -44,6 +44,7 @@ Los proyectos son MDX en `content/projects/`, con frontmatter validado por Zod e
 
 ## Cómo trabajar aquí
 
+- Alcance del producto en `docs/product-brief.md`: qué está entregado, qué queda fuera a propósito y el backlog priorizado. Consúltalo antes de proponer features nuevas.
 - Permisos versionados en `.claude/settings.json`. Lo específico de máquina va en `.claude/settings.local.json` (git-ignored).
 - Skills reutilizables en `.claude/skills/`.
 - `/clear` entre features grandes para resetear contexto.
