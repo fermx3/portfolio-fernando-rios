@@ -230,11 +230,11 @@ Design tokens live in `src/app/globals.css` under `@theme inline` (Tailwind 4 is
 
 ## 📈 Performance & Quality
 
-[PageSpeed Insights](https://pagespeed.web.dev/analysis/https-www-fernandorios-dev-es/a566211t3z) on the live home page, standard Lighthouse conditions:
+[PageSpeed Insights](https://pagespeed.web.dev/analysis/https-www-fernandorios-dev-es/fhcpnlfjjf) on the live home page, standard Lighthouse conditions:
 
 | Category       | Mobile | Desktop |
 | -------------- | ------ | ------- |
-| Performance    | 97     | 100     |
+| Performance    | 98     | 100     |
 | Accessibility  | 100    | 100     |
 | Best Practices | 100    | 100     |
 | SEO            | 100    | 100     |
@@ -243,13 +243,15 @@ Lab metrics from the same run:
 
 | Metric                   | Mobile | Desktop |
 | ------------------------ | ------ | ------- |
-| First Contentful Paint   | 0.9 s  | 0.3 s   |
-| Largest Contentful Paint | 2.6 s  | 0.6 s   |
+| First Contentful Paint   | 1.0 s  | 0.2 s   |
+| Largest Contentful Paint | 2.4 s  | 0.5 s   |
 | Total Blocking Time      | 20 ms  | 0 ms    |
 | Cumulative Layout Shift  | 0      | 0       |
-| Speed Index              | 2.3 s  | 0.7 s   |
+| Speed Index              | 1.5 s  | 0.5 s   |
 
-> Lab data under Lighthouse's simulated mobile throttling; the site has no CrUX field data yet. The audit run linked above scored Accessibility 91 — the two defects behind it (unlabelled icon links, muted text at 4.48:1) are fixed in this codebase, which is why the table reads 100.
+> Lab data under Lighthouse's simulated mobile throttling; the site has no CrUX field data yet.
+
+An [earlier run](https://pagespeed.web.dev/analysis/https-www-fernandorios-dev-es/a566211t3z) scored Accessibility 91 with mobile LCP at 2.6 s and Speed Index at 2.3 s. Three fixes closed the gap: labelling the icon-only social links, darkening muted text to clear the 4.5:1 AA threshold, and rendering the hero without waiting for the JavaScript bundle — it had been server-rendered at `opacity: 0` and only revealed on hydration.
 
 Behind the numbers:
 
