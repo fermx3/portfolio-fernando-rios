@@ -24,7 +24,19 @@ package-lock.json
 
 # misc
 .DS_Store
+*.swp
+
+# private keys & credentials
 *.pem
+*.key
+*.keystore
+.aws/
+.ssh/
+secrets/
+
+# editors
+.vscode/
+.idea/
 
 # debug
 npm-debug.log*
