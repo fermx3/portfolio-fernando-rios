@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { Menu, X } from "lucide-react";
 import { Container } from "./container";
@@ -10,11 +10,13 @@ import { LanguageToggle } from "./language-toggle";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
+// Anchored to "/" rather than bare hashes: the sections only exist on the home
+// page, so from /projects or a project detail a bare "#about" pointed nowhere.
 const navigation = [
-  { key: "home", href: "#hero" },
-  { key: "projects", href: "#projects" },
-  { key: "about", href: "#about" },
-  { key: "contact", href: "#contact" },
+  { key: "home", href: "/" },
+  { key: "projects", href: "/#projects" },
+  { key: "about", href: "/#about" },
+  { key: "contact", href: "/#contact" },
 ];
 
 export function Navigation() {
@@ -54,7 +56,7 @@ export function Navigation() {
             size="icon"
             className="md:hidden"
             onClick={() => setIsOpen(!isOpen)}
-            aria-label="Toggle menu"
+            aria-label={t("toggleMenu")}
           >
             {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </Button>

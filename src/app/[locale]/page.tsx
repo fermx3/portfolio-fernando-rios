@@ -1,3 +1,4 @@
+import { setRequestLocale } from "next-intl/server";
 import { Hero } from "@/components/sections/hero";
 import { FeaturedProjects } from "@/components/projects/featured-projects";
 import { About } from "@/components/sections/about";
@@ -9,6 +10,7 @@ interface Props {
 
 export default async function HomePage({ params }: Props) {
   const { locale } = await params;
+  setRequestLocale(locale);
 
   return (
     <>

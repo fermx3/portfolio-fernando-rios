@@ -1,9 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
-import { usePathname } from "next/navigation";
 import { ExternalLink, Github, Lock } from "lucide-react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -17,17 +16,9 @@ interface ProjectCardProps {
 
 export function ProjectCard({ project }: ProjectCardProps) {
   const t = useTranslations("projects");
-  const pathname = usePathname();
-
-  // Get current locale from pathname
-  const getCurrentLocale = () => {
-    const pathSegments = pathname.split("/").filter(Boolean);
-    return pathSegments[0] === "es" || pathSegments[0] === "en" ? pathSegments[0] : "en";
-  };
-
   return (
     <Card className="group h-full overflow-hidden transition-all duration-300 hover:shadow-lg">
-      <Link href={`/${getCurrentLocale()}/projects/${project.slug}`} className="block">
+      <Link href={`/projects/${project.slug}`} className="block">
         <div className="relative aspect-video overflow-hidden">
           {project.coverImage ? (
             <Image
@@ -132,7 +123,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
           </div>
         )}
         <Button size="sm" asChild className="w-full">
-          <Link href={`/${getCurrentLocale()}/projects/${project.slug}`}>{t("links.details")}</Link>
+          <Link href={`/projects/${project.slug}`}>{t("links.details")}</Link>
         </Button>
       </CardFooter>
     </Card>

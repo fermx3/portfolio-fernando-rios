@@ -7,15 +7,10 @@ interface ProjectGridProps {
   projects: Project[];
 }
 
+// Callers own the empty state: both ProjectsPageClient and FeaturedProjectsClient
+// guard on length > 0 and render their own translated message, so the branch that
+// used to live here was unreachable.
 export function ProjectGrid({ projects }: ProjectGridProps) {
-  if (projects.length === 0) {
-    return (
-      <div className="text-center py-12">
-        <p className="text-muted-foreground">No projects found matching the selected filters.</p>
-      </div>
-    );
-  }
-
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {projects.map((project, index) => (

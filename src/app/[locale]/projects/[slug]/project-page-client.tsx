@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { ArrowLeft, ExternalLink, Github, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -29,7 +29,7 @@ export function ProjectPageClient({ project }: ProjectPageClientProps) {
       <Container size="lg">
         <FadeIn direction="up">
           <Button variant="ghost" asChild className="mb-6">
-            <Link href={`/${locale}/projects`}>
+            <Link href="/projects">
               <ArrowLeft className="mr-2 h-4 w-4" />
               {t("page.backToProjects")}
             </Link>

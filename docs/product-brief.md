@@ -67,21 +67,19 @@ Fuera de alcance por decisión, no por olvido:
 
 ## 4. Backlog priorizado
 
-### P0 — Integridad bilingüe
+### ~~P0 — Integridad bilingüe~~ · resuelto 2026-08-13
 
-El sitio se vende como bilingüe, pero la superficie en español tiene inglés incrustado y pierde el idioma al navegar. Es lo que más daña la credibilidad ante un visitante hispanohablante.
+La superficie en español tenía inglés incrustado y perdía el idioma al navegar. Resuelto:
 
-| Defecto                                                                                                  | Ubicación                                                         |
-| -------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| Copyright en inglés fijo, **justo al lado de un `t("copyright")` traducido**                             | `src/components/layout/footer.tsx:17`                             |
-| `"No projects found matching the selected filters."` en inglés fijo                                      | `src/components/projects/project-grid.tsx:14`                     |
-| `aria-label="Toggle menu"` sin traducir                                                                  | `src/components/layout/navigation.tsx:57`                         |
-| `metadata` es un objeto **estático en inglés** → las páginas ES sirven title, description y OG en inglés | `src/app/[locale]/layout.tsx:16`                                  |
-| `openGraph.locale` fijo en `en_US` también para ES                                                       | `src/app/[locale]/layout.tsx:35`                                  |
-| **Pérdida de idioma:** `href="/"` → `redirect("/en")` duro                                               | `src/app/page.tsx`, `navigation.tsx:28`, `projects-client.tsx:87` |
-| El nav son anclas (`#hero`, `#projects`…) que **no existen fuera de la home**                            | `src/components/layout/navigation.tsx:13-18`                      |
+- Copyright del footer y `aria-label` del menú móvil, ahora traducidos
+- `metadata` pasó de objeto estático a `generateMetadata`: `/es` sirve title, description, `og:locale` y `og:url` en español
+- Todos los enlaces internos usan el `Link` locale-aware de `src/i18n/navigation.ts`; `href="/"` ya no cae en el `redirect("/en")` de la raíz
+- El nav apunta a `/#seccion` en vez de anclas sueltas, así que funciona desde cualquier página
+- `routing` es ahora la única fuente de locales, consumida por `middleware.ts`, `request.ts` y el toggle de idioma
 
-**Criterio de aceptación:** navegar `/es` → proyectos → detalle → volver al inicio sin ver una sola palabra en inglés ni salir de `/es`. Metadata de `/es` en español al inspeccionar el HTML servido.
+**Corrección al diagnóstico original.** Este documento listaba `"No projects found matching the selected filters."` (`project-grid.tsx:14`) como defecto visible. **Era falso:** ambos llamadores del grid filtran con `length > 0` y renderizan su propio estado vacío traducido, así que esa rama era inalcanzable. Se eliminó como código muerto en vez de traducirse.
+
+**Efecto secundario medido:** al declarar el locale con `setRequestLocale`, `/[locale]` y `/[locale]/projects` pasaron de renderizado dinámico a prerenderizado. El sitio entero es ahora estático.
 
 ### P1 — SEO bilingüe
 
@@ -140,8 +138,9 @@ Nada de esto es visible para el usuario, pero cada punto es superficie que mante
 **Código sin usar**
 
 - `searchProjects` y `getProjectsByCategory` (`src/lib/content.ts`): **0 importaciones**. Su lógica está reimplementada a mano en `projects-client.tsx`. Además `content.ts` lleva `"use server"`, así que ambas son server actions expuestas sin motivo
-- `src/i18n/routing.ts` define `routing` y **nadie lo importa**; los locales están duplicados a mano en `middleware.ts` y `src/i18n/request.ts`
 - 5 dependencias MDX sin importar (`@mdx-js/mdx`, `@mdx-js/react`, `@next/mdx`, `remark`, `remark-html`) y `experimental.mdxRs` en la config
+
+> La duplicación de locales entre `routing.ts`, `middleware.ts` y `request.ts` que figuraba aquí se resolvió al arreglar P0.
 
 **Claves i18n huérfanas**
 
@@ -177,10 +176,12 @@ Dos afirmaciones del `README.md` que no se sostienen:
 ## Apéndice: cómo verificar este documento
 
 ```bash
-# P0 — inglés incrustado en la superficie ES
-grep -n "All rights reserved" src/components/layout/footer.tsx
-grep -n "No projects found" src/components/projects/project-grid.tsx
-grep -n 'export const metadata' src/app/\[locale\]/layout.tsx   # estática, no generateMetadata
+# P0 — resuelto: estas comprobaciones deben salir en verde
+curl -s https://www.fernandorios.dev/es | grep -o '©[^<]*'          # en español
+curl -s https://www.fernandorios.dev/es | grep -o '<title>[^<]*'    # en español
+grep -rn 'from "next/link"' src/                                    # sin resultados: todo usa @/i18n/navigation
+grep -rn "getCurrentLocale" src/                                    # sin resultados: nadie deriva el locale a mano
+pnpm build | grep -c '●'                                            # las rutas [locale] salen prerenderizadas
 
 # P1 — ausencias SEO
 grep -rn "alternates\|hreflang\|ld+json\|canonical" src/   # sin resultados
@@ -192,7 +193,6 @@ grep -oE 't\("[^"]+"\)' src/components/sections/contact.tsx | sort -u   # form.n
 
 # P3 — código muerto
 grep -rn "searchProjects\|getProjectsByCategory" src/ | grep -v content.ts   # sin resultados
-grep -rn "i18n/routing" src/ | grep -v "routing.ts"                          # sin resultados
 grep -l 'category: "visualization"' content/projects/*.mdx                   # sin resultados
 grep -h '^status:' content/projects/*.mdx | sort | uniq -c                   # 3 valores distintos
 grep -l 'featured: true' content/projects/*.mdx | grep -vc '\.es\.'          # 6 = el tope del slice
