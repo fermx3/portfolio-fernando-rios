@@ -129,7 +129,7 @@
   },
   "footer": {
     "copyright": "Construido con Next.js, TypeScript y Tailwind CSS",
-    "rights": "© {year} Fernando Ríos. Todos los derechos reservados."
+    "rights": "© {year} Fernando Rios. Todos los derechos reservados."
   },
   "theme": {
     "toggle": "Cambiar tema",
