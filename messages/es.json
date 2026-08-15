@@ -73,7 +73,10 @@
       "galleryClose": "Cerrar",
       "galleryPrevious": "Imagen anterior",
       "galleryNext": "Imagen siguiente",
-      "galleryImageLabel": "Imagen {current} de {total}"
+      "galleryImageLabel": "Imagen {current} de {total}",
+      "challenges": "El Reto",
+      "solutions": "El Enfoque",
+      "results": "Resultados"
     },
     "card": {
       "objective": "Objetivo",

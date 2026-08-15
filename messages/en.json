@@ -73,7 +73,10 @@
       "galleryClose": "Close",
       "galleryPrevious": "Previous image",
       "galleryNext": "Next image",
-      "galleryImageLabel": "Image {current} of {total}"
+      "galleryImageLabel": "Image {current} of {total}",
+      "challenges": "The Challenge",
+      "solutions": "The Approach",
+      "results": "Results"
     },
     "card": {
       "objective": "Objective",
