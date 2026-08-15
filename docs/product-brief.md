@@ -185,9 +185,11 @@ grep -rn "getCurrentLocale" src/                                    # sin result
 pnpm build | grep -c '●'                                            # las rutas [locale] salen prerenderizadas
 
 # P1 — resuelto: estas comprobaciones deben salir en verde
-curl -s https://www.fernandorios.dev/es | grep -c 'rel="alternate" hrefLang'   # 3: en, es, x-default
+# grep -o | wc -l, no grep -c: el HTML de producción viene minificado en una sola
+# línea, así que -c devolvería 1 aunque haya tres etiquetas.
+curl -s https://www.fernandorios.dev/es | grep -o 'rel="alternate" hrefLang' | wc -l   # 3: en, es, x-default
 curl -s https://www.fernandorios.dev/es | grep -o 'rel="canonical" href="[^"]*"'
-curl -s https://www.fernandorios.dev/sitemap.xml | grep -c '<loc>https://fernandorios.dev'  # 0: ninguna apex
+curl -s https://www.fernandorios.dev/sitemap.xml | grep -o '<loc>https://fernandorios.dev' | wc -l  # 0: ninguna apex
 curl -s https://www.fernandorios.dev/es/projects/nebluna-analytics | grep -o 'og:image" content="[^"]*"'
 curl -sI https://www.fernandorios.dev/es/opengraph-image | grep -i content-type   # image/png
 
