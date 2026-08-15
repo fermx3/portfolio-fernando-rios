@@ -48,7 +48,15 @@ export function ProjectPageClient({ project }: ProjectPageClientProps) {
                   </Badge>
                 </div>
 
-                <p className="text-lg text-muted-foreground mb-6">{project.summary}</p>
+                <p className="text-lg text-muted-foreground mb-4">{project.summary}</p>
+
+                {/* The longer form of the summary, written in the frontmatter of
+                    16 projects and previously never shown. */}
+                {project.description && (
+                  <p className="text-base text-muted-foreground leading-relaxed mb-6">
+                    {project.description}
+                  </p>
+                )}
 
                 <div className="flex flex-wrap gap-2 mb-6">
                   {project.tags.map((tag: string) => (
@@ -124,6 +132,35 @@ export function ProjectPageClient({ project }: ProjectPageClientProps) {
                 dangerouslySetInnerHTML={{ __html: project.content }}
               />
             </FadeIn>
+
+            {/* Challenges, approach and results. All three are authored in the
+                MDX frontmatter and were validated but never rendered. */}
+            {[
+              { key: "challenges", items: project.challenges },
+              { key: "solutions", items: project.solutions },
+              { key: "results", items: project.results },
+            ]
+              .filter((section) => section.items && section.items.length > 0)
+              .map((section, index) => (
+                <FadeIn key={section.key} direction="up" delay={0.35 + index * 0.05}>
+                  <section className="mt-12">
+                    <h2 className="text-2xl font-bold tracking-tight">
+                      {t(`project.${section.key}`)}
+                    </h2>
+                    <ul className="mt-4 space-y-3">
+                      {section.items!.map((item: string) => (
+                        <li key={item} className="flex gap-3 text-muted-foreground">
+                          <span
+                            aria-hidden="true"
+                            className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-lime-400"
+                          />
+                          <span className="leading-relaxed">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                </FadeIn>
+              ))}
           </div>
 
           {/* Sidebar */}
@@ -183,11 +220,16 @@ export function ProjectPageClient({ project }: ProjectPageClientProps) {
                   </CardHeader>
                   <CardContent>
                     <div className="flex flex-wrap gap-2">
-                      {project.tags.map((tag: string) => (
-                        <Badge key={tag} variant="secondary" className="text-xs">
-                          {tag}
-                        </Badge>
-                      ))}
+                      {/* This card is titled "Technologies" but rendered tags.
+                          Four projects have no technologies list, so tags stay
+                          as the fallback. */}
+                      {(project.technologies?.length ? project.technologies : project.tags).map(
+                        (item: string) => (
+                          <Badge key={item} variant="secondary" className="text-xs">
+                            {item}
+                          </Badge>
+                        )
+                      )}
                     </div>
                   </CardContent>
                 </Card>
