@@ -1,57 +1,42 @@
 import { MetadataRoute } from "next";
 import { getAllProjects } from "@/lib/content";
+import { routing } from "@/i18n/routing";
+import { absoluteUrl, languageAlternates } from "@/lib/site";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const enProjects = await getAllProjects("en");
-  const esProjects = await getAllProjects("es");
-  const baseUrl = "https://fernandorios.dev";
+  const entries: MetadataRoute.Sitemap = [];
 
-  const enProjectUrls = enProjects.map((project) => ({
-    url: `${baseUrl}/en/projects/${project.slug}`,
-    lastModified: new Date(project.date),
-    changeFrequency: "monthly" as const,
-    priority: 0.7,
-  }));
-
-  const esProjectUrls = esProjects.map((project) => ({
-    url: `${baseUrl}/es/projects/${project.slug}`,
-    lastModified: new Date(project.date),
-    changeFrequency: "monthly" as const,
-    priority: 0.7,
-  }));
-
-  return [
-    {
-      url: baseUrl,
+  // The bare origin is deliberately absent: it 307s to /{locale}, and a sitemap
+  // should only list URLs that resolve directly.
+  for (const locale of routing.locales) {
+    entries.push({
+      url: absoluteUrl(locale),
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 1,
-    },
-    {
-      url: `${baseUrl}/en`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/es`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/en/projects`,
+      alternates: { languages: languageAlternates() },
+    });
+
+    entries.push({
+      url: absoluteUrl(locale, "/projects"),
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/es/projects`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.8,
-    },
-    ...enProjectUrls,
-    ...esProjectUrls,
-  ];
+      alternates: { languages: languageAlternates("/projects") },
+    });
+
+    const projects = await getAllProjects(locale);
+    for (const project of projects) {
+      const path = `/projects/${project.slug}`;
+      entries.push({
+        url: absoluteUrl(locale, path),
+        lastModified: new Date(project.date),
+        changeFrequency: "monthly",
+        priority: 0.7,
+        alternates: { languages: languageAlternates(path) },
+      });
+    }
+  }
+
+  return entries;
 }

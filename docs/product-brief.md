@@ -81,17 +81,18 @@ La superficie en español tenía inglés incrustado y perdía el idioma al naveg
 
 **Efecto secundario medido:** al declarar el locale con `setRequestLocale`, `/[locale]` y `/[locale]/projects` pasaron de renderizado dinámico a prerenderizado. El sitio entero es ahora estático.
 
-### P1 — SEO bilingüe
+### ~~P1 — SEO bilingüe~~ · resuelto 2026-08-15
 
-| Falta                                         | Impacto                                                                                                               |
-| --------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| `alternates.languages` (**hreflang**)         | Google no sabe que `/en/projects/x` y `/es/projects/x` son la misma página en dos idiomas. **La carencia más seria.** |
-| `canonical` por página                        | Riesgo de contenido duplicado                                                                                         |
-| Imagen OG                                     | Se declara `summary_large_image` pero no hay `images` → al compartir, la tarjeta sale **sin imagen**                  |
-| JSON-LD                                       | Sin `Person` ni `CreativeWork`; se pierde presencia en resultados enriquecidos                                        |
-| `sitemap.ts:7` usa `https://fernandorios.dev` | El sitio real es `www`. Apex y www deben resolverse consistentemente                                                  |
+- **hreflang recíproco** (`en`, `es`, `x-default`) y **canonical propio** en home, listado y detalle de proyecto
+- **Imagen OG** generada por idioma en `src/app/[locale]/opengraph-image.tsx`
+- **JSON-LD**: `Person` en la home, `CreativeWork` en cada proyecto
+- **Host unificado**: `src/lib/site.ts` es la única fuente. El sitemap pasó de 24 URLs con el apex a 24 con `www`, con 72 `xhtml:link` de alternates, y ya no lista la raíz (que redirige). `robots.txt` es ahora generado
 
-**Criterio de aceptación:** cada página declara hreflang recíproco EN↔ES y canonical propio; compartir un proyecto en LinkedIn muestra imagen; el sitemap usa el mismo host que sirve el sitio.
+**El apex redirige (307) a `www`**, comprobado con `curl`, así que `www` es el host canónico y el sitemap anterior publicaba 24 redirecciones a los crawlers.
+
+**Trampa encontrada al implementar:** declarar `openGraph` en el `generateMetadata` de una página **anula la imagen basada en archivo** que debería heredar. El listado y el detalle se quedaron sin `og:image` hasta declararla explícitamente con el helper `ogImage(locale)`. Si en el futuro alguna página nueva define `openGraph`, tiene que incluir `images` o repetirá el fallo.
+
+**Nota:** la ruta `opengraph-image` se renderiza a demanda (sale como dinámica en el build), no en tiempo de build. La CDN la cachea y las páginas HTML siguen siendo estáticas.
 
 ### P2 — Canal de contacto de ML engineer (dos fases)
 
@@ -183,9 +184,12 @@ grep -rn 'from "next/link"' src/                                    # sin result
 grep -rn "getCurrentLocale" src/                                    # sin resultados: nadie deriva el locale a mano
 pnpm build | grep -c '●'                                            # las rutas [locale] salen prerenderizadas
 
-# P1 — ausencias SEO
-grep -rn "alternates\|hreflang\|ld+json\|canonical" src/   # sin resultados
-grep -n "baseUrl =" src/app/sitemap.ts                     # apex, no www
+# P1 — resuelto: estas comprobaciones deben salir en verde
+curl -s https://www.fernandorios.dev/es | grep -c 'rel="alternate" hrefLang'   # 3: en, es, x-default
+curl -s https://www.fernandorios.dev/es | grep -o 'rel="canonical" href="[^"]*"'
+curl -s https://www.fernandorios.dev/sitemap.xml | grep -c '<loc>https://fernandorios.dev'  # 0: ninguna apex
+curl -s https://www.fernandorios.dev/es/projects/nebluna-analytics | grep -o 'og:image" content="[^"]*"'
+curl -sI https://www.fernandorios.dev/es/opengraph-image | grep -i content-type   # image/png
 
 # P2 — el placeholder y sus claves huérfanas
 grep -n "comingSoon" src/components/sections/contact.tsx

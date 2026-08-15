@@ -6,6 +6,7 @@ import { Navigation } from "@/components/layout/navigation";
 import { Footer } from "@/components/layout/footer";
 import { Metadata } from "next";
 import { routing } from "@/i18n/routing";
+import { AUTHOR, SITE_URL, absoluteUrl } from "@/lib/site";
 import "../globals.css";
 
 const inter = Inter({
@@ -33,20 +34,23 @@ export async function generateMetadata({
   const title = t("title");
   const description = t("description");
 
+  // No `alternates` here on purpose: metadata is inherited, so a canonical set
+  // at the layout would be wrong for every child page. Each page declares its
+  // own canonical and hreflang set.
   return {
-    metadataBase: new URL("https://fernandorios.dev"),
+    metadataBase: new URL(SITE_URL),
     title: {
       default: title,
-      template: "%s | Fernando Rios",
+      template: `%s | ${AUTHOR.name}`,
     },
     description,
     keywords: t.raw("keywords") as string[],
-    authors: [{ name: "Fernando Rios" }],
-    creator: "Fernando Rios",
+    authors: [{ name: AUTHOR.name }],
+    creator: AUTHOR.name,
     openGraph: {
       type: "website",
       locale: locale === "es" ? "es_ES" : "en_US",
-      url: `https://fernandorios.dev/${locale}`,
+      url: absoluteUrl(locale),
       siteName: t("siteName"),
       title,
       description,
