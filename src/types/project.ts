@@ -7,6 +7,7 @@ export interface Project {
   description?: string;
   objective?: string;
   theme?: string;
+  impact?: string;
   category:
     | "data-science"
     | "full-stack"

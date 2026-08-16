@@ -161,6 +161,20 @@ export function ProjectPageClient({ project }: ProjectPageClientProps) {
                   </section>
                 </FadeIn>
               ))}
+
+            {/* Closing statement. Lives in the frontmatter rather than as a
+                trailing "## Impact" heading in the body, so that it always ends
+                the page instead of being followed by the sections above. */}
+            {project.impact && (
+              <FadeIn direction="up" delay={0.5}>
+                <section className="mt-16 border-l-2 border-lime-400 pl-6">
+                  <h2 className="text-sm font-medium uppercase tracking-wide text-muted-foreground">
+                    {t("project.impact")}
+                  </h2>
+                  <p className="mt-3 text-lg leading-relaxed text-balance">{project.impact}</p>
+                </section>
+              </FadeIn>
+            )}
           </div>
 
           {/* Sidebar */}

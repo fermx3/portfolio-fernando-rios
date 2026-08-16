@@ -151,8 +151,7 @@ Tras renderizar `challenges`/`solutions`/`results`, la página de proyecto pasó
 - **`summary` vs `description`**: solape léxico del 9-30%. Se complementan, no se repiten. Renderizar ambos está justificado
 - **`## Impact` del cuerpo vs viñetas de `results`**: 5 proyectos tenían esa sección
   - **perfectapp**: duplicación casi literal (spreadsheets, programa de lealtad, exportación CSV aparecían en ambos) → **sección eliminada**
-  - **corazonada-tattoo** y **portfolio-website**: solapan solo con la primera viñeta; el resto del párrafo aporta contexto
-  - **coffee-disease-detection** y **sonámbulo**: el párrafo responde "por qué importa", las viñetas dan métricas. Ángulos distintos, se quedan
+  - Los otros 4 se resolvieron por **posición, no por recorte**: `## Impact` era la última sección del cuerpo, así que al renderizar las viñetas el cierre quedaba _antes_ de Reto/Enfoque/Resultados y la historia volvía a empezar tras la conclusión. Ahora es un campo `impact` del frontmatter que se renderiza al final de la página, con tratamiento visual propio
 - Cuerpos entre 204 y 752 palabras, media 464. Ninguno excesivo para una página de detalle
 
 ## 5. Correcciones al README

@@ -18,6 +18,9 @@ export const projectSchema = z.object({
   description: z.string().optional(),
   objective: z.string().optional(),
   theme: z.string().optional(),
+  // Closing statement: what the project changed and for whom. Rendered last,
+  // after the results, so the page ends on the "so what".
+  impact: z.string().optional(),
   category: z.enum([
     "data-science",
     "full-stack",

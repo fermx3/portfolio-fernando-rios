@@ -32,7 +32,7 @@ public/images/projects/<slug>/     # cover.png + capturas
 ## Frontmatter
 
 Requeridos: `title`, `summary`, `category`, `tags[]`, `featured`, `date`, `repoUrl`, `coverImage`
-Opcionales: `description`, `objective`, `theme`, `technologies[]`, `status`, `repoPrivate`, `liveUrl`, `demoUrl`, `images[]`, `challenges[]`, `solutions[]`, `results[]`
+Opcionales: `description`, `objective`, `theme`, `impact`, `technologies[]`, `status`, `repoPrivate`, `liveUrl`, `demoUrl`, `images[]`, `challenges[]`, `solutions[]`, `results[]`
 
 **`slug` NO va en el frontmatter** — se deriva del nombre de archivo.
 
@@ -53,8 +53,9 @@ summary: "<Una o dos frases: qué es y con qué está construido>"
 description: "<Párrafo: alcance técnico completo>"
 objective: "<Qué problema resuelve y para quién>"
 theme: "<Una línea que enmarca el dominio>"
+impact: "<Cierre: qué cambió el proyecto y para quién. Se renderiza al final de la página>"
 date: "YYYY-MM-DD"
-status: "production" # traducir a "producción" en el .es.mdx
+status: "production" # enum: completed | production | archived (NO se traduce)
 featured: false
 category: "web-development"
 tags: ["Tag Uno", "Tag Dos"]
@@ -105,6 +106,7 @@ Todo bajo `public/images/projects/<slug>/`. `cover.png` es obligatoria — es la
 ## Verificación final — obligatoria
 
 ```bash
+pnpm check:content   # imágenes existen, paridad EN/ES, tope de featured
 pnpm build
 ```
 
