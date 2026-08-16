@@ -74,7 +74,8 @@
       "galleryImageLabel": "Image {current} of {total}",
       "challenges": "The Challenge",
       "solutions": "The Approach",
-      "results": "Results"
+      "results": "Results",
+      "impact": "Impact"
     },
     "card": {
       "objective": "Objective",

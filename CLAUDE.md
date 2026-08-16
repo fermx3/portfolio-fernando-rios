@@ -19,7 +19,7 @@
 Los proyectos son MDX en `content/projects/`, con frontmatter validado por Zod en `src/lib/validations.ts`.
 
 **Campos requeridos:** `title`, `summary`, `category`, `tags[]`, `featured`, `date`, `repoUrl`, `coverImage`
-**Opcionales:** `description`, `objective`, `theme`, `technologies[]`, `status`, `repoPrivate`, `liveUrl`, `demoUrl`, `images[]`, `challenges[]`, `solutions[]`, `results[]`
+**Opcionales:** `description`, `objective`, `theme`, `impact`, `technologies[]`, `status`, `repoPrivate`, `liveUrl`, `demoUrl`, `images[]`, `challenges[]`, `solutions[]`, `results[]`
 
 `category` es un enum cerrado:
 `data-science` | `full-stack` | `ml` | `visualization` | `web-development` | `backend-development`
@@ -38,7 +38,9 @@ Los proyectos son MDX en `content/projects/`, con frontmatter validado por Zod e
 - Sin `liveUrl`/`demoUrl` → no se renderiza el botón de demo.
 - `repoPrivate: true` → la UI muestra un botón "Private Repo" deshabilitado. `repoUrl` sigue siendo obligatorio.
 - `images[]` acepta string o `{ src, type: 'mobile' | 'web', alt }`; el `type` decide el aspect ratio en la galería/lightbox.
-- Imágenes en `public/images/<slug>/`.
+- Imágenes en `public/images/projects/<slug>/`. `pnpm check:content` verifica que existan.
+- `impact` es el cierre de la página: qué cambió el proyecto y para quién. Va en el frontmatter, **no** como un `## Impact` al final del cuerpo — ahí quedaría antes de las secciones de Reto/Enfoque/Resultados y rompería el arco narrativo.
+- `status` es un enum: `completed` | `production` | `archived`.
 
 > ⚠️ **Trampa conocida:** `getAllProjects()` en `src/lib/content.ts` envuelve todo en `try/catch` y devuelve `[]` al fallar. Si el frontmatter de **un solo** proyecto no pasa el schema de Zod, **desaparece la lista completa de proyectos** sin ningún error visible. Ante una página de proyectos vacía, sospecha primero de frontmatter inválido en el MDX que acabas de tocar.
 
