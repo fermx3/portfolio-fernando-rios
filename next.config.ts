@@ -38,7 +38,6 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
-  pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
   images: {
     remotePatterns: [
       {
@@ -49,9 +48,6 @@ const nextConfig: NextConfig = {
       },
     ],
     formats: ["image/webp", "image/avif"],
-  },
-  experimental: {
-    mdxRs: true,
   },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];

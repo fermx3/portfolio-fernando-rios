@@ -27,8 +27,6 @@
       "visualization": "Visualization",
       "web-development": "Web Development",
       "backend-development": "Backend Development",
-      "dataScience": "Data Science",
-      "fullStack": "Full-Stack",
       "categories": "Categories",
       "tags": "Tags",
       "activeFilters": "Active filters"
@@ -104,9 +102,6 @@
           "date": "Graduated November 15, 2025"
         }
       ]
-    },
-    "social": {
-      "title": "Connect With Me"
     }
   },
   "contact": {
@@ -114,10 +109,6 @@
     "subtitle": "Let's discuss your next project or collaboration opportunity",
     "form": {
       "title": "Send a Message",
-      "name": "Name",
-      "email": "Email",
-      "message": "Message",
-      "send": "Send Message",
       "note": "For now, please reach out directly via email.",
       "comingSoon": "New contact experience coming soon!"
     },
@@ -135,15 +126,10 @@
     "rights": "© {year} Fernando Rios. All rights reserved."
   },
   "theme": {
-    "toggle": "Toggle theme",
-    "light": "Light",
-    "dark": "Dark",
-    "system": "System"
+    "toggle": "Toggle theme"
   },
   "language": {
-    "toggle": "Change language",
-    "en": "English",
-    "es": "Español"
+    "toggle": "Change language"
   },
   "metadata": {
     "title": "Fernando Rios - Data Scientist & Full-Stack Developer",
@@ -156,5 +142,16 @@
       "web development",
       "Fernando Rios"
     ]
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you are looking for does not exist or has been moved.",
+    "back": "Back to home"
+  },
+  "error": {
+    "title": "Something went wrong",
+    "description": "An unexpected error occurred. Try again, or head back home.",
+    "retry": "Try again",
+    "back": "Back to home"
   }
 }

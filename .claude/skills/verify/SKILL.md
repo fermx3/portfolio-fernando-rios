@@ -21,7 +21,22 @@ Los warnings no bloquean. Solo los errores.
 pnpm typecheck
 ```
 
-## 3. Build
+## 3. Contenido
+
+```bash
+pnpm check:content
+```
+
+Comprueba lo que ni el lint ni el schema de Zod ven: que toda imagen declarada
+exista en `public/`, que viva bajo `/images/projects/<slug>/`, que no haya URLs
+opcionales en cadena vacía, que cada proyecto tenga sus dos idiomas, y que no
+haya más de 6 featured (el tope que renderiza la home).
+
+> Existe porque 16 rutas de imagen declaradas estuvieron devolviendo 404 en
+> producción durante meses: el schema valida que `coverImage` sea un string,
+> nunca que el archivo exista.
+
+## 4. Build
 
 ```bash
 pnpm build
@@ -29,7 +44,7 @@ pnpm build
 
 Al terminar, revisa el conteo de rutas generadas: debe haber **2 páginas por proyecto** (una `/en/...` y una `/es/...`). Si el total bajó respecto a lo esperado, hay un MDX que no está entrando — ve al paso 4.
 
-## 4. Paridad EN/ES
+## 5. Paridad EN/ES
 
 Esto es lo que el lint y el typecheck **no** pueden atrapar, y es la fuente de bugs más común del repo.
 
