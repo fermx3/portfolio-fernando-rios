@@ -132,38 +132,28 @@ Criterios de aceptación:
 - Degrada a captura estática si el endpoint no responde
 - No bloquea el LCP de la página que la aloja
 
-### P3 — Deuda y código muerto
+### ~~P3 — Deuda y código muerto~~ · resuelto 2026-08-16
 
-Nada de esto es visible para el usuario, pero cada punto es superficie que mantener:
+- **Código muerto**: `searchProjects` y `getProjectsByCategory` eliminadas; 6 dependencias MDX desinstaladas junto con `pageExtensions` y `experimental.mdxRs` (el pipeline real siempre fue `gray-matter` + `markdown-it`)
+- **12 claves i18n huérfanas** eliminadas en ambos idiomas
+- **`status`** pasó de `z.string()` libre a enum; `"producción"` normalizado a `"production"`
+- **Páginas de error**: `not-found.tsx` y `error.tsx` dentro de `[locale]`, traducidas y con el layout del sitio
+- **Tope de featured**: `getFeaturedProjects` avisa por consola si hay más de 6, en vez de descartarlos en silencio
+- **Convención de carpetas**: `sonambulo/` → `sonambulo-estudio-creativo/`
+- La galería de `cli-task-manager` era la propia portada repetida; eliminada
 
-**Código sin usar**
+**Lo que faltaba y no estaba en la lista.** El schema de Zod valida que `coverImage` sea un string, nunca que el archivo exista — por eso 16 rutas declaradas estuvieron dando 404 en producción durante meses sin que lint, typecheck ni build dijeran nada. Ahora `pnpm check:content` (en el CI y en la skill `verify`) comprueba que toda imagen exista, que viva bajo `/images/projects/<slug>/`, que no haya URLs en cadena vacía, que cada proyecto tenga sus dos idiomas y que no se pase el tope de featured. Al estrenarla encontró de inmediato los `liveUrl: ""` de dos proyectos.
 
-- `searchProjects` y `getProjectsByCategory` (`src/lib/content.ts`): **0 importaciones**. Su lógica está reimplementada a mano en `projects-client.tsx`. Además `content.ts` lleva `"use server"`, así que ambas son server actions expuestas sin motivo
-- 5 dependencias MDX sin importar (`@mdx-js/mdx`, `@mdx-js/react`, `@next/mdx`, `remark`, `remark-html`) y `experimental.mdxRs` en la config
+### Auditoría de concisión (2026-08-16)
 
-> La duplicación de locales entre `routing.ts`, `middleware.ts` y `request.ts` que figuraba aquí se resolvió al arreglar P0.
+Tras renderizar `challenges`/`solutions`/`results`, la página de proyecto pasó a mostrar hasta **12 viñetas nuevas** además del cuerpo. Medido:
 
-**Claves i18n huérfanas**
-
-- `contact.form.{name,email,message,send}` — del formulario que no existe
-- `about.social.title` — la tarjeta de sociales no renderiza encabezado
-
-**Modelo de contenido**
-
-- 6 campos validados por Zod que **nunca se renderizan**: `description`, `status`, `technologies`, `challenges`, `solutions`, `results`
-- La tarjeta "Technologies" del detalle pinta `project.tags`, **no** `project.technologies` (`project-page-client.tsx:186`)
-- `status` es `z.string()` libre con 3 valores en uso: `"completed"` (6), `"production"` (5), `"producción"` (5)
-- `visualization` está en el enum y tiene botón de filtro, pero **ningún proyecto la usa** → filtro que siempre da 0 resultados
-- `cli-task-manager` y `log-analyser` tienen `liveUrl: ""`; funciona por casualidad porque `""` es falsy
-- `tattoo-kim` sin `images`, `description`, `technologies`, `status` ni `challenges`
-- `sonambulo-estudio-creativo` apunta a `/images/projects/sonambulo/`, rompiendo la convención `<slug>` que documenta `CLAUDE.md`
-
-**Riesgos latentes**
-
-- Hay **exactamente 6 proyectos featured** y `getFeaturedProjects` corta en `.slice(0, 6)`. Un séptimo desaparecería de la home **en silencio**
-- Sin `not-found.tsx`, `error.tsx` ni `loading.tsx`: el `notFound()` de un slug inexistente cae en el 404 por defecto de Next, sin layout ni traducción
-
----
+- **`summary` vs `description`**: solape léxico del 9-30%. Se complementan, no se repiten. Renderizar ambos está justificado
+- **`## Impact` del cuerpo vs viñetas de `results`**: 5 proyectos tenían esa sección
+  - **perfectapp**: duplicación casi literal (spreadsheets, programa de lealtad, exportación CSV aparecían en ambos) → **sección eliminada**
+  - **corazonada-tattoo** y **portfolio-website**: solapan solo con la primera viñeta; el resto del párrafo aporta contexto
+  - **coffee-disease-detection** y **sonámbulo**: el párrafo responde "por qué importa", las viñetas dan métricas. Ángulos distintos, se quedan
+- Cuerpos entre 204 y 752 palabras, media 464. Ninguno excesivo para una página de detalle
 
 ## 5. Correcciones al README
 

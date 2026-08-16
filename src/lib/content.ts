@@ -74,9 +74,23 @@ export const getAllProjects = cache(async (locale: string = "en"): Promise<Proje
   }
 });
 
+const FEATURED_LIMIT = 6;
+
 export const getFeaturedProjects = cache(async (locale: string = "en"): Promise<Project[]> => {
   const projects = await getAllProjects(locale);
-  return projects.filter((project) => project.featured).slice(0, 6);
+  const featured = projects.filter((project) => project.featured);
+
+  // The home page shows FEATURED_LIMIT projects. Without this, marking a
+  // seventh project as featured drops the oldest one silently.
+  if (featured.length > FEATURED_LIMIT) {
+    const dropped = featured.slice(FEATURED_LIMIT).map((p) => p.slug);
+    console.warn(
+      `[content] ${featured.length} featured projects for locale "${locale}" but only ` +
+        `${FEATURED_LIMIT} are shown. Not rendered: ${dropped.join(", ")}`
+    );
+  }
+
+  return featured.slice(0, FEATURED_LIMIT);
 });
 
 export const getProjectBySlug = cache(
@@ -123,24 +137,3 @@ export const getAllTags = cache(async (locale: string = "en"): Promise<string[]>
   const allTags = projects.flatMap((project) => project.tags);
   return Array.from(new Set(allTags)).sort();
 });
-
-export const getProjectsByCategory = cache(
-  async (category: string, locale: string = "en"): Promise<Project[]> => {
-    const projects = await getAllProjects(locale);
-    return projects.filter((project) => project.category === category);
-  }
-);
-
-export const searchProjects = cache(
-  async (query: string, locale: string = "en"): Promise<Project[]> => {
-    const projects = await getAllProjects(locale);
-    const lowerQuery = query.toLowerCase();
-
-    return projects.filter(
-      (project) =>
-        project.title.toLowerCase().includes(lowerQuery) ||
-        project.summary.toLowerCase().includes(lowerQuery) ||
-        project.tags.some((tag) => tag.toLowerCase().includes(lowerQuery))
-    );
-  }
-);

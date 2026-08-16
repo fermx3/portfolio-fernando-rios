@@ -29,7 +29,9 @@ export const projectSchema = z.object({
   tags: z.array(z.string()),
   technologies: z.array(z.string()).optional(),
   featured: z.boolean(),
-  status: z.string().optional(),
+  // Closed set: it was a free string with "completed", "production" and
+  // "producción" all in use across the corpus.
+  status: z.enum(["completed", "production", "archived"]).optional(),
   // Calendar date only — formatDate() renders it in UTC to keep the day stable.
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "date must be a YYYY-MM-DD string"),
   repoUrl: z.string(),

@@ -27,8 +27,6 @@
       "visualization": "Visualización",
       "web-development": "Desarrollo Web",
       "backend-development": "Desarrollo Backend",
-      "dataScience": "Ciencia de Datos",
-      "fullStack": "Full-Stack",
       "categories": "Categorías",
       "tags": "Etiquetas",
       "activeFilters": "Filtros activos"
@@ -104,9 +102,6 @@
           "date": "Graduado el 15 de Noviembre de 2025"
         }
       ]
-    },
-    "social": {
-      "title": "Conecta Conmigo"
     }
   },
   "contact": {
@@ -114,10 +109,6 @@
     "subtitle": "Hablemos sobre tu próximo proyecto u oportunidad de colaboración",
     "form": {
       "title": "Envíame un mensaje",
-      "name": "Nombre",
-      "email": "Email",
-      "message": "Mensaje",
-      "send": "Enviar Mensaje",
       "note": "Por ahora, contáctame directamente por email.",
       "comingSoon": "¡Nueva experiencia de contacto próximamente!"
     },
@@ -135,15 +126,10 @@
     "rights": "© {year} Fernando Rios. Todos los derechos reservados."
   },
   "theme": {
-    "toggle": "Cambiar tema",
-    "light": "Claro",
-    "dark": "Oscuro",
-    "system": "Sistema"
+    "toggle": "Cambiar tema"
   },
   "language": {
-    "toggle": "Cambiar idioma",
-    "en": "English",
-    "es": "Español"
+    "toggle": "Cambiar idioma"
   },
   "metadata": {
     "title": "Fernando Ríos - Científico de Datos y Desarrollador Full-Stack",
@@ -156,5 +142,16 @@
       "desarrollo web",
       "Fernando Ríos"
     ]
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "description": "La página que buscas no existe o fue movida.",
+    "back": "Volver al inicio"
+  },
+  "error": {
+    "title": "Algo salió mal",
+    "description": "Ocurrió un error inesperado. Inténtalo de nuevo o vuelve al inicio.",
+    "retry": "Reintentar",
+    "back": "Volver al inicio"
   }
 }

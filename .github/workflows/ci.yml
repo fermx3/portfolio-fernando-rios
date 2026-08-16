@@ -33,5 +33,8 @@ jobs:
       - name: Type check
         run: pnpm typecheck
 
+      - name: Content check
+        run: pnpm check:content
+
       - name: Build
         run: pnpm build
