@@ -42,6 +42,14 @@ Opcionales: `description`, `objective`, `theme`, `impact`, `technologies[]`, `st
 | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
 | `date`, `featured`, `category`, `coverImage`, `images`, `repoUrl`, `repoPrivate`, `liveUrl`, `demoUrl` | `title`, `summary`, `description`, `objective`, `theme`, `status`, `tags`, `technologies`, `challenges`, `solutions`, `results` y el cuerpo |
 
+**Tags — antes de inventar uno, mira los que ya existen:**
+
+```bash
+grep -h '^tags:' content/projects/*.mdx | grep -v '\.es\.' | tr ',' '\n' | tr -d '[]"' | sed 's/^ *//' | sort | uniq -c | sort -rn
+```
+
+Reglas: nombre **sin versión** (`Next.js`, no `Next.js 16`) · **no repitas la categoría** del propio proyecto · pon **dominio y tecnología real**, no detalle de implementación que ya va en `technologies` ni etiquetas vagas tipo `Responsive Design` · los arrays EN/ES **se emparejan por posición**, mismo número y mismo orden. `pnpm check:content` valida las tres primeras.
+
 `tags` y `technologies` van en el idioma del archivo (`"Data Science"` / `"Ciencia de Datos"`): `getAllTags()` es locale-aware y alimenta los filtros. `category` no se traduce nunca — es clave de enum y la UI la localiza al renderizar.
 
 ### Plantilla

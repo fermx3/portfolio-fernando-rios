@@ -42,6 +42,16 @@ Los proyectos son MDX en `content/projects/`, con frontmatter validado por Zod e
 - `impact` es el cierre de la página: qué cambió el proyecto y para quién. Va en el frontmatter, **no** como un `## Impact` al final del cuerpo — ahí quedaría antes de las secciones de Reto/Enfoque/Resultados y rompería el arco narrativo.
 - `status` es un enum: `completed` | `production` | `archived`.
 
+**Tags — reglas.** Los tags alimentan el filtro del listado, así que el vocabulario tiene que ser estable:
+
+- **Nombre sin versión.** `Next.js`, no `Next.js 16`. Un sufijo de versión crea un segundo chip para la misma tecnología y parte los resultados: la versión va en la prosa, no en el tag.
+- **No repitas la categoría.** `category: "ml"` ya pinta su propio filtro; añadir el tag `Machine Learning` duplica el chip.
+- **Señal, no exhaustividad.** Entra lo que alguien buscaría: dominio (`Computer Vision`, `Time Series`, `SaaS`) y tecnología real (`TensorFlow`, `PostgreSQL`, `Expo`). No entra el detalle de implementación que ya está en `technologies` (`Argparse`, `JSON`, `Regex`), ni etiquetas vagas (`Web Design`, `Performance`, `Responsive Design`), ni el nombre del proyecto en otras palabras (`Task Management` en un gestor de tareas).
+- **No podes por frecuencia.** Con 10 proyectos un tag aparece una vez porque el portfolio es pequeño, no porque sobre. Cortar por frecuencia dejaría al proyecto de visión por computadora sin un solo tag de ML.
+- **Los arrays EN/ES se emparejan por posición**: mismo número de tags y en el mismo orden en los dos archivos.
+
+`pnpm check:content` comprueba las tres primeras automáticamente.
+
 > ⚠️ **Trampa conocida:** `getAllProjects()` en `src/lib/content.ts` envuelve todo en `try/catch` y devuelve `[]` al fallar. Si el frontmatter de **un solo** proyecto no pasa el schema de Zod, **desaparece la lista completa de proyectos** sin ningún error visible. Ante una página de proyectos vacía, sospecha primero de frontmatter inválido en el MDX que acabas de tocar.
 
 ## Cómo trabajar aquí
