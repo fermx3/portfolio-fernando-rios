@@ -1,14 +1,23 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { Mail, Send } from "lucide-react";
+import { Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { FadeIn } from "@/components/motion/fade-in";
+import { AskPortfolio } from "@/components/assistant/ask-portfolio";
+import { AUTHOR } from "@/lib/site";
+import type { CorpusProject } from "@/lib/assistant/corpus";
 
-export function Contact() {
+interface ContactProps {
+  /** slug + title for every project, so the assistant's citations can be
+      checked against the real list before they become links. */
+  projects: CorpusProject[];
+}
+
+export function Contact({ projects }: ContactProps) {
   const t = useTranslations("contact");
 
   return (
@@ -22,22 +31,8 @@ export function Contact() {
         </FadeIn>
 
         <div className="mt-16 grid gap-8 lg:grid-cols-2">
-          {/* Contact Form Placeholder */}
           <FadeIn direction="left" delay={0.1}>
-            <Card className="flex flex-col h-full bg-card/50 backdrop-blur-sm border-dashed">
-              <CardHeader>
-                <CardTitle>{t("form.title")}</CardTitle>
-              </CardHeader>
-              <CardContent className="flex-1 flex flex-col items-center justify-center text-center p-8 space-y-4">
-                <div className="rounded-full bg-primary/10 p-4">
-                  <Send className="h-8 w-8 text-primary animate-pulse" />
-                </div>
-                <div className="space-y-2">
-                  <p className="text-xl font-semibold">{t("form.comingSoon")}</p>
-                  <p className="text-muted-foreground">{t("form.note")}</p>
-                </div>
-              </CardContent>
-            </Card>
+            <AskPortfolio projects={projects} />
           </FadeIn>
 
           {/* Direct Contact */}
@@ -48,7 +43,7 @@ export function Contact() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <Button asChild variant="outline" className="w-full justify-start">
-                  <a href="mailto:fer.riosalcantara@gmail.com">
+                  <a href={`mailto:${AUTHOR.email}`}>
                     <Mail className="mr-2 h-4 w-4" />
                     {t("direct.email")}
                   </a>

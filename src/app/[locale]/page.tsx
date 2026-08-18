@@ -5,6 +5,7 @@ import { FeaturedProjects } from "@/components/projects/featured-projects";
 import { About } from "@/components/sections/about";
 import { Contact } from "@/components/sections/contact";
 import { JsonLd } from "@/components/seo/json-ld";
+import { corpusProjects } from "@/lib/assistant/prompt";
 import { AUTHOR, SITE_URL, absoluteUrl, languageAlternates } from "@/lib/site";
 
 interface Props {
@@ -47,7 +48,10 @@ export default async function HomePage({ params }: Props) {
       <Hero />
       <FeaturedProjects locale={locale} />
       <About locale={locale} />
-      <Contact />
+      {/* Contact is a client component, so the project list is read here and
+          passed down: it is what lets the assistant's citations be validated
+          without a second round trip. */}
+      <Contact projects={corpusProjects(locale)} />
     </>
   );
 }
