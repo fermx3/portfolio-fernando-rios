@@ -1,7 +1,7 @@
 ---
 title: "Portfolio Website"
-summary: "Bilingual portfolio site built with Next.js 16, MDX content management, and type-safe architecture for showcasing data science and full-stack projects."
-description: "Professional portfolio website with English/Spanish support, MDX-powered project pages, dark/light theming, and interactive project filtering. Built with Next.js 16, React 19, TypeScript, and Tailwind CSS 4, deployed on Vercel with static generation for performance."
+summary: "Bilingual portfolio site built with Next.js 16, a file-based Markdown content pipeline, and type-safe architecture for showcasing data science and full-stack projects."
+description: "Professional portfolio website with English/Spanish support, Markdown-driven project pages, dark/light theming, and interactive project filtering. Built with Next.js 16, React 19, TypeScript, and Tailwind CSS 4, deployed on Vercel with static generation for performance."
 objective: "Create a maintainable, bilingual portfolio that makes it easy to add new projects and presents technical work clearly across devices and languages."
 theme: "Modern, clean design with smooth animations and professional presentation."
 impact: "To publish a project I write two text files, one per language, and push. The page, its entry in the list and both language versions build themselves. If I leave a field out, the site refuses to build, so I find out before publishing instead of after."
@@ -15,7 +15,7 @@ technologies:
   - "React 19"
   - "TypeScript 5"
   - "Tailwind CSS 4"
-  - "MDX Content Management"
+  - "Markdown content pipeline"
   - "next-intl (i18n)"
   - "Framer Motion"
   - "Radix UI"
@@ -35,7 +35,7 @@ challenges:
   - "Balancing animation richness with fast load times across devices"
   - "Maintaining accessibility standards alongside custom interactive components"
 solutions:
-  - "MDX pipeline with Zod-validated frontmatter for type-safe, file-based content management"
+  - "Markdown pipeline with Zod-validated frontmatter for type-safe, file-based content management"
   - "next-intl with locale-based routing, keeping a single component tree for both languages"
   - "Framer Motion animations with Intersection Observer-based activation and code splitting"
   - "Radix UI primitives for accessible interactive components (dialogs, dropdowns, toggles)"
@@ -55,7 +55,7 @@ This is the site you're looking at. It's a **bilingual portfolio** that presents
 ### MDX-Based Project Pages
 Each project lives as a pair of `.mdx` files (one per language) in the `content/projects/` directory. The frontmatter is validated against a Zod schema at build time, so type errors and missing fields are caught before deployment, not in production.
 
-The MDX body supports rich formatting, code blocks, and custom components, giving each project page the flexibility of a blog post with the structure of a typed data model.
+The body is plain Markdown: headings, lists, tables and code blocks. It is parsed at build time and rendered to HTML, so a project page is as easy to write as a blog post while the frontmatter above it stays a typed data model.
 
 ### Automatic Route Generation
 Next.js App Router generates project pages dynamically from the content directory. Adding a new project creates its route, adds it to the project listing, and makes it available in both languages, all from the file system.
@@ -78,7 +78,7 @@ The site uses **next-intl** for localization with `/en` and `/es` route prefixes
 - **Dark/light theming** with system preference detection and manual override
 
 ### Content Pipeline
-- **MDX** processing with custom plugins
+- **Markdown** parsed with `markdown-it`, not an MDX compiler: the content is prose, so it has no need for JSX
 - **Gray Matter** for frontmatter extraction
 - **Zod schemas** for build-time validation of project metadata
 - File-based routing for zero-configuration page generation

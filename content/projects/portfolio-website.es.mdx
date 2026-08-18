@@ -1,7 +1,7 @@
 ---
 title: "Sitio Web de Portfolio"
-summary: "Portfolio bilingüe construido con Next.js 16, gestión de contenido MDX y arquitectura type-safe para mostrar proyectos de ciencia de datos y desarrollo full-stack."
-description: "Sitio web de portfolio profesional con soporte Inglés/Español, páginas de proyectos powered by MDX, temas claro/oscuro y filtrado interactivo de proyectos. Construido con Next.js 16, React 19, TypeScript y Tailwind CSS 4, desplegado en Vercel con generación estática para rendimiento."
+summary: "Portfolio bilingüe construido con Next.js 16, un pipeline de contenido Markdown basado en archivos y arquitectura type-safe para mostrar proyectos de ciencia de datos y desarrollo full-stack."
+description: "Sitio web de portfolio profesional con soporte Inglés/Español, páginas de proyectos generadas desde Markdown, temas claro/oscuro y filtrado interactivo de proyectos. Construido con Next.js 16, React 19, TypeScript y Tailwind CSS 4, desplegado en Vercel con generación estática para rendimiento."
 objective: "Crear un portfolio bilingüe y mantenible que facilite agregar nuevos proyectos y presente trabajo técnico de forma clara en todos los dispositivos e idiomas."
 theme: "Diseño moderno y limpio con animaciones fluidas y presentación profesional."
 impact: "Para publicar un proyecto escribo dos archivos de texto, uno por idioma, y hago push. La página, su entrada en el listado y las dos versiones se generan solas. Si me falta un dato, el sitio no compila: me entero antes de publicar, no después."
@@ -15,7 +15,7 @@ technologies:
   - "React 19"
   - "TypeScript 5"
   - "Tailwind CSS 4"
-  - "Gestión de Contenido MDX"
+  - "Pipeline de contenido Markdown"
   - "next-intl (i18n)"
   - "Framer Motion"
   - "Radix UI"
@@ -35,7 +35,7 @@ challenges:
   - "Equilibrar la riqueza de animaciones con tiempos de carga rápidos en todos los dispositivos"
   - "Mantener estándares de accesibilidad junto con componentes interactivos personalizados"
 solutions:
-  - "Pipeline MDX con frontmatter validado por Zod para gestión de contenido type-safe basada en archivos"
+  - "Pipeline Markdown con frontmatter validado por Zod para gestión de contenido type-safe basada en archivos"
   - "next-intl con enrutamiento basado en locale, manteniendo un solo árbol de componentes para ambos idiomas"
   - "Animaciones Framer Motion con activación basada en Intersection Observer y code splitting"
   - "Primitivos Radix UI para componentes interactivos accesibles (diálogos, dropdowns, toggles)"
@@ -55,7 +55,7 @@ Este es el sitio que estás viendo. Es un **portfolio bilingüe** que presenta m
 ### Páginas de Proyecto Basadas en MDX
 Cada proyecto existe como un par de archivos `.mdx` (uno por idioma) en el directorio `content/projects/`. El frontmatter se valida contra un esquema Zod en tiempo de build, así que los errores de tipos y campos faltantes se detectan antes del despliegue, no en producción.
 
-El cuerpo MDX soporta formato enriquecido, bloques de código y componentes personalizados, dando a cada página de proyecto la flexibilidad de un post de blog con la estructura de un modelo de datos tipado.
+El cuerpo es Markdown plano: encabezados, listas, tablas y bloques de código. Se parsea en tiempo de build y se renderiza a HTML, así que una página de proyecto se escribe con la facilidad de un post de blog mientras el frontmatter de arriba sigue siendo un modelo de datos tipado.
 
 ### Generación Automática de Rutas
 Next.js App Router genera páginas de proyectos dinámicamente desde el directorio de contenido. Agregar un nuevo proyecto crea su ruta, lo agrega al listado de proyectos y lo hace disponible en ambos idiomas, todo desde el sistema de archivos.
@@ -78,7 +78,7 @@ El sitio usa **next-intl** para localización con prefijos de ruta `/en` y `/es`
 - **Temas claro/oscuro** con detección de preferencia del sistema y override manual
 
 ### Pipeline de Contenido
-- Procesamiento **MDX** con plugins personalizados
+- **Markdown** procesado con `markdown-it`, no un compilador MDX: el contenido es prosa y no necesita JSX
 - **Gray Matter** para extracción de frontmatter
 - **Esquemas Zod** para validación en build-time de metadatos de proyectos
 - Enrutamiento basado en archivos para generación de páginas sin configuración
