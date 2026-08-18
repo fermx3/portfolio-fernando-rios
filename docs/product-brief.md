@@ -96,32 +96,45 @@ La superficie en español tenía inglés incrustado y perdía el idioma al naveg
 
 ### P2 — Canal de contacto de ML engineer (dos fases)
 
-Hoy el único canal real es `mailto:`, repetido en 3 sitios. La tarjeta izquierda de `contact.tsx:25` es un placeholder con `border-dashed` que dice _"coming soon"_ **desde marzo de 2026** (commit `1c3568c`), y quedaron 4 claves i18n huérfanas esperando un formulario que nunca se construyó: `contact.form.{name,email,message,send}`.
+El único canal era `mailto:`, repetido en 3 sitios. La tarjeta izquierda de `contact.tsx` era un placeholder con `border-dashed` que decía _"coming soon"_ **desde marzo de 2026** (commit `1c3568c`), con 3 claves i18n huérfanas esperando un formulario que nunca se construyó.
 
 **La decisión de producto es no construir ese formulario.** Un formulario genérico no dice nada de un perfil de ML. El canal de contacto debe ser, en sí mismo, una demostración de capacidad.
 
-#### Fase 1 — Asistente RAG: "Pregúntale a mi portfolio"
+#### ~~Fase 1 — Asistente "Pregúntale a mi portfolio"~~ · entregado 2026-08-17
 
-Chat que responde preguntas sobre experiencia y proyectos, recuperando sobre el corpus que **ya está versionado**. Es canal de contacto y demo de ML en el mismo componente: un recruiter ve el trabajo usándolo, no leyéndolo.
+Chat que responde sobre los proyectos citando la fuente, y que recoge el contacto dentro de la conversación en vez de junto a ella. Sustituye al placeholder; las claves `contact.form.*` se eliminaron.
 
-Criterios de aceptación:
+Criterios cumplidos:
 
-- Corpus: `content/projects/*.mdx` en ambos idiomas + CV. No hay que crear contenido nuevo
+- Corpus: `content/projects/*.mdx` en ambos idiomas (**no hay CV en el repo**; si aparece, entra como una sección más en `src/lib/assistant/corpus.ts`)
 - Responde en el idioma de la página activa
-- **Cita el proyecto** del que sale cada respuesta, enlazando a `/[locale]/projects/[slug]`
-- **No inventa**: si algo no está en el corpus, lo dice explícitamente
-- Ofrece dejar email ante intención de contacto → **reemplaza** el placeholder, no se añade al lado
-- Coste acotado: rate limit por sesión/IP y techo de tokens por conversación
-- Degrada a `mailto` si el servicio falla o se agota la cuota
-- Consume o elimina las 4 claves i18n huérfanas
+- Cita el proyecto con `[[slug]]`, que el cliente convierte en enlace a `/[locale]/projects/[slug]`
+- No inventa: el prompt le prohíbe suponer formación, disponibilidad o tarifas, nada de lo cual está en el corpus
+- Captura el contacto con la tool `capture_lead` → Resend
+- Coste acotado: prompt caching, rate limit distribuido, techo de `max_tokens`, historial recortado
+- Degrada a `mailto` sin API key, con error o pasado el límite
 
-Implicaciones técnicas a considerar antes de empezar:
+**Tres supuestos del brief que resultaron falsos al implementarlo:**
 
-- Hoy **todo es SSG**. Requiere `src/app/api/**` o una server action — la primera superficie dinámica del sitio
-- Hay que ampliar `connect-src` en la CSP de `next.config.ts` (hoy `'self'`)
-- Es la primera dependencia con coste recurrente del proyecto
+| Se asumía                                 | Lo que era cierto                                                                                                                                                                           |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Hacía falta RAG con base vectorial        | El corpus son ~16k tokens por idioma y cabe entero en el prompt. Sin embeddings ni chunking, y además responde mejor a preguntas transversales ("¿en qué proyectos usaste X?") que un top-k |
+| Había que ampliar `connect-src` en la CSP | No. El navegador solo llama a `/api/ask`, mismo origen; la salida a Anthropic es del servidor. `connect-src 'self'` ya lo cubría                                                            |
+| Faltaba tocar el middleware               | Su matcher ya excluía `api` (`middleware.ts:9`)                                                                                                                                             |
 
-#### Fase 2 — Demo ML embebida
+Lo que sí se confirmó: es la **primera superficie dinámica** del sitio (`/api/ask`, el resto sigue siendo SSG) y el **primer coste recurrente**.
+
+**Decisiones de seguridad, porque es un endpoint público con una capacidad que produce efectos:**
+
+- El historial que manda el cliente es falsificable, así que **ninguna decisión del servidor depende de lo que diga la conversación**: roles en whitelist, system prompt y tools siempre del servidor
+- `to` y `from` del correo los fija el servidor. El peor caso de una conversación manipulada es ruido en la bandeja propia, no un relay hacia terceros
+- El correo se manda en texto plano, con los campos marcados como no verificados
+- La salida del modelo se renderiza como **texto**, nunca con `dangerouslySetInnerHTML` — y solo los slugs que existen se vuelven enlaces
+- El freno duro del gasto es el tope mensual en la API key, no el rate limit: en serverless un contador por instancia es best-effort aunque esté sobre Upstash
+
+No se añadió clasificador de entrada ni lista de frases prohibidas: a esta escala añaden latencia y falsos positivos sin cerrar nada que lo anterior no cierre.
+
+#### Fase 2 — Demo ML embebida · pendiente
 
 Una demo real e interactiva incrustada en el sitio, con CTA hacia el asistente de la fase 1.
 
