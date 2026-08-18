@@ -59,7 +59,7 @@ Los proyectos son MDX en `content/projects/`, con frontmatter validado por Zod e
 La tarjeta de contacto es un chat sobre los proyectos. **Es la única ruta dinámica del sitio**; todo lo demás sigue siendo SSG y debe seguir siéndolo.
 
 - **Sin base vectorial.** El corpus va entero en el system prompt (`src/lib/assistant/corpus.ts`): 23k tokens en ES y 18k en EN, medidos con `usage`. Si crece mucho, lo primero que hay que revisar es esa decisión, no añadir retrieval por reflejo.
-- **El corpus va cacheado** con `cache_control`. Es un prefix match: meter cualquier cosa volátil (fecha, id de sesión) antes del breakpoint anula la caché y multiplica el coste por diez. No metas nada variable en el system prompt.
+- **El corpus va cacheado** con `cache_control`. Es un prefix match: meter cualquier cosa volátil (fecha, id de sesión) antes del breakpoint anula la caché y multiplica el coste por ocho. No metas nada variable en el system prompt. El handler registra los tokens en cada petición; un `cache_read=0` repetido es la señal de que se rompió.
 - **El cuerpo de la petición es entrada no confiable**, historial incluido: se pueden fabricar turnos del asistente. Ninguna decisión del servidor puede depender de lo que diga la conversación — roles en whitelist, y el system prompt y las tools siempre del servidor.
 - **La salida del modelo se renderiza como texto.** Nunca con `dangerouslySetInnerHTML`, que sí se usa para el contenido de los proyectos porque ese es tuyo.
 - **El cliente de Anthropic se instancia dentro del handler.** A nivel de módulo revienta el build del CI, que corre sin secretos.
@@ -73,7 +73,23 @@ Variables de entorno (todas opcionales; el asistente degrada un escalón por cad
 | `LEAD_TO_EMAIL` / `LEAD_FROM_EMAIL` | Usan `AUTHOR.email` y el dominio de pruebas de Resend |
 | `UPSTASH_REDIS_REST_URL` + `_TOKEN` | El rate limit cae a un contador por instancia         |
 
-El freno duro del gasto es el **tope mensual en la API key**, no el rate limit.
+### Qué cuesta esto
+
+Medido sobre el corpus en español (23 016 tokens) con Opus 5 a $5/$25 por MTok:
+
+|                           | Precio     | Coste      |
+| ------------------------- | ---------- | ---------- |
+| Escribir la caché (1.25×) | $6.25/MTok | **$0.144** |
+| Leerla (0.1×)             | $0.50/MTok | $0.012     |
+| Salida, ~250 tokens       | $25/MTok   | $0.006     |
+
+**La pregunta que escribe la caché cuesta ocho veces más que la que la lee**, y ese es el número que gobierna el gasto: la caché dura 5 minutos, así que con visitas espaciadas —lo normal en un portfolio— casi toda primera pregunta de cada visitante es en frío. Citar solo el caso caliente subestima el coste por ocho.
+
+Lo que hay que presupuestar es la **conversación**, no la pregunta: ~$0.15 la de un solo turno, ~$0.19 la de tres. Del orden de 50–65 conversaciones por cada 10 USD.
+
+No cambies el TTL a 1 hora buscando ahorro: escribir cuesta el doble y solo compensa si llegan dos o más visitantes por hora.
+
+El freno duro del gasto es el **tope mensual en la API key**, no el rate limit. El criterio para fijarlo no es el consumo esperado sino cuánto estás dispuesto a perder si alguien abusa del endpoint.
 
 ## Cómo trabajar aquí
 

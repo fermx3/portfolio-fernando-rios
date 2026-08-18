@@ -111,7 +111,7 @@ Criterios cumplidos:
 - Cita el proyecto con `[[slug]]`, que el cliente convierte en enlace a `/[locale]/projects/[slug]`
 - No inventa: el prompt le prohíbe suponer formación, disponibilidad o tarifas, nada de lo cual está en el corpus
 - Captura el contacto con la tool `capture_lead` → Resend
-- Coste acotado: prompt caching, rate limit distribuido, techo de `max_tokens`, historial recortado
+- Coste acotado: prompt caching, rate limit distribuido, techo de `max_tokens`, historial recortado. Medido: ~$0.15 la conversación de un turno, ~$0.19 la de tres — el desglose y por qué el caso caliente engaña están en `CLAUDE.md`
 - Degrada a `mailto` sin API key, con error o pasado el límite
 
 **Tres supuestos del brief que resultaron falsos al implementarlo:**
@@ -130,7 +130,7 @@ Lo que sí se confirmó: es la **primera superficie dinámica** del sitio (`/api
 - `to` y `from` del correo los fija el servidor. El peor caso de una conversación manipulada es ruido en la bandeja propia, no un relay hacia terceros
 - El correo se manda en texto plano, con los campos marcados como no verificados
 - La salida del modelo se renderiza como **texto**, nunca con `dangerouslySetInnerHTML` — y solo los slugs que existen se vuelven enlaces
-- El freno duro del gasto es el tope mensual en la API key, no el rate limit: en serverless un contador por instancia es best-effort aunque esté sobre Upstash
+- El freno duro del gasto es el tope mensual en la API key, no el rate limit: en serverless un contador por instancia es best-effort aunque esté sobre Upstash. Se fija por lo que estás dispuesto a perder ante un abuso, no por el consumo previsto
 
 No se añadió clasificador de entrada ni lista de frases prohibidas: a esta escala añaden latencia y falsos positivos sin cerrar nada que lo anterior no cierre.
 
