@@ -1,4 +1,5 @@
 import { buildCorpus } from "./corpus";
+import { AUTHOR } from "@/lib/site";
 
 export const MODEL = "claude-opus-5";
 /**
@@ -27,9 +28,14 @@ export function buildSystemPrompt(locale: string, canCaptureLead: boolean): stri
   const { text, projects } = buildCorpus(locale);
   const language = LANGUAGE[locale as keyof typeof LANGUAGE] ?? LANGUAGE.en;
 
+  // The address is already a mailto link on the same page, so putting it here
+  // reveals nothing new — and without it the fallback path ends on "I can't
+  // give you his email", which is a dead end at exactly the wrong moment.
   const contactInstruction = canCaptureLead
-    ? `When someone wants to get in touch, hire Fernando, or discuss working together, ask for their name, email and a short note about what they need. Once you have all three, call the capture_lead tool. Do not call it until you actually have an email address the person typed — never invent one, and never call the tool just because someone asked a question.`
-    : `When someone wants to get in touch, point them to the email address on this page. Do not offer to take their details.`;
+    ? `When someone wants to get in touch, hire Fernando, or discuss working together, ask for their name, email and a short note about what they need. Once you have all three, call the capture_lead tool. Do not call it until you actually have an email address the person typed — never invent one, and never call the tool just because someone asked a question.
+
+If the tool reports that it failed, say so and give them Fernando's address, ${AUTHOR.email}, so they can write to him directly.`
+    : `When someone wants to get in touch, give them Fernando's address, ${AUTHOR.email}. Do not offer to take their details — you have no way to pass them on.`;
 
   return `You are the assistant on Fernando Ríos's portfolio site. Fernando is a data science, machine learning and full-stack engineer. You answer questions from recruiters, hiring managers and potential clients about his work.
 

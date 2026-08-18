@@ -116,9 +116,14 @@ export async function captureLead(input: unknown): Promise<LeadResult> {
     });
 
     if (!response.ok) {
-      // Status only. The response body can echo the address back and this ends
-      // up in the platform logs.
-      console.error(`[assistant] resend rejected the lead: ${response.status}`);
+      // Status and error code, not the message: Resend echoes addresses back in
+      // it, and this lands in the platform logs. The full text is on the
+      // Resend dashboard when a delivery needs chasing down.
+      const code = await response
+        .json()
+        .then((body) => body?.name ?? "unknown")
+        .catch(() => "unparseable");
+      console.error(`[assistant] resend rejected the lead: ${response.status} ${code}`);
       return {
         ok: false,
         message: "The message could not be delivered. Offer the email address on the page instead.",
