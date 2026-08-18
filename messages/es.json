@@ -108,10 +108,24 @@
   "contact": {
     "title": "Contacto",
     "subtitle": "Hablemos sobre tu próximo proyecto u oportunidad de colaboración",
-    "form": {
-      "title": "Envíame un mensaje",
-      "note": "Por ahora, contáctame directamente por email.",
-      "comingSoon": "¡Nueva experiencia de contacto próximamente!"
+    "assistant": {
+      "title": "Pregúntale a mi portfolio",
+      "intro": "Pregunta por los proyectos de este sitio y te respondo con lo que está escrito aquí, enlazando el proyecto del que sale la respuesta. Si prefieres hablar con Fernando, dímelo y le paso tus datos.",
+      "placeholder": "Pregunta por un proyecto…",
+      "send": "Enviar",
+      "thinking": "Leyendo los proyectos…",
+      "disclaimer": "Las respuestas salen de los proyectos de este sitio. Si algo no está aquí, te digo que no lo sé.",
+      "suggestions": {
+        "first": "¿Qué ha construido con visión por computadora?",
+        "second": "¿Qué proyectos llegaron a producción?",
+        "third": "¿Qué usa para el backend?"
+      },
+      "errors": {
+        "generic": "Algo falló de mi lado.",
+        "rateLimited": "Van muchas preguntas en poco rato — dale unos minutos.",
+        "unavailable": "El asistente está fuera de servicio ahora mismo.",
+        "emailInstead": "Escríbele directamente a Fernando"
+      }
     },
     "direct": {
       "title": "O contáctame directamente:",
