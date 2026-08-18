@@ -10,10 +10,19 @@ import fs from "node:fs";
 import path from "node:path";
 
 const CONTENT = "content/projects";
+const CATEGORY_LABELS = {
+  ml: "Machine Learning",
+  "data-science": "Data Science",
+  "full-stack": "Full-Stack",
+  "web-development": "Web Development",
+  "backend-development": "Backend Development",
+  visualization: "Visualization",
+};
 const PUBLIC = "public";
 const FEATURED_LIMIT = 6;
 
 const problems = [];
+const tagsByFile = new Map();
 
 /** Minimal frontmatter reader: scalars and dash lists, line by line. */
 function parseFrontmatter(raw) {
@@ -82,6 +91,46 @@ for (const file of files) {
   }
 
   if (data.featured === "true" || data.featured === true) featured[locale].push(slug);
+
+  // 6. tags: same count in both languages, so the translated arrays stay aligned
+  const tags = Array.isArray(data.tags)
+    ? data.tags
+    : typeof data.tags === "string"
+      ? JSON.parse(data.tags)
+      : [];
+  tagsByFile.set(file, tags);
+
+  // 7. a tag must not repeat the project's own category -- the category has its
+  //    own filter row, so the tag is a duplicate chip
+  const label = CATEGORY_LABELS[data.category];
+  if (label && tags.includes(label)) {
+    problems.push(
+      `${file}: tag "${label}" repeats the project's category; the category filter already covers it`
+    );
+  }
+}
+
+// 8. no versioned variant of a tag that also exists bare. "Next.js 16" next to
+//    "Next.js" splits the filter and silently drops projects from the results.
+const allTags = new Set([...tagsByFile.values()].flat());
+for (const tag of allTags) {
+  const bare = tag.replace(/\s+v?\d+(\.\d+)*$/, "");
+  if (bare !== tag && allTags.has(bare)) {
+    problems.push(
+      `tag "${tag}" is a versioned variant of "${bare}"; use the bare name so the filter groups them`
+    );
+  }
+}
+
+// 9. tag arrays must line up between languages -- they are matched by position
+for (const slug of slugs) {
+  const en = tagsByFile.get(`${slug}.mdx`);
+  const es = tagsByFile.get(`${slug}.es.mdx`);
+  if (en && es && en.length !== es.length) {
+    problems.push(
+      `${slug}: ${en.length} tags in English but ${es.length} in Spanish; they are paired by position`
+    );
+  }
 }
 
 // 4. both languages exist for every project

@@ -29,8 +29,10 @@ pnpm check:content
 
 Comprueba lo que ni el lint ni el schema de Zod ven: que toda imagen declarada
 exista en `public/`, que viva bajo `/images/projects/<slug>/`, que no haya URLs
-opcionales en cadena vacía, que cada proyecto tenga sus dos idiomas, y que no
-haya más de 6 featured (el tope que renderiza la home).
+opcionales en cadena vacía, que cada proyecto tenga sus dos idiomas, que no
+haya más de 6 featured (el tope que renderiza la home), y las reglas de tags:
+sin sufijo de versión, sin repetir la categoría, y arrays EN/ES del mismo
+tamaño.
 
 > Existe porque 16 rutas de imagen declaradas estuvieron devolviendo 404 en
 > producción durante meses: el schema valida que `coverImage` sea un string,
