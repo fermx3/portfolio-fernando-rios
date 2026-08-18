@@ -73,6 +73,8 @@ Variables de entorno (todas opcionales; el asistente degrada un escalón por cad
 | `LEAD_TO_EMAIL` / `LEAD_FROM_EMAIL` | Usan `AUTHOR.email` y el dominio de pruebas de Resend |
 | `UPSTASH_REDIS_REST_URL` + `_TOKEN` | El rate limit cae a un contador por instancia         |
 
+> ⚠️ **Con el dominio de pruebas de Resend, `LEAD_TO_EMAIL` tiene que ser la dirección de la cuenta de Resend**, no cualquier otra: `onboarding@resend.dev` solo entrega ahí. Si no coinciden, Resend responde **403 `validation_error`** y el asistente cae al correo en vez de registrar el lead. Se arregla poniendo esa dirección, o verificando `fernandorios.dev` y cambiando `LEAD_FROM_EMAIL`.
+
 ### Qué cuesta esto
 
 Medido sobre el corpus en español (23 016 tokens) con Opus 5 a $5/$25 por MTok:
