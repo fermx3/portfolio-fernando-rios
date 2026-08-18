@@ -54,6 +54,27 @@ Los proyectos son MDX en `content/projects/`, con frontmatter validado por Zod e
 
 > ⚠️ **Trampa conocida:** `getAllProjects()` en `src/lib/content.ts` envuelve todo en `try/catch` y devuelve `[]` al fallar. Si el frontmatter de **un solo** proyecto no pasa el schema de Zod, **desaparece la lista completa de proyectos** sin ningún error visible. Ante una página de proyectos vacía, sospecha primero de frontmatter inválido en el MDX que acabas de tocar.
 
+## El asistente (`/api/ask`)
+
+La tarjeta de contacto es un chat sobre los proyectos. **Es la única ruta dinámica del sitio**; todo lo demás sigue siendo SSG y debe seguir siéndolo.
+
+- **Sin base vectorial.** El corpus son ~16k tokens por idioma, así que va entero en el system prompt (`src/lib/assistant/corpus.ts`). Si crece mucho, lo primero que hay que revisar es esa decisión, no añadir retrieval por reflejo.
+- **El corpus va cacheado** con `cache_control`. Es un prefix match: meter cualquier cosa volátil (fecha, id de sesión) antes del breakpoint anula la caché y multiplica el coste por diez. No metas nada variable en el system prompt.
+- **El cuerpo de la petición es entrada no confiable**, historial incluido: se pueden fabricar turnos del asistente. Ninguna decisión del servidor puede depender de lo que diga la conversación — roles en whitelist, y el system prompt y las tools siempre del servidor.
+- **La salida del modelo se renderiza como texto.** Nunca con `dangerouslySetInnerHTML`, que sí se usa para el contenido de los proyectos porque ese es tuyo.
+- **El cliente de Anthropic se instancia dentro del handler.** A nivel de módulo revienta el build del CI, que corre sin secretos.
+
+Variables de entorno (todas opcionales; el asistente degrada un escalón por cada una que falte):
+
+| Variable                            | Si falta                                              |
+| ----------------------------------- | ----------------------------------------------------- |
+| `ANTHROPIC_API_KEY`                 | El asistente queda offline y se ofrece el correo      |
+| `RESEND_API_KEY`                    | Responde preguntas pero no recoge contactos           |
+| `LEAD_TO_EMAIL` / `LEAD_FROM_EMAIL` | Usan `AUTHOR.email` y el dominio de pruebas de Resend |
+| `UPSTASH_REDIS_REST_URL` + `_TOKEN` | El rate limit cae a un contador por instancia         |
+
+El freno duro del gasto es el **tope mensual en la API key**, no el rate limit.
+
 ## Cómo trabajar aquí
 
 - Alcance del producto en `docs/product-brief.md`: qué está entregado, qué queda fuera a propósito y el backlog priorizado. Consúltalo antes de proponer features nuevas.
