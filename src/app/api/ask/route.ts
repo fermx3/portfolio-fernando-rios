@@ -128,7 +128,10 @@ export async function POST(request: Request) {
         console.error(
           `[assistant] request failed: ${cause instanceof Error ? cause.name : "unknown"}`
         );
-        if (!wroteSomething) controller.error(cause);
+        // The status line is long gone by now, so there is no error code left
+        // to send. Closing with nothing written is the signal: the client
+        // treats an empty answer as a failure and offers the email instead.
+        // Erroring the controller here would throw on the close() below.
       } finally {
         controller.close();
       }
