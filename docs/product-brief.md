@@ -116,11 +116,11 @@ Criterios cumplidos:
 
 **Tres supuestos del brief que resultaron falsos al implementarlo:**
 
-| Se asumía                                 | Lo que era cierto                                                                                                                                                                           |
-| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Hacía falta RAG con base vectorial        | El corpus son ~16k tokens por idioma y cabe entero en el prompt. Sin embeddings ni chunking, y además responde mejor a preguntas transversales ("¿en qué proyectos usaste X?") que un top-k |
-| Había que ampliar `connect-src` en la CSP | No. El navegador solo llama a `/api/ask`, mismo origen; la salida a Anthropic es del servidor. `connect-src 'self'` ya lo cubría                                                            |
-| Faltaba tocar el middleware               | Su matcher ya excluía `api` (`middleware.ts:9`)                                                                                                                                             |
+| Se asumía                                 | Lo que era cierto                                                                                                                                                                                                 |
+| ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Hacía falta RAG con base vectorial        | El corpus cabe entero en el prompt: 23k tokens en ES y 18k en EN, medidos con `usage`. Sin embeddings ni chunking, y además responde mejor a preguntas transversales ("¿en qué proyectos usaste X?") que un top-k |
+| Había que ampliar `connect-src` en la CSP | No. El navegador solo llama a `/api/ask`, mismo origen; la salida a Anthropic es del servidor. `connect-src 'self'` ya lo cubría                                                                                  |
+| Faltaba tocar el middleware               | Su matcher ya excluía `api` (`middleware.ts:9`)                                                                                                                                                                   |
 
 Lo que sí se confirmó: es la **primera superficie dinámica** del sitio (`/api/ask`, el resto sigue siendo SSG) y el **primer coste recurrente**.
 

@@ -58,7 +58,7 @@ Los proyectos son MDX en `content/projects/`, con frontmatter validado por Zod e
 
 La tarjeta de contacto es un chat sobre los proyectos. **Es la única ruta dinámica del sitio**; todo lo demás sigue siendo SSG y debe seguir siéndolo.
 
-- **Sin base vectorial.** El corpus son ~16k tokens por idioma, así que va entero en el system prompt (`src/lib/assistant/corpus.ts`). Si crece mucho, lo primero que hay que revisar es esa decisión, no añadir retrieval por reflejo.
+- **Sin base vectorial.** El corpus va entero en el system prompt (`src/lib/assistant/corpus.ts`): 23k tokens en ES y 18k en EN, medidos con `usage`. Si crece mucho, lo primero que hay que revisar es esa decisión, no añadir retrieval por reflejo.
 - **El corpus va cacheado** con `cache_control`. Es un prefix match: meter cualquier cosa volátil (fecha, id de sesión) antes del breakpoint anula la caché y multiplica el coste por diez. No metas nada variable en el system prompt.
 - **El cuerpo de la petición es entrada no confiable**, historial incluido: se pueden fabricar turnos del asistente. Ninguna decisión del servidor puede depender de lo que diga la conversación — roles en whitelist, y el system prompt y las tools siempre del servidor.
 - **La salida del modelo se renderiza como texto.** Nunca con `dangerouslySetInnerHTML`, que sí se usa para el contenido de los proyectos porque ese es tuyo.

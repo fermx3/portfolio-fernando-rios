@@ -23,50 +23,94 @@ const MAX_LENGTH = 1000;
 /** Matches the server's MAX_HISTORY: older turns are dropped before sending. */
 const MAX_HISTORY = 8;
 
-const CITATION = /\[\[([a-z0-9-]+)\]\]/g;
+/** A citation, or a **bold** run. The prompt limits the model to this subset. */
+const INLINE = /\[\[([a-z0-9-]+)\]\]|\*\*(.+?)\*\*/g;
 
 /**
- * Renders assistant text.
+ * Turns one line of model output into React nodes.
  *
- * The text is model output, so it is rendered as text — never through
- * dangerouslySetInnerHTML, which is how the project pages render Fernando's own
- * markdown but would be an XSS hole here. The only markup is the citation
- * links, and a citation is only linked when its slug is a real project; a
- * hallucinated slug is dropped rather than turned into a 404.
+ * Everything is built as elements rather than markup: this is model output, so
+ * it never goes through dangerouslySetInnerHTML. The project pages do use that,
+ * but the markdown there is Fernando's own.
+ *
+ * A citation is only linked when its slug is a real project, so a hallucinated
+ * one is dropped instead of becoming a 404.
  */
-function AssistantText({ text, projects }: { text: string; projects: CorpusProject[] }) {
-  const known = new Map(projects.map((p) => [p.slug, p.title]));
+function inline(text: string, titles: Map<string, string>): React.ReactNode[] {
   const parts: React.ReactNode[] = [];
-  let lastIndex = 0;
+  let cursor = 0;
 
-  for (const match of text.matchAll(CITATION)) {
-    const [raw, slug] = match;
+  for (const match of text.matchAll(INLINE)) {
+    const [raw, slug, bold] = match;
     const start = match.index ?? 0;
-    if (start > lastIndex) parts.push(text.slice(lastIndex, start));
-    lastIndex = start + raw.length;
+    if (start > cursor) parts.push(text.slice(cursor, start));
+    cursor = start + raw.length;
 
-    const title = known.get(slug);
-    if (title) {
-      parts.push(
-        <Link
-          key={`${slug}-${start}`}
-          href={`/projects/${slug}`}
-          className="font-medium text-primary underline underline-offset-4 hover:no-underline"
-        >
-          {title}
-        </Link>
-      );
+    if (slug) {
+      const title = titles.get(slug);
+      if (title) {
+        parts.push(
+          <Link
+            key={`${slug}-${start}`}
+            href={`/projects/${slug}`}
+            className="font-medium text-primary underline underline-offset-4 hover:no-underline"
+          >
+            {title}
+          </Link>
+        );
+      }
+      continue;
+    }
+
+    parts.push(
+      <strong key={`b-${start}`} className="font-medium text-foreground">
+        {bold}
+      </strong>
+    );
+  }
+
+  if (cursor < text.length) parts.push(text.slice(cursor));
+  return parts.map((part, i) => <Fragment key={i}>{part}</Fragment>);
+}
+
+/**
+ * The model writes markdown, so rendering it as one flat string collapsed every
+ * list into a wall of text with literal "-" and "**" in it. This handles the
+ * subset the prompt asks for — paragraphs and simple bullets — and nothing else.
+ */
+function AssistantMessage({ text, projects }: { text: string; projects: CorpusProject[] }) {
+  const titles = new Map(projects.map((p) => [p.slug, p.title]));
+  const blocks: { type: "p" | "ul"; lines: string[] }[] = [];
+
+  for (const raw of text.split("\n")) {
+    const line = raw.trim();
+    if (!line) continue;
+
+    const bullet = line.match(/^[-*]\s+(.*)$/);
+    const last = blocks[blocks.length - 1];
+
+    if (bullet) {
+      if (last?.type === "ul") last.lines.push(bullet[1]);
+      else blocks.push({ type: "ul", lines: [bullet[1]] });
+    } else {
+      blocks.push({ type: "p", lines: [line] });
     }
   }
 
-  if (lastIndex < text.length) parts.push(text.slice(lastIndex));
-
   return (
-    <>
-      {parts.map((part, i) => (
-        <Fragment key={i}>{part}</Fragment>
-      ))}
-    </>
+    <div className="space-y-2 leading-relaxed">
+      {blocks.map((block, i) =>
+        block.type === "ul" ? (
+          <ul key={i} className="list-disc space-y-1 pl-4 marker:text-lime-400">
+            {block.lines.map((item, j) => (
+              <li key={j}>{inline(item, titles)}</li>
+            ))}
+          </ul>
+        ) : (
+          <p key={i}>{inline(block.lines[0], titles)}</p>
+        )
+      )}
+    </div>
   );
 }
 
@@ -93,7 +137,11 @@ export function AskPortfolio({ projects }: AskPortfolioProps) {
     if (!trimmed || pending) return;
 
     const history = [...messages, { role: "user" as const, content: trimmed }];
-    setMessages(history);
+    // The empty assistant turn goes in now, not once the response arrives: it
+    // is what renders the "reading the projects…" line. A first token can be
+    // several seconds away, and until this was hoisted the only feedback was
+    // the input going disabled.
+    setMessages([...history, { role: "assistant", content: "" }]);
     setInput("");
     setError(null);
     setPending(true);
@@ -114,6 +162,9 @@ export function AskPortfolio({ projects }: AskPortfolioProps) {
           .json()
           .then((data) => data?.error)
           .catch(() => null);
+        // Drop the placeholder turn, or it sits there reading "thinking…"
+        // forever under the error.
+        setMessages(history);
         setError(
           code === "rate_limited"
             ? t("errors.rateLimited")
@@ -127,8 +178,6 @@ export function AskPortfolio({ projects }: AskPortfolioProps) {
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
       let answer = "";
-
-      setMessages([...history, { role: "assistant", content: "" }]);
 
       while (true) {
         const { done, value } = await reader.read();
@@ -165,9 +214,13 @@ export function AskPortfolio({ projects }: AskPortfolioProps) {
       </CardHeader>
 
       <CardContent className="flex flex-1 flex-col gap-4">
+        {/* The max height is what makes overflow-y-auto do anything. Without
+            it the card grew with every turn, which pushed the input and the
+            "reading…" line below the fold — so the indicator was there but
+            nobody could see it. */}
         <div
           ref={logRef}
-          className="min-h-56 flex-1 space-y-4 overflow-y-auto text-sm"
+          className="min-h-56 max-h-96 flex-1 space-y-4 overflow-y-auto text-sm"
           aria-live="polite"
           aria-busy={pending}
         >
@@ -194,13 +247,20 @@ export function AskPortfolio({ projects }: AskPortfolioProps) {
                   {message.content}
                 </p>
               ) : (
-                <p key={index} className="max-w-[95%] leading-relaxed text-muted-foreground">
+                <div key={index} className="max-w-[95%] text-muted-foreground">
                   {message.content ? (
-                    <AssistantText text={message.content} projects={projects} />
+                    <AssistantMessage text={message.content} projects={projects} />
                   ) : (
-                    <span className="inline-block animate-pulse">{t("thinking")}</span>
+                    <span className="inline-flex items-center gap-2">
+                      <span className="flex gap-1" aria-hidden="true">
+                        <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-lime-400 [animation-delay:-0.3s]" />
+                        <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-lime-400 [animation-delay:-0.15s]" />
+                        <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-lime-400" />
+                      </span>
+                      {t("thinking")}
+                    </span>
                   )}
-                </p>
+                </div>
               )
             )
           )}

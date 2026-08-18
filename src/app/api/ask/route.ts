@@ -100,6 +100,17 @@ export async function POST(request: Request) {
 
           const message = await response.finalMessage();
 
+          // Token counts only — no conversation content. The cached read is
+          // what makes a turn cost about a cent instead of ten, so a zero here
+          // means something volatile crept into the system prompt and the
+          // corpus is being re-billed at full price on every request.
+          const { cache_read_input_tokens: cached, input_tokens: fresh } = message.usage;
+          console.log(
+            `[assistant] cache_read=${cached ?? 0} cache_write=${
+              message.usage.cache_creation_input_tokens ?? 0
+            } input=${fresh} output=${message.usage.output_tokens}`
+          );
+
           // Safety classifiers can decline; content is empty or partial then,
           // so this has to be checked before anything reads it.
           if (message.stop_reason === "refusal") {
