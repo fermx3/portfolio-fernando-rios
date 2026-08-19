@@ -70,6 +70,26 @@ function memoryAllows(bucket: Bucket, ip: string): boolean {
   return true;
 }
 
+let announced = false;
+
+/**
+ * Says once which limiter is actually in play.
+ *
+ * Without this the shared counter fails to silence: the env vars have to be
+ * named exactly UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN, and any
+ * other name just falls through to the per-instance counter with nothing in
+ * the logs. You would think it was configured when it was not.
+ */
+function announceOnce(shared: boolean) {
+  if (announced) return;
+  announced = true;
+  console.log(
+    shared
+      ? "[assistant] rate limit: shared (Upstash)"
+      : "[assistant] rate limit: per-instance (no UPSTASH_REDIS_REST_URL/_TOKEN)"
+  );
+}
+
 /**
  * Returns false when the caller has run out of budget for this bucket.
  *
@@ -78,12 +98,15 @@ function memoryAllows(bucket: Bucket, ip: string): boolean {
  */
 export async function allow(bucket: Bucket, ip: string): Promise<boolean> {
   if (hasUpstash()) {
+    announceOnce(true);
     try {
       const { success } = await upstashLimiter(bucket).limit(ip);
       return success;
     } catch {
       console.error(`[assistant] rate limit store unavailable; falling back to in-memory`);
     }
+  } else {
+    announceOnce(false);
   }
   return memoryAllows(bucket, ip);
 }
