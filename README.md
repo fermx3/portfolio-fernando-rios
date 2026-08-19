@@ -281,7 +281,7 @@ This project is open source and available under the [MIT License](LICENSE).
 - Portfolio: [fernandorios.dev](https://www.fernandorios.dev/)
 - GitHub: [@fermx3](https://github.com/fermx3)
 - LinkedIn: [https://www.linkedin.com/in/riosafernando](https://www.linkedin.com/in/riosafernando)
-- Email: fer.riosalcantara@gmail.com
+- Email: hola@fernandorios.dev
 
 ---
 

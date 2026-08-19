@@ -5,6 +5,7 @@ import { ArrowDown, Github, Linkedin, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
+import { AUTHOR } from "@/lib/site";
 
 export function Hero() {
   const t = useTranslations("hero");
@@ -77,7 +78,7 @@ export function Hero() {
                 </a>
               </Button>
               <Button variant="ghost" size="icon" asChild>
-                <a href="mailto:fer.riosalcantara@gmail.com" aria-label="Email">
+                <a href={`mailto:${AUTHOR.email}`} aria-label="Email">
                   <Mail className="h-5 w-5" />
                 </a>
               </Button>

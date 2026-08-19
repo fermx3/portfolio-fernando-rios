@@ -8,6 +8,7 @@ import { Section } from "@/components/layout/section";
 import { FadeIn } from "@/components/motion/fade-in";
 import { StaggerContainer, StaggerItem } from "@/components/motion/stagger-container";
 import ProfilePicture from "@/components/ui/profile-picture";
+import { AUTHOR } from "@/lib/site";
 
 interface EducationItem {
   institution: string;
@@ -78,7 +79,7 @@ export async function About({ locale }: AboutProps) {
                         </a>
                       </Button>
                       <Button variant="outline" size="sm" asChild>
-                        <a href="mailto:fer.riosalcantara@gmail.com" aria-label="Email">
+                        <a href={`mailto:${AUTHOR.email}`} aria-label="Email">
                           <Mail className="h-4 w-4" />
                         </a>
                       </Button>
