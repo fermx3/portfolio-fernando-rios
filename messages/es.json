@@ -104,7 +104,7 @@
         {
           "organization": "Freelance",
           "role": "Desarrollador Full-Stack",
-          "date": "Más de 3 años",
+          "date": "Septiembre 2021 - Presente",
           "description": "Construyendo y entregando aplicaciones web completas para clientes, de la base de datos a la interfaz."
         }
       ]
@@ -115,6 +115,8 @@
     },
     "techStack": {
       "title": "Stack Tecnológico",
+      "subtitleLabel": "Diferenciador",
+      "subtitle": "Puedo tomar un problema, entrenar, desplegar y monitorear en producción.",
       "frontend": "Frontend",
       "backend": "Backend",
       "data": "Datos y ML",

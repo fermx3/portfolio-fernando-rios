@@ -104,7 +104,7 @@
         {
           "organization": "Freelance",
           "role": "Full-Stack Developer",
-          "date": "3+ years",
+          "date": "September 2021 - Present",
           "description": "Building and shipping complete web applications for clients, from the database to the interface."
         }
       ]
@@ -115,6 +115,8 @@
     },
     "techStack": {
       "title": "Tech Stack",
+      "subtitleLabel": "What sets me apart",
+      "subtitle": "I can take a problem, train, deploy and monitor it in production.",
       "frontend": "Frontend",
       "backend": "Backend",
       "data": "Data & ML",
