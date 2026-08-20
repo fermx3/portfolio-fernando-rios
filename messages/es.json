@@ -8,8 +8,9 @@
   },
   "hero": {
     "name": "Fernando Rios",
-    "role": "Científico de Datos y Desarrollador Full-Stack",
-    "description": "Apasionado por transformar datos en insights y construir soluciones escalables que generen impacto real.",
+    "role": "ML Engineer y Desarrollador Full-Stack",
+    "specialties": "Machine Learning · Full-Stack · Sistemas en producción",
+    "description": "Llevo modelos de machine learning del prototipo a producción: entrenamiento, API en la nube y el panel donde tu equipo lo usa todos los días.",
     "cta": {
       "primary": "Ver Proyectos",
       "secondary": "Contactar"
