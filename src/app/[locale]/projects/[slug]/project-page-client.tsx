@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { ImageWithPlaceholder } from "@/components/ui/image-with-placeholder";
 import { Link } from "@/i18n/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { ArrowLeft, ExternalLink, Github, Lock } from "lucide-react";
@@ -101,10 +101,13 @@ export function ProjectPageClient({ project }: ProjectPageClientProps) {
             <FadeIn direction="up" delay={0.2}>
               <div className="relative aspect-video mb-8 overflow-hidden rounded-lg">
                 {project.coverImage ? (
-                  <Image
+                  <ImageWithPlaceholder
                     src={project.coverImage}
                     alt={project.title}
+                    placeholderSeed={project.title}
                     fill
+                    sizes="(max-width: 1024px) 100vw, 66vw"
+                    priority
                     className="object-cover"
                   />
                 ) : (

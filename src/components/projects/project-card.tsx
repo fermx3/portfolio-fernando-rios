@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { ImageWithPlaceholder } from "@/components/ui/image-with-placeholder";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { ExternalLink, Github, Lock } from "lucide-react";
@@ -21,10 +21,12 @@ export function ProjectCard({ project }: ProjectCardProps) {
       <Link href={`/projects/${project.slug}`} className="block">
         <div className="relative aspect-video overflow-hidden">
           {project.coverImage ? (
-            <Image
+            <ImageWithPlaceholder
               src={project.coverImage}
               alt={project.title}
+              placeholderSeed={project.title}
               fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               className="object-cover transition-transform duration-300 group-hover:scale-105"
             />
           ) : (
