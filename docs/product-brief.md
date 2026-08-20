@@ -145,6 +145,10 @@ Criterios de aceptación:
 - Degrada a captura estática si el endpoint no responde
 - No bloquea el LCP de la página que la aloja
 
+> **Antes de escribir código hay que comprobar el estado real de los endpoints.** Esta sección se redactó antes de construir la fase 1 y elige entre dos candidatos a ciegas. Los dos proyectos son de 2025, así que lo primero es ver si sus servicios en Cloud Run siguen vivos, qué latencia tienen en frío y quién paga ese cómputo — es el segundo coste recurrente del sitio, y a diferencia del asistente no lo acota un tope de gasto en una API key.
+>
+> Esa comprobación es la que decide el modelo, no la lista de arriba. Y con ella hay que rehacer la sección con la estructura que acabó teniendo la fase 1: contexto verificado, decisiones con su porqué, superficie de ataque y criterios comprobables. Aplica casi todo lo aprendido —rate limit, degradación, entrada no confiable— con un agravante: aquí el visitante **sube un fichero**, así que el riesgo es mayor que en el chat, no menor.
+
 ### ~~P3 — Deuda y código muerto~~ · resuelto 2026-08-16
 
 - **Código muerto**: `searchProjects` y `getProjectsByCategory` eliminadas; 6 dependencias MDX desinstaladas junto con `pageExtensions` y `experimental.mdxRs` (el pipeline real siempre fue `gray-matter` + `markdown-it`)
