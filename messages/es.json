@@ -87,7 +87,30 @@
     "title": "Acerca de Mí",
     "aboutMe": "Sobre mí",
     "role": "ML Engineer y Desarrollador Full-Stack",
-    "bio": "Construyo sistemas de machine learning que pasan de la etapa de prototipo. Eso significa el modelo, pero también todo lo que lo rodea: entrenamiento reproducible, una API que aguanta tráfico real y una interfaz donde los resultados de verdad se pueden usar. Trabajar en ambos lados me permite llevar un proyecto desde el primer experimento hasta la versión a la que tu equipo entra cada mañana.",
+    "bio": "ML Engineer con experiencia end to end: entreno modelos, los despliego en producción y automatizo los pipelines con MLOps. Vengo del desarrollo full-stack, así que para mí un modelo no termina en una métrica de validación. Termina en una interfaz donde alguien lo usa para decidir algo.",
+    "expertise": {
+      "title": "Qué puedo cubrir",
+      "body": "Puedo tomar un problema de datos, entrenar un modelo, desplegarlo en GCP o AWS con CI/CD y construir el dashboard donde lo usa el usuario final. El ciclo completo, del problema al producto."
+    },
+    "experience": {
+      "title": "Experiencia",
+      "items": [
+        {
+          "organization": "TikTok",
+          "role": "QA Analyst",
+          "description": "Aseguramiento de calidad en un producto con una base de usuarios masiva."
+        },
+        {
+          "organization": "Freelance",
+          "role": "Desarrollador Full-Stack",
+          "description": "Más de 3 años construyendo y entregando aplicaciones web completas para clientes, de la base de datos a la interfaz."
+        }
+      ]
+    },
+    "current": {
+      "title": "Ahora mismo",
+      "body": "Construyo Nebluna Café, mi marca de café tostado. De ahí salió Nebluna Analytics: el sistema de pronóstico de demanda que aparece en los proyectos, hecho para resolver un problema real del negocio. Abierto a roles de ML Engineer y a proyectos freelance de ML o data end to end."
+    },
     "techStack": {
       "title": "Stack Tecnológico",
       "frontend": "Frontend",
@@ -101,7 +124,15 @@
         {
           "institution": "Le Wagon",
           "program": "Bootcamp de Ciencia de Datos e IA",
-          "date": "Graduado el 15 de Noviembre de 2025"
+          "date": "Graduado el 15 de Noviembre de 2025",
+          "topics": [
+            "Python",
+            "Deep Learning",
+            "Series de Tiempo",
+            "NLP",
+            "MLOps",
+            "Entrenamiento en la nube"
+          ]
         }
       ]
     }
@@ -149,7 +180,7 @@
   },
   "metadata": {
     "title": "Fernando Ríos - ML Engineer y Desarrollador Full-Stack",
-    "description": "ML Engineer que entrena, deploya y monitorea modelos en producción. Full-stack Python, Cloud, MLOps. Ex-TikTok, 3+ años freelance.",
+    "description": "ML Engineer que entrena, despliega y monitorea modelos en producción. Full-stack Python, Cloud, MLOps. Ex-QA Analyst en TikTok, 3+ años freelance.",
     "siteName": "Portafolio de Fernando Ríos",
     "keywords": [
       "ciencia de datos",
