@@ -86,8 +86,8 @@
   "about": {
     "title": "About Me",
     "aboutMe": "About Me",
-    "role": "Data Scientist & Full-Stack Developer",
-    "bio": "I'm a data scientist and full-stack developer with a passion for creating innovative solutions that bridge the gap between complex data analysis and user-friendly applications. With expertise in machine learning, statistical modeling, and modern web development, I help organizations unlock insights from their data and build scalable digital products.",
+    "role": "ML Engineer & Full-Stack Developer",
+    "bio": "I build machine learning systems that make it past the prototype stage. That means the model, but also everything around it: reproducible training, an API that holds up under real traffic, and an interface where the results are actually usable. Working on both sides lets me carry a project from the first experiment to the version your team logs into every morning.",
     "techStack": {
       "title": "Tech Stack",
       "frontend": "Frontend",
@@ -148,8 +148,8 @@
     "toggle": "Change language"
   },
   "metadata": {
-    "title": "Fernando Rios - Data Scientist & Full-Stack Developer",
-    "description": "Passionate about transforming data into insights and building scalable solutions that drive real-world impact.",
+    "title": "Fernando Rios - ML Engineer & Full-Stack Developer",
+    "description": "ML engineer and full-stack developer. I take machine learning models from prototype to production: training, cloud APIs, and dashboards teams use daily.",
     "siteName": "Fernando Rios Portfolio",
     "keywords": [
       "data science",
