@@ -33,12 +33,18 @@ export function Hero() {
           </h1>
 
           <div className="fade-in-up" style={{ animationDelay: "0.08s" }}>
-            <p className="mt-6 max-w-2xl text-xl text-muted-foreground sm:text-2xl">
-              {t("description")}
+            <p className="mt-5 text-base font-medium tracking-wide sm:text-lg">
+              {t("specialties")}
             </p>
           </div>
 
           <div className="fade-in-up" style={{ animationDelay: "0.16s" }}>
+            <p className="mt-5 max-w-2xl text-xl text-muted-foreground sm:text-2xl">
+              {t("description")}
+            </p>
+          </div>
+
+          <div className="fade-in-up" style={{ animationDelay: "0.24s" }}>
             <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:gap-6">
               <Button size="lg" onClick={handleScrollToProjects} className="text-base">
                 {t("cta.primary")}
@@ -55,7 +61,7 @@ export function Hero() {
             </div>
           </div>
 
-          <div className="fade-in-up" style={{ animationDelay: "0.24s" }}>
+          <div className="fade-in-up" style={{ animationDelay: "0.32s" }}>
             <div className="mt-16 flex gap-6">
               <Button variant="ghost" size="icon" asChild>
                 <a
