@@ -14,6 +14,13 @@ interface EducationItem {
   institution: string;
   program: string;
   date: string;
+  topics?: string[];
+}
+
+interface ExperienceItem {
+  organization: string;
+  role: string;
+  description: string;
 }
 
 interface AboutProps {
@@ -49,7 +56,12 @@ export async function About({ locale }: AboutProps) {
                   <div className="mb-6 flex justify-center">
                     <div className="relative">
                       <ProfilePicture className="ring-lime-400/30 shadow-xl" />
-                      <div className="absolute -bottom-2 -right-2 w-6 h-6 bg-lime-400 rounded-full ring-4 ring-background"></div>
+                      {/* Availability dot. Decorative on its own -- what it
+                          means is spelled out by the "current" block below. */}
+                      <div
+                        aria-hidden="true"
+                        className="absolute -bottom-2 -right-2 w-6 h-6 bg-lime-400 rounded-full ring-4 ring-background"
+                      ></div>
                     </div>
                   </div>
                   <h3 className="font-bold text-xl mb-2">Fernando Rios</h3>
@@ -90,30 +102,76 @@ export async function About({ locale }: AboutProps) {
             </div>
           </FadeIn>
 
-          {/* Bio & Education - Together */}
+          {/* Bio, what the work covers, and what he is doing right now */}
           <FadeIn direction="up" delay={0.2}>
-            <div className="space-y-6">
+            <div className="space-y-8">
               <div>
                 <h3 className="mb-4 text-lg font-semibold">{t("aboutMe")}</h3>
                 <p className="text-lg text-muted-foreground leading-relaxed">{t("bio")}</p>
               </div>
 
-              {/* Education */}
               <div>
-                <h3 className="mb-4 text-lg font-semibold">{t("education.title")}</h3>
-                <div className="space-y-4">
-                  {t.raw("education.items").map((item: EducationItem, index: number) => (
-                    <Card key={index} className="hover:shadow-md transition-shadow">
-                      <CardContent className="pt-6">
-                        <div className="space-y-2">
-                          <h4 className="font-semibold text-foreground">{item.institution}</h4>
-                          <p className="text-muted-foreground">{item.program}</p>
-                          <p className="text-sm text-muted-foreground">{item.date}</p>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
+                <h3 className="mb-4 text-lg font-semibold">{t("expertise.title")}</h3>
+                <p className="text-lg text-muted-foreground leading-relaxed">
+                  {t("expertise.body")}
+                </p>
+              </div>
+
+              {/* Lime border ties this back to the availability dot on the
+                  profile picture, which otherwise signals nothing. */}
+              <div className="border-l-2 border-lime-400 pl-5">
+                <h3 className="mb-2 text-lg font-semibold">{t("current.title")}</h3>
+                <p className="text-muted-foreground leading-relaxed">{t("current.body")}</p>
+              </div>
+            </div>
+          </FadeIn>
+        </div>
+
+        {/* Experience and Education, side by side below the intro */}
+        <div className="mt-16 grid gap-8 lg:grid-cols-2 lg:gap-16">
+          <FadeIn direction="up" delay={0.3}>
+            <div>
+              <h3 className="mb-4 text-lg font-semibold">{t("experience.title")}</h3>
+              <div className="space-y-4">
+                {t.raw("experience.items").map((item: ExperienceItem, index: number) => (
+                  <Card key={index} className="hover:shadow-md transition-shadow">
+                    <CardContent className="pt-6">
+                      <div className="space-y-2">
+                        <h4 className="font-semibold text-foreground">{item.organization}</h4>
+                        <p className="text-muted-foreground">{item.role}</p>
+                        <p className="text-sm text-muted-foreground">{item.description}</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </FadeIn>
+
+          <FadeIn direction="up" delay={0.4}>
+            <div>
+              <h3 className="mb-4 text-lg font-semibold">{t("education.title")}</h3>
+              <div className="space-y-4">
+                {t.raw("education.items").map((item: EducationItem, index: number) => (
+                  <Card key={index} className="hover:shadow-md transition-shadow">
+                    <CardContent className="pt-6">
+                      <div className="space-y-2">
+                        <h4 className="font-semibold text-foreground">{item.institution}</h4>
+                        <p className="text-muted-foreground">{item.program}</p>
+                        <p className="text-sm text-muted-foreground">{item.date}</p>
+                        {item.topics && item.topics.length > 0 && (
+                          <div className="flex flex-wrap gap-2 pt-2">
+                            {item.topics.map((topic) => (
+                              <Badge key={topic} variant="secondary">
+                                {topic}
+                              </Badge>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
               </div>
             </div>
           </FadeIn>
@@ -121,7 +179,7 @@ export async function About({ locale }: AboutProps) {
 
         {/* Tech Stack - Full width section below */}
         <div className="mt-16">
-          <FadeIn direction="up" delay={0.3}>
+          <FadeIn direction="up" delay={0.5}>
             <div>
               <h3 className="mb-8 text-lg font-semibold">{t("techStack.title")}</h3>
 
