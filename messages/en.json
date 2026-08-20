@@ -115,8 +115,6 @@
     },
     "techStack": {
       "title": "Tech Stack",
-      "subtitleLabel": "What sets me apart",
-      "subtitle": "I can take a problem, train, deploy and monitor it in production.",
       "frontend": "Frontend",
       "backend": "Backend",
       "data": "Data & ML",
@@ -184,7 +182,7 @@
   },
   "metadata": {
     "title": "Fernando Rios - ML Engineer & Full-Stack Developer",
-    "description": "ML Engineer who trains, deploys and monitors models in production. Full-stack Python, Cloud, MLOps. Ex-QA Analyst at TikTok, 3+ years freelance.",
+    "description": "ML Engineer who trains, deploys and monitors models in production. Full-stack Python, Cloud, MLOps. Ex-QA Analyst at TikTok, 5 years freelance.",
     "siteName": "Fernando Rios Portfolio",
     "keywords": [
       "data science",

@@ -115,8 +115,6 @@
     },
     "techStack": {
       "title": "Stack Tecnológico",
-      "subtitleLabel": "Diferenciador",
-      "subtitle": "Puedo tomar un problema, entrenar, desplegar y monitorear en producción.",
       "frontend": "Frontend",
       "backend": "Backend",
       "data": "Datos y ML",
@@ -184,7 +182,7 @@
   },
   "metadata": {
     "title": "Fernando Ríos - ML Engineer y Desarrollador Full-Stack",
-    "description": "ML Engineer que entrena, despliega y monitorea modelos en producción. Full-stack Python, Cloud, MLOps. Ex-QA Analyst en TikTok, 3+ años freelance.",
+    "description": "ML Engineer que entrena, despliega y monitorea modelos en producción. Full-stack Python, Cloud, MLOps. Ex-QA Analyst en TikTok, 5 años freelance.",
     "siteName": "Portafolio de Fernando Ríos",
     "keywords": [
       "ciencia de datos",
