@@ -3,6 +3,8 @@ import path from "path";
 import matter from "gray-matter";
 import { cache } from "react";
 import { projectSchema } from "@/lib/validations";
+import enMessages from "../../../messages/en.json";
+import esMessages from "../../../messages/es.json";
 
 const contentDirectory = path.join(process.cwd(), "content/projects");
 
@@ -56,6 +58,54 @@ function line(label: string, value: string | undefined) {
 function list(label: string, items: string[] | undefined) {
   if (!items || items.length === 0) return "";
   return `${label}:\n${items.map((i) => `- ${i}`).join("\n")}\n`;
+}
+
+const MESSAGES: Record<string, typeof enMessages> = {
+  en: enMessages,
+  es: esMessages,
+};
+
+/**
+ * Fernando himself, as plain text for the system prompt.
+ *
+ * Read from the same message files the About section renders, so the page and
+ * the assistant cannot disagree about where he worked or when. A second copy
+ * kept here by hand would drift the first time either one is edited.
+ *
+ * Roughly 300 tokens, against a corpus of 18-23k, so it barely moves the cost
+ * of a cache write. It is static per locale, which is what matters: the prompt
+ * cache is a prefix match and anything variable above the breakpoint would
+ * invalidate the corpus on every request.
+ */
+export function buildProfile(locale: string): string {
+  const about = (MESSAGES[locale] ?? MESSAGES.en).about;
+
+  const experience = about.experience.items
+    .map((item) => `- ${item.organization}, ${item.role} (${item.date}). ${item.description}`)
+    .join("\n");
+
+  const education = about.education.items
+    .map((item) => {
+      const covered = item.topics.length > 0 ? ` Covered: ${item.topics.join(", ")}.` : "";
+      return `- ${item.institution}, ${item.program} (${item.date}).${covered}`;
+    })
+    .join("\n");
+
+  return [
+    `title: ${about.role}`,
+    "",
+    about.bio,
+    "",
+    `What he can cover end to end: ${about.expertise.body}`,
+    "",
+    "Experience:",
+    experience,
+    "",
+    "Education:",
+    education,
+    "",
+    `Right now: ${about.current.body}`,
+  ].join("\n");
 }
 
 /**
