@@ -7,6 +7,7 @@
 
 ## Reglas no negociables
 
+- **Nunca commitear ni pushear a `master`.** Todo cambio entra por rama y PR, incluida la documentación y los cambios de una línea. Antes de cada commit, comprobar con `git branch --show-current`; si es `master`, crear rama primero. La excepción "esto es pequeño" es justo la que erosiona la convención.
 - Commits en **Conventional Commits** (`feat:`, `fix:`, `chore:`) — es la convención de todo el historial.
 - TypeScript `strict: true`. Nada de `any` ni `@ts-ignore` sin comentario que lo justifique.
 - **Paridad EN/ES obligatoria.** Todo proyecto necesita el par `<slug>.mdx` + `<slug>.es.mdx`. Los campos estructurales deben ser **idénticos**; los de contenido se traducen (ver tabla abajo). Toda clave nueva en `messages/en.json` debe existir en `messages/es.json`.
