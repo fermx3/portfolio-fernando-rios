@@ -86,8 +86,8 @@
   "about": {
     "title": "Acerca de Mí",
     "aboutMe": "Sobre mí",
-    "role": "Científico de Datos y Desarrollador Full-Stack",
-    "bio": "Soy un científico de datos y desarrollador full-stack con pasión por crear soluciones innovadoras que conectan el análisis complejo de datos con aplicaciones fáciles de usar. Con experiencia en machine learning, modelado estadístico y desarrollo web moderno, ayudo a las organizaciones a descubrir insights de sus datos y construir productos digitales escalables.",
+    "role": "ML Engineer y Desarrollador Full-Stack",
+    "bio": "Construyo sistemas de machine learning que pasan de la etapa de prototipo. Eso significa el modelo, pero también todo lo que lo rodea: entrenamiento reproducible, una API que aguanta tráfico real y una interfaz donde los resultados de verdad se pueden usar. Trabajar en ambos lados me permite llevar un proyecto desde el primer experimento hasta la versión a la que tu equipo entra cada mañana.",
     "techStack": {
       "title": "Stack Tecnológico",
       "frontend": "Frontend",
@@ -148,8 +148,8 @@
     "toggle": "Cambiar idioma"
   },
   "metadata": {
-    "title": "Fernando Ríos - Científico de Datos y Desarrollador Full-Stack",
-    "description": "Convierto datos en decisiones y construyo soluciones escalables con impacto real.",
+    "title": "Fernando Ríos - ML Engineer y Desarrollador Full-Stack",
+    "description": "ML engineer y desarrollador full-stack. Llevo modelos de machine learning del prototipo a producción: entrenamiento, API en la nube y dashboards de uso diario.",
     "siteName": "Portafolio de Fernando Ríos",
     "keywords": [
       "ciencia de datos",
