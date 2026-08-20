@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import Image from "next/image";
+import { ImageWithPlaceholder } from "@/components/ui/image-with-placeholder";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -98,9 +98,10 @@ export function ProjectGallery({ images, title }: ProjectGalleryProps) {
               total: items.length,
             })}
           >
-            <Image
+            <ImageWithPlaceholder
               src={item.src}
               alt={item.alt ?? `${title} — ${index + 1}`}
+              placeholderSeed={item.src}
               fill
               sizes="(max-width: 640px) 50vw, 33vw"
               className="object-cover object-top transition-transform duration-300 group-hover:scale-105"
@@ -155,12 +156,14 @@ export function ProjectGallery({ images, title }: ProjectGalleryProps) {
                 className="relative h-[80vh] w-full max-w-5xl"
                 onClick={(e) => e.stopPropagation()}
               >
-                <Image
+                <ImageWithPlaceholder
+                  key={items[openIndex].src}
                   src={items[openIndex].src}
                   alt={items[openIndex].alt ?? `${title} — ${openIndex + 1}`}
                   fill
                   sizes="100vw"
                   className="object-contain"
+                  placeholderClassName="rounded-lg bg-white/5"
                   priority
                 />
               </motion.div>
