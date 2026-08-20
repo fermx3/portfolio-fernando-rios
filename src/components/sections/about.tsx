@@ -20,6 +20,7 @@ interface EducationItem {
 interface ExperienceItem {
   organization: string;
   role: string;
+  date: string;
   description: string;
 }
 
@@ -139,7 +140,8 @@ export async function About({ locale }: AboutProps) {
                       <div className="space-y-2">
                         <h4 className="font-semibold text-foreground">{item.organization}</h4>
                         <p className="text-muted-foreground">{item.role}</p>
-                        <p className="text-sm text-muted-foreground">{item.description}</p>
+                        <p className="text-sm text-muted-foreground">{item.date}</p>
+                        <p className="text-sm text-muted-foreground pt-1">{item.description}</p>
                       </div>
                     </CardContent>
                   </Card>

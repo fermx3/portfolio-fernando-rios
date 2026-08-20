@@ -97,13 +97,15 @@
       "items": [
         {
           "organization": "TikTok",
-          "role": "QA Analyst",
-          "description": "Aseguramiento de calidad en un producto con una base de usuarios masiva."
+          "role": "QA Analyst, Trust & Safety",
+          "date": "Abril 2024 - Julio 2026",
+          "description": "Análisis de calidad sobre decisiones de moderación a escala, en una plataforma con una base de usuarios masiva."
         },
         {
           "organization": "Freelance",
           "role": "Desarrollador Full-Stack",
-          "description": "Más de 3 años construyendo y entregando aplicaciones web completas para clientes, de la base de datos a la interfaz."
+          "date": "Más de 3 años",
+          "description": "Construyendo y entregando aplicaciones web completas para clientes, de la base de datos a la interfaz."
         }
       ]
     },
