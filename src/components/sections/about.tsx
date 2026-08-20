@@ -183,7 +183,13 @@ export async function About({ locale }: AboutProps) {
         <div className="mt-16">
           <FadeIn direction="up" delay={0.5}>
             <div>
-              <h3 className="mb-8 text-lg font-semibold">{t("techStack.title")}</h3>
+              <h3 className="mb-2 text-lg font-semibold">{t("techStack.title")}</h3>
+              <p className="mb-8 max-w-3xl text-muted-foreground">
+                <span className="font-semibold text-foreground">
+                  {t("techStack.subtitleLabel")}:
+                </span>{" "}
+                {t("techStack.subtitle")}
+              </p>
 
               <StaggerContainer className="space-y-6">
                 {Object.entries(techStack).map(([category, technologies]) => (
