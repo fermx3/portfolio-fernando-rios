@@ -1,10 +1,10 @@
 ---
 title: "Nebluna Inventory & Sales"
-summary: "Inventory and sales system for a specialty coffee micro-roastery in Mexico City, covering the whole cycle from green coffee to roast, bulk stock, packaging, sale and shipping. Next.js 16 on Supabase, replacing the spreadsheet the business had been running on."
-description: "A multi-role operations app built on Next.js 16 and Supabase, where the business rules live in PostgreSQL rather than in the interface: stock cannot go negative because a trigger refuses the write, every packaged bag references the roast it came from, and roasting shrinkage is measured per batch instead of estimated. Ninety-nine versioned migrations, Row Level Security on every table, and a CI pipeline that rebuilds the database from scratch on every pull request."
+summary: "Inventory and sales system for a specialty coffee micro-roastery in Mexico City. Covers the full cycle: green coffee, roasting, bulk stock, packaging, sale, shipping and reporting. Next.js 16 and TypeScript on Supabase."
+description: "A multi-role operations app on PostgreSQL, where the business rules are enforced in the database rather than in the forms: constraints and triggers prevent negative stock, every sale references a specific lot, and roasting shrinkage is measured per batch. 99 versioned migrations, Row Level Security on every table, and a CI pipeline that rebuilds the database from scratch on every pull request."
 objective: "Move the operation off a spreadsheet and onto a system where the database enforces the business rules, and where the sales team works with the catalogue and their own commissions without access to financial data."
-theme: "Operational software for a micro-roaster, where the domain rules are the product."
-impact: "The micro-roastery can answer which roast a customer's bag came from, what a kilo actually costs once shrinkage is counted, and what each sales rep is owed. Those used to be questions you reconstructed by following a formula, and now the database answers them."
+theme: "Operations and inventory software for specialty coffee production."
+impact: "Lot-level traceability, a real cost per kilo with shrinkage accounted for, and commissions the system calculates, instead of all three being reconstructed by hand in a spreadsheet."
 date: "2026-08-20"
 status: "production"
 featured: true
@@ -40,66 +40,49 @@ images:
     type: "mobile"
     alt: "Packaged inventory on a phone"
 challenges:
-  - "A spreadsheet has no way to declare that two similarly named supplies are different things, so both get drawn from the same balance and the gap stays invisible until the next physical count"
-  - "Stock that goes negative is not an error to display: by the time anyone sees it, the number has been wrong for weeks"
-  - "Roasting burns off 12 to 20% of the green coffee's weight, and a cost per kilo that ignores that loss is fiction"
-  - "Administration and sales reps share one dataset with opposing needs: one works in costs and margins, the others must not see them, or each other's"
+  - "Stock cannot be allowed to go negative, and a spreadsheet has no way to prevent it"
+  - "Roasting loses 12 to 20% of the green weight, so cost per kilo depends on measuring shrinkage on every batch"
+  - "Administration and sales reps share the same data with opposing needs: one works in costs and margins, the others must not see them, or each other's"
+  - "Applying 99 migrations to a database already in use without the files and the remote registry drifting apart"
 solutions:
-  - "Audited the whole spreadsheet before writing a single table: much of its logic lived in Google-only functions with no SQL equivalent, so it was rebuilt as views rather than translated formula by formula"
-  - "Constraints and triggers in PostgreSQL rather than validation in the form, so the database refuses the write instead of the interface asking nicely"
-  - "Shrinkage is recorded per roast as green weight in minus roasted weight out, which makes cost per kilo a measurement rather than an estimate"
-  - "Row Level Security on every table, so the permission is enforced in the database and no interface bug can leak past it"
+  - "Constraints and triggers in PostgreSQL: the database refuses the write instead of the form validating it"
+  - "Shrinkage is recorded per roast as green weight in minus roasted weight out, and cost per kilo is derived from that"
+  - "Row Level Security on every table, with the permission enforced in the database rather than in the interface"
+  - "A single documented path for applying migrations, with an automated guard that compares the files against the remote registry"
 results:
-  - "99 versioned migrations applied through a single documented path, with an automated guard that compares the files against the remote registry"
-  - "86 unit tests plus 9 integration suites that run against an ephemeral database built from scratch on every pull request"
-  - "Lighthouse gates on every production deploy: accessibility and best practices at 0.95, performance at 0.60, measured over five runs"
-  - "Login page cut from 6.2 MB to roughly 760 KB by self-hosting the icon font and optimizing the brand logos"
+  - "99 versioned migrations and a drift guard that runs in CI"
+  - "86 unit tests and 9 integration suites against an ephemeral database built from scratch on every pull request"
+  - "Lighthouse gates on every production deploy: accessibility and best practices at 0.95, performance at 0.60"
+  - "Login page cut from 6.2 MB to roughly 760 KB by self-hosting the icon font and optimizing the logos"
 ---
 
 ## Project Overview
 
-**Nebluna** is the operations system for a specialty coffee micro-roastery in Mexico City. Green coffee arrives in lots, gets roasted into batches, packaged into bags, sold across four channels and shipped. The app covers that whole cycle, and it is the only place the business now records any of it.
+**Nebluna** is the inventory and sales system for a specialty coffee micro-roastery in Mexico City. It covers the full product cycle: green coffee intake, roasting, bulk stock, packaging, sales across four channels, shipping and reporting. It is built with **Next.js 16** (App Router) and **TypeScript** on **Supabase**, replacing the spreadsheet the business had been running on.
 
-The interesting part was never the CRUD. The micro-roastery already ran on a spreadsheet, which is where nearly every small business starts and which works fine while the catalogue still fits in your head. The project is mostly the story of replacing it without losing what it already knew about the trade.
+## Technical Implementation
 
-## The Problem
+### Data Model & Integrity
 
-To a spreadsheet, `BOLSA-250` and `BOLSA-250-VALV` look too much alike. If the formula that totals them compares text, both supplies come off the same balance and the gap does not surface until the next physical count. That is not a mistake by whoever wrote the formula: a sheet has no way to declare that they are two different things.
+99 versioned migrations define the schema in **PostgreSQL**. Business rules are enforced in the database rather than in the forms: constraints and triggers prevent stock from going negative, every sale references a specific packaged-inventory row, and a blend deducts from its source lots through a single canonical path. Business dates are stored as `DATE` rather than `TIMESTAMPTZ`, and rows are always related by foreign key, never by matching text.
 
-The pattern repeats across the whole domain. Stock should not be able to go negative. A sale should not be able to exist without pointing at a specific lot. A blend should not be deducted twice. These are rules a cell can remember but cannot enforce.
+### Roles & Security
 
-So the migration started with an audit rather than a schema. Much of the logic lived in Google-only functions (`QUERY`, `FILTER`, `LET`, `SCAN`) with no SQL equivalent, so it was not translated: it was rebuilt as views and application logic. That is slower than porting it, and the only way the result stays explainable.
+Two roles with different products: administration sees financials, costs and settings; each sales rep sees the catalogue, their own sales and their own commissions, and nothing belonging to anyone else. The separation is enforced by **Row Level Security** policies on every table, so it holds even if a route guard fails.
 
-That is where the schema's hardest rule comes from: relate rows by foreign key, never by matching text. The original error stops being expressible.
+### Interface
 
-## Architecture
+**React Query** for server state, **react-hook-form** with **Zod** for forms, and **shadcn/ui** over **Tailwind CSS 4**. Three route groups: authentication, dashboard, and a print group that renders a letter-sized sale ticket with its own stylesheet. Mobile first, with the dense screens, reports and reconciliation, designed for a desktop.
 
-### Data Layer
-**PostgreSQL** on **Supabase**, with 99 versioned migrations from `001_create_base_tables.sql` onward. The invariants live here, not in the forms: stock cannot go negative because a trigger refuses the write, a sale must reference a concrete packaged-inventory row, and a blend deducts from its source lots through `blend_components` and nowhere else.
+### Testing & CI
 
-That last one is a scar. Deducting a blend both through its components and through a manual adjustment double-counted the loss, so the canonical path is now singular and documented. The repository keeps a numbered register of that kind of finding, and reading it is a precondition for touching the schema.
+86 unit tests and 9 integration suites covering RLS policies, the sale lifecycle, commissions, repackaging, inventory reconciliation, date handling and stock by SKU. Four GitHub Actions workflows: lint blocking at zero errors, integration against a Supabase stack built from scratch inside the runner, a Lighthouse audit on every production deploy, and a guard that compares the migrations against the remote registry.
 
-### Application Layer
-**Next.js 16** with the App Router, organised into three route groups: authentication, the dashboard, and a print group that renders a letter-sized sale ticket with its own stylesheet. Server state is **React Query**, forms are **react-hook-form** validated with **Zod**, and the interface is **shadcn/ui** over **Tailwind CSS 4**.
+## Functionality
 
-It is built mobile first, because a good share of the sales get recorded standing up, at a market stall or in a customer's shop, not at a desk. The dense screens, reports and reconciliation, are the ones that assume a laptop.
-
-### Roles & Access
-Two roles, `owner` and `sales_rep`, which in practice are two different products: administration sees financials, costs and settings; each sales rep sees the catalogue, their own sales and their own commissions, and nothing belonging to anyone else. The separation is enforced by **Row Level Security** policies on every table, so it holds even if a route guard is wrong. The interface hides what a rep should not see; the database is what makes sure it cannot be fetched.
-
-## Domain Rules
-
-The rules are the product, and most of them are unintuitive until someone explains the trade:
-
-- **Shrinkage is measured, not estimated.** Roasting loses 12 to 20% of the green weight to moisture. Green in minus roasted out is recorded per batch, which is the single biggest lever on true cost per kilo.
-- **Lot traceability is mandatory.** Every sale points at the packaged lot it came from, so "which roast was this bag?" is answerable when a customer reports a defect.
-- **Roasted coffee is IVA exempt** under article 2-A of the Mexican VAT law, so any calculation that multiplies or divides by 1.16 is broken by definition.
-- **Commission is rate times subtotal, and only on the Promotor channel.** Direct, WhatsApp and Instagram sales earn none.
-- **Business dates are `DATE`, never `TIMESTAMPTZ`.** Storing one as a timestamp shifted every app-captured date back a day before anyone noticed.
-- **Lot codes are designed to be handwritten**, on a label and read aloud during a count.
-
-## Testing & CI
-
-Eighteen test files: 9 unit suites covering 86 cases with no database, and 9 integration suites that exercise the parts where correctness actually lives: RLS policies, the sale lifecycle, commissions, repackaging, inventory reconciliation, date handling and stock by SKU.
-
-Four GitHub Actions workflows guard the branch. Lint is blocking at zero errors. The integration workflow spins up a complete Supabase stack inside the runner, applies all 99 migrations from scratch and runs the suites against it, so it never touches production and never depends on its state. A Lighthouse workflow audits the stable domain on every production deploy, with accessibility and best practices gated at 0.95; SEO is switched off on purpose, because an internal app behind a login has no business being indexed. A fourth workflow compares the migration files against the remote registry and fails on drift.
+- **Sales**: a four-step guided flow, four channels (direct, sales rep, WhatsApp and Instagram), retail and wholesale pricing, shipping calculation and a printable ticket.
+- **Inventory**: packaged and bulk stock broken down by lot, with a 60-day freshness indicator and bag assignment to sales reps.
+- **Production**: roast records with green weight, roasted weight, shrinkage and a derived cost per kilo, plus blends built from several source lots.
+- **Commissions**: a rate on subtotal, only on the sales-rep channel, with a settlement history by period.
+- **Reconciliation**: physical inventory counts and count requests sent to sales reps.
+- **Reports**: by channel, product, customer, freshness, profitability, collections, pricing and sales rep.
