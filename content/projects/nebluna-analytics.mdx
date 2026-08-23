@@ -2,9 +2,9 @@
 title: "Nebluna Analytics"
 summary: "Demand forecasting system for coffee shops that turns a daily sales CSV into a 30-day forecast with confidence intervals, served by a Prophet + FastAPI backend on GCP Cloud Run."
 description: "End-to-end time series forecasting platform: a Prophet model wrapped in a FastAPI service, containerized with Docker and deployed to Google Cloud Run, plus a Streamlit dashboard where a shop owner uploads sales history and gets predictions, confidence bands, and model error metrics."
-objective: "Give small coffee shops a usable demand forecast — not a notebook — by shipping the model behind a real API and a dashboard anyone can operate without writing code."
+objective: "Give small coffee shops a demand forecast they can operate from a browser, with the model served behind a REST API rather than living in a notebook."
 theme: "Applied time series forecasting for small-business inventory planning."
-impact: "Upload a CSV of your sales and it tells you how much you will sell in the coming weeks. It also shows how far off it might be, so you know how much to trust it. All from a browser, with no Python involved."
+impact: "A shop owner uploads a sales CSV and gets a demand forecast with its error margin, from a browser and without writing code."
 date: "2026-08-03"
 status: "production"
 featured: true
@@ -41,58 +41,43 @@ solutions:
 results:
   - "Live on two platforms: Streamlit Cloud for the dashboard, GCP Cloud Run for the API"
   - "Four REST endpoints with auto-generated OpenAPI docs and Pydantic-validated payloads"
-  - "MAE, MAPE, and RMSE surfaced in the UI so the forecast can be judged, not just trusted"
+  - "MAE, MAPE and RMSE surfaced in the UI, computed on a held-out tail of the series"
   - "Multi-platform Docker build (arm64 + amd64) with Cloud Build CI/CD and a $10/month budget alert"
 ---
 
 ## Project Overview
 
-**Nebluna Analytics** forecasts daily demand for coffee shops. You upload a CSV of historical sales, choose how many days ahead you want to look, and get a forecast with a confidence band and the model's error metrics.
+**Nebluna Analytics** forecasts daily demand for coffee shops. You upload a CSV of historical sales, pick a horizon between 7 and 90 days, and get a forecast with a 95% confidence band plus the model's error metrics. It is a **Prophet** model served by a **FastAPI** service on **GCP Cloud Run**, with a **Streamlit** dashboard on top.
 
-The point of the project was not the model — Prophet is a few lines of code. The point was everything around it: taking a time series model out of a notebook and putting it behind a REST API, in a container, on managed infrastructure, with a UI that a shop owner can actually operate.
-
-## The Problem
-
-A coffee shop's daily sales are not flat. They have a weekly rhythm (weekends spike, Mondays sag), a slower seasonal drift across the year, and day-to-day noise on top. Ordering stock against last week's average means over-buying on quiet days and running out on busy ones.
-
-Prophet is a good fit for this shape of data: it decomposes the series into trend and seasonal components, tolerates gaps and outliers, and — importantly for a business user — produces interpretable uncertainty intervals rather than a single number.
-
-## Architecture
-
-The system is split into three pieces that can be deployed and scaled separately.
+## Technical Implementation
 
 ### Model Layer
-`DataProcessor` handles loading, validation, and cleaning: it enforces the `date` / `sales` contract, requires a minimum of 30 days of history, and normalizes the frame into Prophet's expected shape. `DemandForecaster` wraps the model itself — fitting, holding out the tail of the series for evaluation, and generating future dates with 95% confidence bounds.
+
+`DataProcessor` handles loading, validation and cleaning: it enforces the `date` / `sales` contract, requires at least 30 days of history, and normalizes the frame into Prophet's expected shape. `DemandForecaster` wraps the model, fitting it, holding out the tail of the series for evaluation, and generating future dates with 95% confidence bounds. Prophet decomposes the series into trend plus multiplicative weekly and yearly seasonality, so the day-of-week effect stays separate from the slower annual drift.
 
 ### API Layer
+
 A **FastAPI** service exposes four endpoints:
 
-- `GET /health` — liveness check for Cloud Run
-- `POST /api/v1/upload` — accepts a CSV, trains the model, returns fit metrics
-- `POST /api/v1/forecast` — generates *n* days ahead, optionally with confidence intervals
-- `GET /api/v1/stats` — summary statistics for the loaded dataset
+- `GET /health`: liveness check for Cloud Run
+- `POST /api/v1/upload`: accepts a CSV, trains the model, returns fit metrics
+- `POST /api/v1/forecast`: generates *n* days ahead, optionally with confidence intervals
+- `GET /api/v1/stats`: summary statistics for the loaded dataset
 
-Requests and responses are typed with **Pydantic** schemas, which means the [OpenAPI documentation](https://nebluna-api-670750486989.us-central1.run.app/docs) is generated from the same definitions the service validates against. Errors are raised through a custom exception hierarchy so a malformed CSV returns a useful message instead of a stack trace.
+Requests and responses are typed with **Pydantic**, so the [OpenAPI documentation](https://nebluna-api-670750486989.us-central1.run.app/docs) is generated from the same definitions the service validates against. A custom exception hierarchy returns a useful message on a malformed CSV instead of a stack trace.
 
-### Dashboard Layer
-A **Streamlit** app consumes the API and organizes the output into three tabs — Historical, Forecast, and Metrics — with interactive Plotly charts. The sidebar carries the controls: CSV upload, a 7-to-90-day forecast horizon slider, and a toggle for confidence intervals.
+### Evaluation
 
-## Evaluation
+The model is scored on a held-out tail of the series rather than on the data it was fit to. Three metrics are surfaced in the dashboard: **MAE**, the average error in currency, which is the number to size an order against; **MAPE**, the same error as a percentage, comparable across shops of different sizes; and **RMSE**, which penalizes large misses more heavily and catches a model that is usually fine but occasionally very wrong.
 
-The model is scored on a held-out tail of the series rather than on the data it was fit to. Three metrics are surfaced in the dashboard, each answering a different question:
+### Dashboard
 
-- **MAE** — average error in dollars, the number to reason about when sizing an order
-- **MAPE** — the same error as a percentage, comparable across shops of different sizes
-- **RMSE** — penalizes large misses more heavily, which catches a model that is usually fine but occasionally very wrong
+A **Streamlit** app consumes the API and organizes the output into three tabs, Historical, Forecast and Metrics, with interactive **Plotly** charts. The sidebar carries the CSV upload, a 7 to 90 day horizon slider and a toggle for confidence intervals.
 
-Showing all three in the UI is deliberate: a forecast presented without its error is a guess with a chart attached.
+### Deployment
 
-## Deployment
+The API is containerized and runs on **GCP Cloud Run**, built for both `arm64` and `amd64` so the same image works on an Apple Silicon laptop and on Google's infrastructure. **Cloud Build** handles CI/CD from `cloudbuild.yaml`, and a budget alert caps monthly spend. Prophet sits on NumPy and Pandas C extensions that break when conda and pip packages mix in one environment, so the boundary is fixed by rule: conda for local development, pip wheels inside the Docker image.
 
-The API is containerized and runs on **GCP Cloud Run**, built for both `arm64` and `amd64` so the same image works on an Apple Silicon laptop and on Google's infrastructure. **Cloud Build** handles CI/CD from `cloudbuild.yaml`, and a budget alert caps monthly spend.
+### Testing
 
-The dependency story was its own problem. Prophet sits on top of NumPy and Pandas C extensions that are fragile when `conda` and `pip` packages are mixed in the same environment. The project settles it by drawing a hard line: **conda** for local development, where pre-compiled binaries are reliable, and **pip** inside the Docker image, where Linux wheels are. The rule is documented in the README so the environment stays reproducible.
-
-## Testing
-
-Unit tests cover both the data processing pipeline and the API endpoints — validation failures, malformed input, and the happy path — run with **pytest**.
+**pytest** covers the data processing pipeline and the API endpoints: validation failures, malformed input and the happy path.

@@ -2,9 +2,9 @@
 title: "Nebluna Analytics"
 summary: "Sistema de pronóstico de demanda para cafeterías que convierte un CSV de ventas diarias en un pronóstico a 30 días con intervalos de confianza, servido por un backend de Prophet + FastAPI en GCP Cloud Run."
 description: "Plataforma de pronóstico de series de tiempo de extremo a extremo: un modelo Prophet envuelto en un servicio FastAPI, contenerizado con Docker y desplegado en Google Cloud Run, más un dashboard en Streamlit donde el dueño de una cafetería sube su histórico de ventas y obtiene predicciones, bandas de confianza y métricas de error del modelo."
-objective: "Darle a las cafeterías pequeñas un pronóstico de demanda usable —no un notebook— publicando el modelo detrás de una API real y un dashboard que cualquiera puede operar sin escribir código."
+objective: "Darle a las cafeterías pequeñas un pronóstico de demanda que puedan operar desde el navegador, con el modelo servido detrás de una API REST en vez de vivir en un notebook."
 theme: "Series de tiempo aplicadas a la planeación de inventario en pequeños negocios."
-impact: "Subes un CSV con tus ventas y te dice cuánto vas a vender las próximas semanas. También te dice cuánto se puede equivocar, para que sepas qué tanto confiar en él. Todo desde el navegador, sin saber Python."
+impact: "El dueño de una cafetería sube un CSV de ventas y obtiene un pronóstico de demanda con su margen de error, desde el navegador y sin escribir código."
 date: "2026-08-03"
 status: "production"
 featured: true
@@ -41,58 +41,43 @@ solutions:
 results:
   - "En producción en dos plataformas: Streamlit Cloud para el dashboard y GCP Cloud Run para la API"
   - "Cuatro endpoints REST con documentación OpenAPI autogenerada y payloads validados con Pydantic"
-  - "MAE, MAPE y RMSE expuestos en la interfaz para que el pronóstico se pueda juzgar, no solo creer"
+  - "MAE, MAPE y RMSE expuestos en la interfaz, calculados sobre una cola reservada de la serie"
   - "Build de Docker multiplataforma (arm64 + amd64) con CI/CD en Cloud Build y una alerta de presupuesto de $10/mes"
 ---
 
 ## Descripción del Proyecto
 
-**Nebluna Analytics** pronostica la demanda diaria de cafeterías. Subes un CSV con el histórico de ventas, eliges cuántos días quieres ver hacia adelante y obtienes un pronóstico con su banda de confianza y las métricas de error del modelo.
+**Nebluna Analytics** pronostica la demanda diaria de cafeterías. Subes un CSV con el histórico de ventas, eliges un horizonte de entre 7 y 90 días y obtienes un pronóstico con banda de confianza del 95% más las métricas de error del modelo. Es un modelo **Prophet** servido por un servicio **FastAPI** en **GCP Cloud Run**, con un dashboard en **Streamlit** encima.
 
-El punto del proyecto no era el modelo —Prophet son unas cuantas líneas de código—. El punto era todo lo que lo rodea: sacar un modelo de series de tiempo de un notebook y ponerlo detrás de una API REST, en un contenedor, sobre infraestructura administrada, con una interfaz que el dueño de un negocio realmente pueda operar.
-
-## El Problema
-
-Las ventas diarias de una cafetería no son planas. Tienen un ritmo semanal (los fines de semana suben, los lunes caen), una deriva estacional más lenta a lo largo del año y ruido del día a día encima. Pedir insumos contra el promedio de la semana pasada significa comprar de más en los días tranquilos y quedarse corto en los ocupados.
-
-Prophet encaja bien con esta forma de datos: descompone la serie en componentes de tendencia y estacionalidad, tolera huecos y valores atípicos y —algo importante para un usuario de negocio— produce intervalos de incertidumbre interpretables en lugar de un solo número.
-
-## Arquitectura
-
-El sistema está dividido en tres piezas que se pueden desplegar y escalar por separado.
+## Implementación Técnica
 
 ### Capa de Modelo
-`DataProcessor` se encarga de la carga, validación y limpieza: verifica el contrato `date` / `sales`, exige un mínimo de 30 días de historia y normaliza el dataframe a la forma que Prophet espera. `DemandForecaster` envuelve el modelo en sí — el entrenamiento, la reserva de la cola de la serie para evaluación y la generación de fechas futuras con límites de confianza del 95%.
+
+`DataProcessor` se encarga de la carga, validación y limpieza: verifica el contrato `date` / `sales`, exige un mínimo de 30 días de historia y normaliza el dataframe a la forma que Prophet espera. `DemandForecaster` envuelve el modelo: lo entrena, reserva la cola de la serie para evaluación y genera fechas futuras con límites de confianza del 95%. Prophet descompone la serie en tendencia más estacionalidad multiplicativa semanal y anual, así que el efecto del día de la semana queda separado de la deriva anual.
 
 ### Capa de API
+
 Un servicio en **FastAPI** expone cuatro endpoints:
 
-- `GET /health` — verificación de vida para Cloud Run
-- `POST /api/v1/upload` — recibe un CSV, entrena el modelo y devuelve métricas de ajuste
-- `POST /api/v1/forecast` — genera *n* días hacia adelante, opcionalmente con intervalos de confianza
-- `GET /api/v1/stats` — estadísticas resumen del dataset cargado
+- `GET /health`: verificación de vida para Cloud Run
+- `POST /api/v1/upload`: recibe un CSV, entrena el modelo y devuelve métricas de ajuste
+- `POST /api/v1/forecast`: genera *n* días hacia adelante, opcionalmente con intervalos de confianza
+- `GET /api/v1/stats`: estadísticas resumen del dataset cargado
 
-Peticiones y respuestas están tipadas con esquemas **Pydantic**, lo que significa que la [documentación OpenAPI](https://nebluna-api-670750486989.us-central1.run.app/docs) se genera a partir de las mismas definiciones contra las que el servicio valida. Los errores se propagan mediante una jerarquía de excepciones propia, así un CSV mal formado devuelve un mensaje útil en vez de un stack trace.
+Peticiones y respuestas están tipadas con **Pydantic**, así que la [documentación OpenAPI](https://nebluna-api-670750486989.us-central1.run.app/docs) se genera a partir de las mismas definiciones contra las que el servicio valida. Una jerarquía de excepciones propia devuelve un mensaje útil ante un CSV mal formado en lugar de un stack trace.
 
-### Capa de Dashboard
-Una app en **Streamlit** consume la API y organiza la salida en tres pestañas —Historical, Forecast y Metrics— con gráficas interactivas de Plotly. La barra lateral concentra los controles: carga del CSV, un slider de horizonte de 7 a 90 días y un toggle para los intervalos de confianza.
+### Evaluación
 
-## Evaluación
+El modelo se evalúa sobre una cola reservada de la serie y no sobre los datos con los que se ajustó. En el dashboard se muestran tres métricas: **MAE**, el error promedio en pesos, que es el número con el que dimensionar un pedido; **MAPE**, el mismo error como porcentaje, comparable entre negocios de distinto tamaño; y **RMSE**, que castiga más los errores grandes y delata a un modelo que casi siempre acierta pero de vez en cuando falla feo.
 
-El modelo se evalúa sobre una cola reservada de la serie y no sobre los datos con los que se ajustó. Tres métricas se muestran en el dashboard, cada una respondiendo a una pregunta distinta:
+### Dashboard
 
-- **MAE** — error promedio en pesos, el número con el que razonar al dimensionar un pedido
-- **MAPE** — el mismo error como porcentaje, comparable entre negocios de distinto tamaño
-- **RMSE** — castiga más los errores grandes, lo que delata a un modelo que casi siempre acierta pero de vez en cuando falla feo
+Una app en **Streamlit** consume la API y organiza la salida en tres pestañas, Historical, Forecast y Metrics, con gráficas interactivas de **Plotly**. La barra lateral concentra la carga del CSV, un slider de horizonte de 7 a 90 días y un toggle para los intervalos de confianza.
 
-Mostrar las tres en la interfaz es deliberado: un pronóstico presentado sin su error es una adivinanza con una gráfica encima.
+### Despliegue
 
-## Despliegue
+La API está contenerizada y corre en **GCP Cloud Run**, construida para `arm64` y `amd64` para que la misma imagen funcione en una laptop con Apple Silicon y en la infraestructura de Google. **Cloud Build** maneja el CI/CD desde `cloudbuild.yaml`, y una alerta de presupuesto limita el gasto mensual. Prophet se apoya en extensiones C de NumPy y Pandas que se rompen al mezclar paquetes de conda y pip en un mismo entorno, así que la frontera está fijada por regla: conda para desarrollo local, wheels de pip dentro de la imagen de Docker.
 
-La API está contenerizada y corre en **GCP Cloud Run**, construida para `arm64` y `amd64` para que la misma imagen funcione en una laptop con Apple Silicon y en la infraestructura de Google. **Cloud Build** maneja el CI/CD desde `cloudbuild.yaml`, y una alerta de presupuesto limita el gasto mensual.
+### Pruebas
 
-Las dependencias fueron un problema aparte. Prophet se apoya en extensiones C de NumPy y Pandas que son frágiles cuando se mezclan paquetes de `conda` y `pip` en el mismo entorno. El proyecto lo resuelve trazando una línea dura: **conda** para desarrollo local, donde los binarios precompilados son confiables, y **pip** dentro de la imagen de Docker, donde lo son los wheels de Linux. La regla está documentada en el README para que el entorno siga siendo reproducible.
-
-## Pruebas
-
-Las pruebas unitarias cubren tanto el pipeline de procesamiento de datos como los endpoints de la API —fallos de validación, entradas mal formadas y el camino feliz— ejecutadas con **pytest**.
+**pytest** cubre el pipeline de procesamiento de datos y los endpoints de la API: fallos de validación, entradas mal formadas y el camino feliz.
