@@ -1,6 +1,6 @@
 ---
 title: "Nebluna Inventory & Sales"
-summary: "Inventory and sales system for a specialty coffee roastery in Mexico City, covering the whole cycle from green coffee to roast, bulk stock, packaging, sale and shipping. Next.js 16 on Supabase, replacing the spreadsheet the business had been running on."
+summary: "Inventory and sales system for a specialty coffee micro-roastery in Mexico City, covering the whole cycle from green coffee to roast, bulk stock, packaging, sale and shipping. Next.js 16 on Supabase, replacing the spreadsheet the business had been running on."
 description: "A multi-role operations app built on Next.js 16 and Supabase, where the business rules live in PostgreSQL rather than in the interface: stock cannot go negative because a trigger refuses the write, every packaged bag references the roast it came from, and roasting shrinkage is measured per batch instead of estimated. Ninety-nine versioned migrations, Row Level Security on every table, and a CI pipeline that rebuilds the database from scratch on every pull request."
 objective: "Move the operation off a spreadsheet and onto a system where the database enforces the business rules, and where the sales team works with the catalogue and their own commissions without access to financial data."
 theme: "Operational software for a micro-roaster, where the domain rules are the product."
@@ -58,7 +58,7 @@ results:
 
 ## Project Overview
 
-**Nebluna** is the operations system for a specialty coffee roastery in Mexico City. Green coffee arrives in lots, gets roasted into batches, packaged into bags, sold across four channels and shipped. The app covers that whole cycle, and it is the only place the business now records any of it.
+**Nebluna** is the operations system for a specialty coffee micro-roastery in Mexico City. Green coffee arrives in lots, gets roasted into batches, packaged into bags, sold across four channels and shipped. The app covers that whole cycle, and it is the only place the business now records any of it.
 
 The interesting part was never the CRUD. The roastery already ran on a spreadsheet, which is where nearly every small business starts and which works fine while the catalogue still fits in your head. The project is mostly the story of replacing it without losing what it already knew about the trade.
 
