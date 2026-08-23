@@ -89,21 +89,31 @@ results:
 
 ## Cuerpo
 
-Markdown estándar tras el frontmatter. La estructura que siguen los proyectos existentes:
+### Tono — no negociable
+
+El texto **describe qué hace el proyecto y con qué está construido**. No cuenta la historia de cómo se llegó ahí.
+
+Fuera: aperturas de ensayo ("la parte interesante nunca fue el CRUD"), aforismos de cierre ("un pronóstico sin su error es una suposición con un gráfico"), frases que desinflan lo que el proyecto _no_ era, metáforas, y guiones largos. Fuera también los volúmenes de operación y el detalle interno del negocio del cliente.
+
+Quien lee un portfolio escanea, no lee un artículo: la narrativa alarga sin añadir información. Y el cuerpo entero viaja al system prompt del asistente (`src/lib/assistant/corpus.ts`), así que cada frase de relleno se paga en cada petición.
+
+Regla práctica antes de commitear: si una frase no aporta un hecho técnico o una funcionalidad, bórrala.
+
+### Estructura
+
+El modelo es `companeros-en-ruta.mdx` o `nebluna-app.mdx`. **No** `nebluna-analytics.mdx`, que es ensayístico y quedó de una etapa anterior.
 
 ```markdown
-## Project Overview
+## Project Overview # un párrafo: qué es, qué cubre, con qué
 
-## The Problem
+## Technical Implementation
 
-## Architecture
+### <Un bloque por área: datos, seguridad, interfaz, pruebas>
 
-### <Subsecciones por capa>
-
-## Challenges & Solutions
-
-## Results
+## Functionality # lista de viñetas, una por módulo
 ```
+
+`## Challenges & Solutions` y `## Results` **no** se escriben en el cuerpo: salen de los arrays del frontmatter y la página los renderiza después.
 
 En el `.es.mdx`, traduce también los encabezados.
 
