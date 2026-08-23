@@ -1,11 +1,11 @@
 ---
 title: "Compañeros en Ruta"
 date: "2026-07-06"
-summary: "SaaS multi-tenant de grado de producción para logística y distribución de marcas — una web app en Next.js más apps nativas para iOS y Android — que comparten un motor de lealtad basado en QR y un núcleo de seguridad estricto sobre PostgreSQL + RLS."
+summary: "SaaS multi-tenant de grado de producción para logística y distribución de marcas: una web app en Next.js más apps nativas para iOS y Android, que comparten un motor de lealtad basado en QR y un núcleo de seguridad estricto sobre PostgreSQL + RLS."
 category: "full-stack"
 featured: true
 tags: ["Next.js", "React", "Expo", "React Native", "Supabase", "PostgreSQL", "RLS", "TypeScript", "Tailwind CSS"]
-objective: "Entregar un SaaS escalable y multiplataforma para redes de distribución —web y móvil nativo— con aislamiento multi-tenant estricto, herramientas para operación en campo y métricas operativas en tiempo real a través de seis roles distintos."
+objective: "Entregar un SaaS escalable y multiplataforma para redes de distribución, web y móvil nativo, con aislamiento multi-tenant estricto, herramientas para operación en campo y métricas operativas en tiempo real a través de seis roles distintos."
 theme: "Enterprise Modern SaaS"
 impact: "Seis tipos de usuario trabajan en el mismo sistema, cada uno viendo solo lo suyo. Esa separación la impone la base de datos, no el código, así que un error de programación no puede filtrar los datos de una empresa a otra. La web y las apps de iOS y Android funcionan igual."
 repoUrl: "https://github.com/fermx3/companeros-en-ruta"
@@ -21,7 +21,7 @@ images:
 
 ## Descripción del Proyecto
 
-**Compañeros en Ruta** es una plataforma SaaS integral y multi-tenant para logística a gran escala y distribución de marcas. Está construida sobre una filosofía de **verdad basada en el esquema**, donde la estructura de la base de datos PostgreSQL dicta las capacidades y los límites de seguridad de la aplicación. La plataforma atiende seis roles distintos — Admin, Brand Manager, Supervisor, Promotor, Asesor de Ventas y Cliente — cada uno con su propia experiencia protegida. Se distribuye como un **monorepo Turborepo**: una web app en Next.js más apps nativas para iOS y Android, todas compartiendo lógica tipada y un único backend en Supabase.
+**Compañeros en Ruta** es una plataforma SaaS integral y multi-tenant para logística a gran escala y distribución de marcas. Está construida sobre una filosofía de **verdad basada en el esquema**, donde la estructura de la base de datos PostgreSQL dicta las capacidades y los límites de seguridad de la aplicación. La plataforma atiende seis roles distintos (Admin, Brand Manager, Supervisor, Promotor, Asesor de Ventas y Cliente), cada uno con su propia experiencia protegida. Se distribuye como un **monorepo Turborepo**: una web app en Next.js más apps nativas para iOS y Android, todas compartiendo lógica tipada y un único backend en Supabase.
 
 ## Excelencia Técnica
 
@@ -32,10 +32,10 @@ El núcleo de la aplicación es su implementación de **Row Level Security (RLS)
 La plataforma corre sobre **Next.js 16 (App Router, Turbopack)** y **React 19**, con estilos en **Tailwind CSS 4** y **shadcn/ui** bajo un sistema de diseño propio. Los formularios se validan de extremo a extremo con **react-hook-form + Zod**, y los dashboards visualizan métricas con **Recharts**.
 
 ### Diseño Orientado a Base de Datos
-El proyecto mantiene un mapeo 1:1 entre el esquema de PostgreSQL y los tipos de TypeScript para seguridad de tipos completa. Los flujos operativos complejos —desde evaluaciones de visita 7Ps hasta la redención de QR y la facturación a distribuidores— se manejan con integridad transaccional y migraciones versionadas.
+El proyecto mantiene un mapeo 1:1 entre el esquema de PostgreSQL y los tipos de TypeScript para seguridad de tipos completa. Los flujos operativos complejos, desde evaluaciones de visita 7Ps hasta la redención de QR y la facturación a distribuidores, se manejan con integridad transaccional y migraciones versionadas.
 
 ### Entrega Multiplataforma
-Además de la web app, la plataforma incluye dos **apps móviles nativas construidas con Expo y React Native** (SDK 54) —una para el personal en campo y otra para clientes— que comparten código a través del monorepo. La app del personal aprovecha la cámara del dispositivo para escanear QR, la geolocalización para evidencia con GPS y las notificaciones push. Las builds se publican a iOS y Android mediante **EAS Build**, y se prueban activamente en dispositivos reales.
+Además de la web app, la plataforma incluye dos **apps móviles nativas construidas con Expo y React Native** (SDK 54), una para el personal en campo y otra para clientes, que comparten código a través del monorepo. La app del personal aprovecha la cámara del dispositivo para escanear QR, la geolocalización para evidencia con GPS y las notificaciones push. Las builds se publican a iOS y Android mediante **EAS Build**, y se prueban activamente en dispositivos reales.
 
 ### Probado y Verificado
 La confiabilidad se respalda con un stack completo de pruebas: **Playwright** para flujos end-to-end, **Vitest / Jest + Testing Library** para unidades y **MSW** para simular APIs.

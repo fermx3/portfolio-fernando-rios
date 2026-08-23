@@ -49,7 +49,7 @@ The heart of the tool is a robust parser that uses **pre-compiled regular expres
 The use of generators (line-by-line processing) ensures that the tool can handle files much larger than the available RAM without performance degradation.
 
 ### Data Analysis
-For statistical analysis, I leveraged Python's `collections.Counter`. This allowed for near-instantaneous counting of log occurrences and efficient identification of the `n` most frequent error messages using the `.most_common()` method.
+Statistical analysis uses Python's `collections.Counter`, which gives near-instantaneous counting of log occurrences and efficient identification of the `n` most frequent error messages using the `.most_common()` method.
 
 ### Modular Architecture
 The codebase is strictly organized into four key modules:
@@ -57,12 +57,3 @@ The codebase is strictly organized into four key modules:
 2.  **`analyzer.py`**: Performs statistical computations on the parsed data.
 3.  **`reporter.py`**: Formats and prints the final report using advanced f-string alignment.
 4.  **`main.py`**: Acts as the orchestrator and handles CLI arguments via `argparse`.
-
-## Why this project?
-
-While many log analysis tools exist, this project serves as a testament to my ability to:
-- Build **dependency-free** tools that work out of the box.
-- Apply **Software Design Patterns** (Separation of Concerns) in a scripting context.
-- Write **optimized Python** for text processing tasks.
-
-It’s a practical example of creating custom tooling to improve developer workflows.
