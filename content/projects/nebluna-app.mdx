@@ -1,10 +1,10 @@
 ---
 title: "Nebluna Inventory & Sales"
-summary: "Inventory and sales system for a specialty coffee roastery in Mexico City, covering the whole cycle from green coffee to roast, bulk stock, packaging, sale and shipping. Next.js 16 on Supabase, replacing a spreadsheet that had become the system of record."
+summary: "Inventory and sales system for a specialty coffee roastery in Mexico City, covering the whole cycle from green coffee to roast, bulk stock, packaging, sale and shipping. Next.js 16 on Supabase, replacing the spreadsheet the business had been running on."
 description: "A multi-role operations app built on Next.js 16 and Supabase, where the business rules live in PostgreSQL rather than in the interface: stock cannot go negative because a trigger refuses the write, every packaged bag references the roast it came from, and roasting shrinkage is measured per batch instead of estimated. Ninety-nine versioned migrations, Row Level Security on every table, and a CI pipeline that rebuilds the database from scratch on every pull request."
-objective: "Replace a Google Sheets workbook whose formulas had quietly stopped being trustworthy with a system where the numbers cannot drift, and where a second person can use it without seeing the owner's margins."
+objective: "Move the operation off a spreadsheet and onto a system where the database enforces the business rules, and where the sales team works with the catalogue and their own commissions without access to financial data."
 theme: "Operational software for a small manufacturer, where the domain rules are the product."
-impact: "Stock counts stopped being an argument. The roastery can answer which roast a customer's bag came from, what a kilo actually costs once shrinkage is counted, and what a sales rep is owed, without anyone rebuilding a spreadsheet formula to find out."
+impact: "The roastery can answer which roast a customer's bag came from, what a kilo actually costs once shrinkage is counted, and what each sales rep is owed. Those used to be questions you reconstructed by following a formula, and now the database answers them."
 date: "2026-08-20"
 status: "production"
 featured: true
@@ -40,12 +40,12 @@ images:
     type: "mobile"
     alt: "Packaged inventory on a phone"
 challenges:
-  - "A spreadsheet with 1,421 formulas had become the system of record, and nobody could say which of its numbers were still trustworthy"
+  - "A spreadsheet has no way to declare that two similarly named supplies are different things, so both get drawn from the same balance and the gap stays invisible until the next physical count"
   - "Stock that goes negative is not an error to display: by the time anyone sees it, the number has been wrong for weeks"
   - "Roasting burns off 12 to 20% of the green coffee's weight, and a cost per kilo that ignores that loss is fiction"
-  - "Two people with very different jobs share one dataset: the owner needs margins, the sales rep must never see them"
+  - "Administration and sales reps share one dataset with opposing needs: one works in costs and margins, the others must not see them, or each other's"
 solutions:
-  - "Audited all 16 sheets before writing code. 139 cells used Google-native functions with no SQL equivalent, so that logic was rebuilt as views instead of translated formula by formula"
+  - "Audited the whole spreadsheet before writing a single table: much of its logic lived in Google-only functions with no SQL equivalent, so it was rebuilt as views rather than translated formula by formula"
   - "Constraints and triggers in PostgreSQL rather than validation in the form, so the database refuses the write instead of the interface asking nicely"
   - "Shrinkage is recorded per roast as green weight in minus roasted weight out, which makes cost per kilo a measurement rather than an estimate"
   - "Row Level Security on every table, so the permission is enforced in the database and no interface bug can leak past it"
@@ -60,30 +60,32 @@ results:
 
 **Nebluna** is the operations system for a specialty coffee roastery in Mexico City. Green coffee arrives in lots, gets roasted into batches, packaged into bags, sold across four channels and shipped. The app covers that whole cycle, and it is the only place the business now records any of it.
 
-The interesting part was never the CRUD. The roastery already had a system, a Google Sheets workbook that had grown to 1,421 formulas, and it worked, right up until it quietly didn't. The project is mostly the story of replacing that without losing what it knew.
+The interesting part was never the CRUD. The roastery already ran on a spreadsheet, which is where nearly every small business starts and which works fine while the catalogue still fits in your head. The project is mostly the story of replacing it without losing what it already knew about the trade.
 
 ## The Problem
 
-A spreadsheet fails slowly. One formula gets a wildcard where it needed an exact match, and from that day the stock figure is wrong by an amount nobody notices. In this workbook a `SUMIFS` was counting `BOLSA-250-VALV` as `BOLSA-250`, so two different packaging supplies were being consumed from the same balance.
+To a spreadsheet, `BOLSA-250` and `BOLSA-250-VALV` look too much alike. If the formula that totals them compares text, both supplies come off the same balance and the gap does not surface until the next physical count. That is not a mistake by whoever wrote the formula: a sheet has no way to declare that they are two different things.
 
-So the migration started with an audit rather than a schema: 16 sheets, roughly 300 rows of real data, all 1,421 formulas read and classified, and 10 structural risks written down before any table existed. The most useful finding was that **139 cells used Google-native functions** (`QUERY`, `FILTER`, `LET`, `SCAN`) that have no equivalent in SQL. None of that was translated. It was rebuilt as views and application logic, which is slower than porting and the only way the result stays explainable.
+The pattern repeats across the whole domain. Stock should not be able to go negative. A sale should not be able to exist without pointing at a specific lot. A blend should not be deducted twice. These are rules a cell can remember but cannot enforce.
 
-That audit is also where the schema's hardest rule comes from: relate rows by UUID foreign key, never by matching text. The wildcard bug is not allowed to be expressible.
+So the migration started with an audit rather than a schema. Much of the logic lived in Google-only functions (`QUERY`, `FILTER`, `LET`, `SCAN`) with no SQL equivalent, so it was not translated: it was rebuilt as views and application logic. That is slower than porting it, and the only way the result stays explainable.
+
+That is where the schema's hardest rule comes from: relate rows by foreign key, never by matching text. The original error stops being expressible.
 
 ## Architecture
 
 ### Data Layer
 **PostgreSQL** on **Supabase**, with 99 versioned migrations from `001_create_base_tables.sql` onward. The invariants live here, not in the forms: stock cannot go negative because a trigger refuses the write, a sale must reference a concrete packaged-inventory row, and a blend deducts from its source lots through `blend_components` and nowhere else.
 
-That last one is a scar. Deducting a blend both through its components and through a manual adjustment double-counted the loss, so the canonical path is now singular and documented. The repository keeps a numbered register of that kind of bug, `LEARNINGS.md`, currently at twelve entries, and the rule is to read it before touching the schema.
+That last one is a scar. Deducting a blend both through its components and through a manual adjustment double-counted the loss, so the canonical path is now singular and documented. The repository keeps a numbered register of that kind of finding, and reading it is a precondition for touching the schema.
 
 ### Application Layer
 **Next.js 16** with the App Router, organised into three route groups: authentication, the dashboard, and a print group that renders a letter-sized sale ticket with its own stylesheet. Server state is **React Query**, forms are **react-hook-form** validated with **Zod**, and the interface is **shadcn/ui** over **Tailwind CSS 4**.
 
-It is built mobile first, because the sales that matter get recorded standing up, at a market stall or in a customer's shop, not at a desk. The dense screens, reports and reconciliation, are the ones that assume a laptop.
+It is built mobile first, because a good share of the sales get recorded standing up, at a market stall or in a customer's shop, not at a desk. The dense screens, reports and reconciliation, are the ones that assume a laptop.
 
 ### Roles & Access
-Two roles, `owner` and `sales_rep`, with genuinely different products: the owner sees financials and settings, the rep sees the catalogue, their own sales and their own commissions. The separation is enforced by **Row Level Security** policies on every table, so it holds even if a route guard is wrong. The interface hides what a rep should not see; the database is what makes sure it cannot be fetched.
+Two roles, `owner` and `sales_rep`, which in practice are two different products: administration sees financials, costs and settings; each sales rep sees the catalogue, their own sales and their own commissions, and nothing belonging to anyone else. The separation is enforced by **Row Level Security** policies on every table, so it holds even if a route guard is wrong. The interface hides what a rep should not see; the database is what makes sure it cannot be fetched.
 
 ## Domain Rules
 
@@ -94,7 +96,7 @@ The rules are the product, and most of them are unintuitive until someone explai
 - **Roasted coffee is IVA exempt** under article 2-A of the Mexican VAT law, so any calculation that multiplies or divides by 1.16 is broken by definition.
 - **Commission is rate times subtotal, and only on the Promotor channel.** Direct, WhatsApp and Instagram sales earn none.
 - **Business dates are `DATE`, never `TIMESTAMPTZ`.** Storing one as a timestamp shifted every app-captured date back a day before anyone noticed.
-- **Lot codes are designed to be handwritten**, on a label and read aloud during a count: `OAX-XUU-M-L-2507-V01`.
+- **Lot codes are designed to be handwritten**, on a label and read aloud during a count.
 
 ## Testing & CI
 
