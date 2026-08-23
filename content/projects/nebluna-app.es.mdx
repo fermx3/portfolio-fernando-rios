@@ -1,10 +1,10 @@
 ---
 title: "Nebluna Inventario y Ventas"
-summary: "Sistema de inventario y ventas para una tostaduría de café de especialidad en Ciudad de México, que cubre el ciclo completo desde el café verde hasta el tueste, el granel, el empaque, la venta y el envío. Next.js 16 sobre Supabase, en sustitución de una hoja de cálculo que se había convertido en la fuente de verdad."
+summary: "Sistema de inventario y ventas para una tostaduría de café de especialidad en Ciudad de México, que cubre el ciclo completo desde el café verde hasta el tueste, el granel, el empaque, la venta y el envío. Next.js 16 sobre Supabase, en sustitución de la hoja de cálculo con la que operaba."
 description: "Aplicación de operación multi-rol construida con Next.js 16 y Supabase, donde las reglas de negocio viven en PostgreSQL y no en la interfaz: el stock no puede quedar en negativo porque un trigger rechaza la escritura, cada bolsa empacada apunta al tueste del que salió, y la merma se mide por lote en vez de estimarse. Noventa y nueve migraciones versionadas, Row Level Security en todas las tablas y un CI que reconstruye la base desde cero en cada pull request."
-objective: "Sustituir un libro de Google Sheets cuyas fórmulas habían dejado de ser confiables sin que nadie lo notara, por un sistema donde los números no puedan desviarse y donde una segunda persona pueda trabajar sin ver los márgenes del dueño."
+objective: "Llevar la operación de una hoja de cálculo a un sistema donde las reglas del negocio las imponga la base de datos, y donde el equipo de venta trabaje con el catálogo y sus propias comisiones sin acceso a los datos financieros."
 theme: "Software de operación para un fabricante pequeño, donde las reglas del dominio son el producto."
-impact: "El conteo de stock dejó de ser una discusión. La tostaduría puede responder de qué tueste salió la bolsa de un cliente, cuánto cuesta de verdad un kilo una vez contada la merma, y cuánto se le debe a un promotor, sin que nadie tenga que reconstruir una fórmula para averiguarlo."
+impact: "La tostaduría puede responder de qué tueste salió la bolsa de un cliente, cuánto cuesta de verdad un kilo una vez contada la merma, y cuánto se le debe a cada promotor. Son preguntas que antes había que reconstruir siguiendo una fórmula y que ahora contesta la propia base de datos."
 date: "2026-08-20"
 status: "production"
 featured: true
@@ -40,12 +40,12 @@ images:
     type: "mobile"
     alt: "Inventario empacado en el móvil"
 challenges:
-  - "Una hoja de cálculo con 1 421 fórmulas se había convertido en la fuente de verdad, y nadie podía decir cuáles de sus números seguían siendo confiables"
+  - "Una hoja de cálculo no puede declarar que dos insumos de nombre parecido son cosas distintas, así que acaban descontándose del mismo saldo y el desfase no aparece hasta el conteo físico"
   - "Un stock en negativo no es un error que se muestre: para cuando alguien lo ve, el número lleva semanas equivocado"
   - "El tueste evapora entre el 12 y el 20% del peso del café verde, y un costo por kilo que ignora esa pérdida es ficción"
-  - "Dos personas con trabajos muy distintos comparten un mismo conjunto de datos: el dueño necesita los márgenes, el promotor no debe verlos nunca"
+  - "Administración y promotores comparten un mismo conjunto de datos con necesidades opuestas: unos trabajan con costos y márgenes, los otros no deben verlos, ni entre ellos"
 solutions:
-  - "Auditar las 16 hojas antes de escribir código. 139 celdas usaban funciones nativas de Google sin equivalente en SQL, así que esa lógica se reconstruyó como vistas en vez de traducirse fórmula por fórmula"
+  - "Auditar la hoja de cálculo entera antes de escribir una sola tabla: buena parte de su lógica vivía en funciones propias de Google sin equivalente en SQL, así que se reconstruyó como vistas en vez de traducirse fórmula por fórmula"
   - "Constraints y triggers en PostgreSQL en lugar de validación en el formulario, para que la base rechace la escritura en vez de que la interfaz lo pida por favor"
   - "La merma se registra por tueste como peso verde menos peso tostado, lo que convierte el costo por kilo en una medición y no en una estimación"
   - "Row Level Security en todas las tablas, de modo que el permiso se aplica en la base y ningún fallo de interfaz puede saltárselo"
@@ -60,30 +60,32 @@ results:
 
 **Nebluna** es el sistema de operación de una tostaduría de café de especialidad en Ciudad de México. El café verde llega en lotes, se tuesta en batches, se empaca en bolsas, se vende por cuatro canales y se envía. La app cubre ese ciclo completo, y hoy es el único lugar donde el negocio registra cualquiera de esos pasos.
 
-La parte interesante nunca fue el CRUD. La tostaduría ya tenía un sistema, un libro de Google Sheets que había crecido hasta las 1 421 fórmulas, y funcionaba, justo hasta que dejó de hacerlo sin avisar. El proyecto es sobre todo la historia de reemplazarlo sin perder lo que sabía.
+La parte interesante nunca fue el CRUD. La tostaduría ya operaba con una hoja de cálculo, que es donde arranca casi cualquier negocio pequeño y que funciona bien mientras el catálogo cabe en la cabeza. El proyecto es sobre todo la historia de reemplazarla sin perder lo que esa hoja ya sabía del oficio.
 
 ## El Problema
 
-Una hoja de cálculo falla despacio. Una fórmula recibe un comodín donde necesitaba una coincidencia exacta, y desde ese día la cifra de stock está mal por una cantidad que nadie nota. En este libro, un `SUMIFS` contaba `BOLSA-250-VALV` como `BOLSA-250`, así que dos insumos de empaque distintos se descontaban del mismo saldo.
+Para una hoja de cálculo, `BOLSA-250` y `BOLSA-250-VALV` se parecen demasiado. Si la fórmula que las suma compara texto, los dos insumos se descuentan del mismo saldo y el desfase no se ve hasta el siguiente conteo físico. No es un descuido de quien escribió la fórmula: es que una hoja no tiene forma de declarar que son dos cosas distintas.
 
-Por eso la migración empezó con una auditoría y no con un esquema: 16 hojas, unas 300 filas de datos reales, las 1 421 fórmulas leídas y clasificadas, y 10 riesgos estructurales anotados antes de que existiera una sola tabla. El hallazgo más útil fue que **139 celdas usaban funciones nativas de Google** (`QUERY`, `FILTER`, `LET`, `SCAN`) que no tienen equivalente en SQL. Nada de eso se tradujo. Se reconstruyó como vistas y lógica de aplicación, que es más lento que portarlo y la única forma de que el resultado siga siendo explicable.
+Ese patrón se repite por todo el dominio. El stock no debería poder quedar en negativo. Una venta no debería poder existir sin apuntar a un lote concreto. Una mezcla no debería descontarse dos veces. Son reglas que no se pueden imponer desde una celda, solo recordar.
 
-De esa auditoría sale también la regla más dura del esquema: relacionar filas por clave foránea UUID, nunca por coincidencia de texto. El bug del comodín no puede ni siquiera enunciarse.
+Por eso la migración empezó con una auditoría y no con un esquema. Buena parte de la lógica vivía en funciones propias de Google (`QUERY`, `FILTER`, `LET`, `SCAN`) que no tienen equivalente en SQL, así que no se tradujo: se reconstruyó como vistas y lógica de aplicación. Es más lento que portarla y es la única forma de que el resultado siga siendo explicable.
+
+De ahí sale la regla más dura del esquema: relacionar filas por clave foránea, nunca por coincidencia de texto. El error del principio deja de ser expresable.
 
 ## Arquitectura
 
 ### Capa de Datos
 **PostgreSQL** sobre **Supabase**, con 99 migraciones versionadas desde `001_create_base_tables.sql`. Los invariantes viven aquí, no en los formularios: el stock no puede quedar negativo porque un trigger rechaza la escritura, una venta tiene que apuntar a una fila concreta de inventario empacado, y una mezcla descuenta de sus lotes de origen a través de `blend_components` y de ningún otro sitio.
 
-Ese último es una cicatriz. Descontar una mezcla por sus componentes y además por un ajuste manual duplicaba la baja, así que el camino canónico es ahora único y está documentado. El repositorio lleva un registro numerado de ese tipo de bug, `LEARNINGS.md`, hoy en doce entradas, y la norma es leerlo antes de tocar el esquema.
+Ese último es una cicatriz. Descontar una mezcla por sus componentes y además por un ajuste manual duplicaba la baja, así que el camino canónico es ahora único y está documentado. El repositorio lleva un registro numerado de ese tipo de hallazgo, y leerlo es condición previa para tocar el esquema.
 
 ### Capa de Aplicación
 **Next.js 16** con App Router, organizado en tres grupos de rutas: autenticación, el dashboard, y un grupo de impresión que renderiza un ticket de venta tamaño carta con su propia hoja de estilos. El estado de servidor es **React Query**, los formularios son **react-hook-form** validados con **Zod**, y la interfaz es **shadcn/ui** sobre **Tailwind CSS 4**.
 
-Está construido mobile first, porque las ventas que importan se registran de pie, en un puesto de mercado o en el local de un cliente, y no en un escritorio. Las pantallas densas, reportes y reconciliación, son las que sí asumen una laptop.
+Está construido mobile first, porque buena parte de las ventas se registran de pie, en un puesto de mercado o en el local de un cliente, y no en un escritorio. Las pantallas densas, reportes y reconciliación, son las que sí asumen una laptop.
 
 ### Roles y Accesos
-Dos roles, `owner` y `sales_rep`, con productos realmente distintos: el dueño ve finanzas y ajustes, el promotor ve el catálogo, sus propias ventas y sus propias comisiones. La separación la imponen políticas de **Row Level Security** en cada tabla, así que se sostiene aunque un guard de ruta esté mal. La interfaz oculta lo que un promotor no debe ver; la base de datos es lo que garantiza que no se pueda pedir.
+Dos roles, `owner` y `sales_rep`, que en la práctica son dos productos distintos: administración ve finanzas, costos y ajustes; cada promotor ve el catálogo, sus propias ventas y sus propias comisiones, y nada de lo que corresponde a los demás. La separación la imponen políticas de **Row Level Security** en cada tabla, así que se sostiene aunque un guard de ruta esté mal. La interfaz oculta lo que un promotor no debe ver; la base de datos es lo que garantiza que no se pueda pedir.
 
 ## Reglas del Dominio
 
@@ -94,7 +96,7 @@ Las reglas son el producto, y casi todas resultan poco intuitivas hasta que algu
 - **El café tostado está exento de IVA** por el artículo 2-A de la ley mexicana, así que cualquier cálculo que multiplique o divida por 1.16 está roto por definición.
 - **La comisión es tasa por subtotal, y solo en el canal Promotor.** Las ventas directas, por WhatsApp y por Instagram no generan ninguna.
 - **Las fechas de negocio son `DATE`, nunca `TIMESTAMPTZ`.** Guardar una como timestamp corría un día hacia atrás cada fecha capturada por la app, y tardó en verse.
-- **Los códigos de lote están pensados para escribirse a mano**, en una etiqueta, y leerse en voz alta durante un conteo: `OAX-XUU-M-L-2507-V01`.
+- **Los códigos de lote están pensados para escribirse a mano**, en una etiqueta, y leerse en voz alta durante un conteo.
 
 ## Pruebas y CI
 
