@@ -100,7 +100,7 @@ export function ProjectGallery({ images, title }: ProjectGalleryProps) {
           >
             <ImageWithPlaceholder
               src={item.src}
-              alt={item.alt ?? `${title} — ${index + 1}`}
+              alt={item.alt ?? `${title}, ${index + 1}`}
               placeholderSeed={item.src}
               fill
               sizes="(max-width: 640px) 50vw, 33vw"
@@ -159,7 +159,7 @@ export function ProjectGallery({ images, title }: ProjectGalleryProps) {
                 <ImageWithPlaceholder
                   key={items[openIndex].src}
                   src={items[openIndex].src}
-                  alt={items[openIndex].alt ?? `${title} — ${openIndex + 1}`}
+                  alt={items[openIndex].alt ?? `${title}, ${openIndex + 1}`}
                   fill
                   sizes="100vw"
                   className="object-contain"

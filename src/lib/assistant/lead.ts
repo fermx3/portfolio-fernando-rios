@@ -66,7 +66,7 @@ export async function captureLead(input: unknown): Promise<LeadResult> {
     return {
       ok: false,
       message:
-        "Those details were not valid — an email address is required. Ask the visitor to confirm it.",
+        "Those details were not valid: an email address is required. Ask the visitor to confirm it.",
     };
   }
 

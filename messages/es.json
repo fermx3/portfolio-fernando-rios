@@ -157,7 +157,7 @@
       },
       "errors": {
         "generic": "Algo falló de mi lado.",
-        "rateLimited": "Van muchas preguntas en poco rato — dale unos minutos.",
+        "rateLimited": "Van muchas preguntas en poco rato. Dale unos minutos.",
         "unavailable": "El asistente está fuera de servicio ahora mismo.",
         "emailInstead": "Escríbele directamente a Fernando"
       }
