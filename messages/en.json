@@ -144,11 +144,12 @@
     "subtitle": "Let's discuss your next project or collaboration opportunity",
     "assistant": {
       "title": "Ask my portfolio",
+      "aiLabel": "AI",
       "intro": "Ask about the projects on this site and I'll answer from what's actually written here — with a link to the project I'm drawing on. If you'd rather talk to Fernando, say so and I'll pass along your details.",
       "placeholder": "Ask about a project…",
       "send": "Send",
       "thinking": "Reading the projects…",
-      "disclaimer": "Answers come from the projects on this site. Anything outside them, I'll say I don't know.",
+      "disclaimer": "Answers are generated with AI (Claude) from the projects on this site. Anything outside them, I'll say I don't know.",
       "suggestions": {
         "first": "What has he built with computer vision?",
         "second": "Which projects went to production?",
