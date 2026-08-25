@@ -144,11 +144,12 @@
     "subtitle": "Hablemos sobre tu próximo proyecto u oportunidad de colaboración",
     "assistant": {
       "title": "Pregúntale a mi portfolio",
+      "aiLabel": "IA",
       "intro": "Pregunta por los proyectos de este sitio y te respondo con lo que está escrito aquí, enlazando el proyecto del que sale la respuesta. Si prefieres hablar con Fernando, dímelo y le paso tus datos.",
       "placeholder": "Pregunta por un proyecto…",
       "send": "Enviar",
       "thinking": "Leyendo los proyectos…",
-      "disclaimer": "Las respuestas salen de los proyectos de este sitio. Si algo no está aquí, te digo que no lo sé.",
+      "disclaimer": "Respuestas generadas con IA (Claude) a partir de los proyectos de este sitio. Si algo no está aquí, te digo que no lo sé.",
       "suggestions": {
         "first": "¿Qué ha construido con visión por computadora?",
         "second": "¿Qué proyectos llegaron a producción?",
