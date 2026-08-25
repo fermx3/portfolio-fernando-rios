@@ -48,7 +48,7 @@ Los proyectos son MDX en `content/projects/`, con frontmatter validado por Zod e
 - **Nombre sin versión.** `Next.js`, no `Next.js 16`. Un sufijo de versión crea un segundo chip para la misma tecnología y parte los resultados: la versión va en la prosa, no en el tag.
 - **No repitas la categoría.** `category: "ml"` ya pinta su propio filtro; añadir el tag `Machine Learning` duplica el chip.
 - **Señal, no exhaustividad.** Entra lo que alguien buscaría: dominio (`Computer Vision`, `Time Series`, `SaaS`) y tecnología real (`TensorFlow`, `PostgreSQL`, `Expo`). No entra el detalle de implementación que ya está en `technologies` (`Argparse`, `JSON`, `Regex`), ni etiquetas vagas (`Web Design`, `Performance`, `Responsive Design`), ni el nombre del proyecto en otras palabras (`Task Management` en un gestor de tareas).
-- **No podes por frecuencia.** Con 10 proyectos un tag aparece una vez porque el portfolio es pequeño, no porque sobre. Cortar por frecuencia dejaría al proyecto de visión por computadora sin un solo tag de ML.
+- **No podes por frecuencia.** Con 11 proyectos un tag aparece una vez porque el portfolio es pequeño, no porque sobre. Cortar por frecuencia dejaría al proyecto de visión por computadora sin un solo tag de ML.
 - **Los arrays EN/ES se emparejan por posición**: mismo número de tags y en el mismo orden en los dos archivos.
 
 `pnpm check:content` comprueba las tres primeras automáticamente.
@@ -59,7 +59,8 @@ Los proyectos son MDX en `content/projects/`, con frontmatter validado por Zod e
 
 La tarjeta de contacto es un chat sobre los proyectos. **Es la única ruta dinámica del sitio**; todo lo demás sigue siendo SSG y debe seguir siéndolo.
 
-- **Sin base vectorial.** El corpus va entero en el system prompt (`src/lib/assistant/corpus.ts`): 23k tokens en ES y 18k en EN, medidos con `usage`. Si crece mucho, lo primero que hay que revisar es esa decisión, no añadir retrieval por reflejo.
+- **Sin base vectorial.** El corpus va entero en el system prompt (`src/lib/assistant/corpus.ts`): los proyectos completos, cuerpo incluido, más el perfil de Fernando, que `buildProfile()` lee de `messages/{en,es}.json` para no duplicar lo que ya renderiza la sección About. Del orden de 20k tokens por idioma. Si crece mucho, lo primero que hay que revisar es esa decisión, no añadir retrieval por reflejo.
+- **La cifra de tokens se mide, no se estima.** Cambia con cada proyecto que se agrega o se reescribe, así que no confíes en el número de arriba: el handler registra `cache_read` y `cache_write` en cada petición, y la primera pregunta en frío de un idioma imprime el tamaño real de su prefijo cacheado.
 - **El corpus va cacheado** con `cache_control`. Es un prefix match: meter cualquier cosa volátil (fecha, id de sesión) antes del breakpoint anula la caché y multiplica el coste por ocho. No metas nada variable en el system prompt. El handler registra los tokens en cada petición; un `cache_read=0` repetido es la señal de que se rompió.
 - **El cuerpo de la petición es entrada no confiable**, historial incluido: se pueden fabricar turnos del asistente. Ninguna decisión del servidor puede depender de lo que diga la conversación — roles en whitelist, y el system prompt y las tools siempre del servidor.
 - **La salida del modelo se renderiza como texto.** Nunca con `dangerouslySetInnerHTML`, que sí se usa para el contenido de los proyectos porque ese es tuyo.
@@ -78,7 +79,7 @@ Variables de entorno (todas opcionales; el asistente degrada un escalón por cad
 
 ### Qué cuesta esto
 
-Medido sobre el corpus en español (23 016 tokens) con Opus 5 a $5/$25 por MTok:
+Medido el 2026-08-19 sobre el corpus en español, entonces de 23 016 tokens, con Opus 5 a $5/$25 por MTok. Desde esa medición se agregó un proyecto y el perfil, así que las cifras absolutas se quedaron cortas; la proporción entre escribir y leer no depende del tamaño y sigue valiendo:
 
 |                           | Precio     | Coste      |
 | ------------------------- | ---------- | ---------- |

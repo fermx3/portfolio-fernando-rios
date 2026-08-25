@@ -24,10 +24,10 @@ Portfolio bilingüe (EN/ES) de Fernando Ríos: data science, machine learning y 
 | **Home**                 | 4 secciones: Hero, Featured Projects, About, Contact (`src/app/[locale]/page.tsx`)                                                                         |
 | **Listado de proyectos** | Búsqueda por título/summary/tags · filtro por categoría · filtro por tags (lógica AND) · 3 ordenamientos · contador y estado vacío (`projects-client.tsx`) |
 | **Detalle de proyecto**  | Galería con lightbox completa: navegación por teclado, dots, aspect ratio distinto para `mobile`/`web` (`project-gallery.tsx`)                             |
-| **Contenido**            | 10 proyectos, paridad EN/ES al 100% (20 archivos en `content/projects/`)                                                                                   |
+| **Contenido**            | 11 proyectos, paridad EN/ES al 100% (22 archivos en `content/projects/`)                                                                                   |
 | **i18n**                 | EN/ES con toggle, rutas por locale, middleware de negociación                                                                                              |
 | **Tema**                 | Dark/light con `next-themes`                                                                                                                               |
-| **Infraestructura**      | SSG (26 páginas), sitemap, robots, 7 cabeceras de seguridad, CI de 4 pasos (format · lint · typecheck · build)                                             |
+| **Infraestructura**      | SSG (35 páginas), sitemap, robots, 7 cabeceras de seguridad, CI de 4 pasos (format · lint · typecheck · build)                                             |
 
 ### Métricas verificadas
 
@@ -60,7 +60,7 @@ Fuera de alcance por decisión, no por olvido:
 - **CMS** — el contenido en Git con validación Zod es suficiente para un autor único
 - **Comentarios / analytics de terceros**
 - **Tests E2E** — la superficie es estática y el CI ya cubre lint, tipos y build
-- **Paginación** — 10 proyectos no la justifican; reevaluar a partir de ~25
+- **Paginación** — 11 proyectos no la justifican; reevaluar a partir de ~25
 - **Sección de experiencia laboral** — la trayectoria se lee a través de los proyectos
 
 ---
