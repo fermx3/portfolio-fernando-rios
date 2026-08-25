@@ -145,7 +145,7 @@
     "assistant": {
       "title": "Ask my portfolio",
       "aiLabel": "AI",
-      "intro": "Ask about the projects on this site and I'll answer from what's actually written here — with a link to the project I'm drawing on. If you'd rather talk to Fernando, say so and I'll pass along your details.",
+      "intro": "Ask about the projects on this site and I'll answer from what's actually written here, with a link to the project I'm drawing on. If you'd rather talk to Fernando, say so and I'll pass along your details.",
       "placeholder": "Ask about a project…",
       "send": "Send",
       "thinking": "Reading the projects…",
@@ -157,7 +157,7 @@
       },
       "errors": {
         "generic": "Something went wrong on my side.",
-        "rateLimited": "That's a lot of questions in a short window — give it a few minutes.",
+        "rateLimited": "That's a lot of questions in a short window. Give it a few minutes.",
         "unavailable": "The assistant is offline right now.",
         "emailInstead": "Email Fernando directly"
       }
