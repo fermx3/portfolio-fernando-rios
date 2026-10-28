@@ -1,15 +1,15 @@
 ---
 title: "Nebluna Inventario y Ventas"
-summary: "Sistema de inventario y ventas para una microtostadora de café de especialidad en Ciudad de México. Cubre el ciclo completo: café verde, tueste, granel, empaque, venta, envío y reportes. Next.js 16 y TypeScript sobre Supabase."
-description: "Aplicación de operación multi-rol sobre PostgreSQL, donde las reglas de negocio se imponen en la base de datos y no en los formularios: constraints y triggers impiden el stock negativo, cada venta referencia un lote concreto y la merma de tueste se mide por batch. 99 migraciones versionadas, Row Level Security en todas las tablas y un CI que reconstruye la base desde cero en cada pull request."
-objective: "Llevar la operación de una hoja de cálculo a un sistema donde las reglas del negocio las imponga la base de datos, y donde el equipo de venta trabaje con el catálogo y sus propias comisiones sin acceso a los datos financieros."
-theme: "Software de operación e inventario para producción de café de especialidad."
-impact: "Trazabilidad por lote, costo real por kilo con la merma incluida y comisiones calculadas por el sistema, en lugar de reconstruirse a mano sobre una hoja de cálculo."
+summary: "Sistema de operación y tienda en línea para una microtostadora de café de especialidad en Ciudad de México. Cubre el ciclo completo, del café verde y el tueste al pedido pagado en la web, el empaque, el envío y los reportes. Dos apps Next.js 16 sobre una sola base de Supabase."
+description: "Un monorepo con dos apps sobre la misma base PostgreSQL: el panel de operación, multi-rol, y la tienda pública, que cobra con Mercado Pago y convierte cada pedido en una venta del panel. Las reglas de negocio se imponen en la base de datos y no en los formularios: constraints y triggers impiden el stock negativo, cada venta referencia un lote concreto y la merma de tueste se mide por batch. 230 migraciones versionadas, Row Level Security en todas las tablas y un CI que reconstruye la base desde cero en cada pull request que la toca."
+objective: "Llevar la operación de una hoja de cálculo a un sistema donde las reglas del negocio las imponga la base de datos; vender en línea sin llevar un segundo inventario; y registrar cada tueste con datos suficientes para repetirlo o corregirlo."
+theme: "Software de operación, comercio electrónico y bitácora de tueste para producción de café de especialidad."
+impact: "Trazabilidad por lote desde el café verde hasta el pedido en línea, costo real por kilo con la merma y lo que cobra cada canal incluidos, y una bitácora que enseña lo que se decidió la última vez antes de volver a tostar el mismo café."
 date: "2026-08-20"
 status: "production"
 featured: true
 category: "full-stack"
-tags: ["Next.js", "React", "TypeScript", "Supabase", "PostgreSQL", "RLS", "Gestión de Inventario", "Tailwind CSS"]
+tags: ["Next.js", "React", "TypeScript", "Supabase", "PostgreSQL", "RLS", "Gestión de Inventario", "Comercio Electrónico", "Mercado Pago", "Tailwind CSS"]
 technologies:
   - "Next.js 16 (App Router)"
   - "React 19"
@@ -17,14 +17,21 @@ technologies:
   - "Supabase"
   - "PostgreSQL"
   - "Row Level Security"
+  - "pnpm workspaces"
+  - "Mercado Pago Checkout Pro"
+  - "Resend"
   - "React Query"
   - "Tailwind CSS 4"
   - "shadcn/ui"
+  - "Recharts"
+  - "React PDF"
   - "Zod"
   - "Vitest"
+  - "GitHub Actions"
   - "Vercel"
 repoUrl: "https://github.com/fermx3/nebluna"
 repoPrivate: true
+liveUrl: "https://www.neblunacafe.com.mx"
 coverImage: "/images/projects/nebluna-app/cover.jpg"
 images:
   - "/images/projects/nebluna-app/produccion.jpg"
@@ -43,46 +50,62 @@ challenges:
   - "El stock no puede quedar en negativo, y una hoja de cálculo no tiene forma de impedirlo"
   - "El tueste pierde entre el 12 y el 20% del peso verde, así que el costo por kilo depende de medir la merma en cada lote"
   - "Administración y promotores comparten los mismos datos con necesidades opuestas: unos trabajan con costos y márgenes, los otros no deben verlos, ni entre ellos"
-  - "Aplicar 99 migraciones sobre una base ya en uso sin que los archivos y el registro remoto se desincronicen"
+  - "La tienda en línea vende del mismo stock que el panel, y un pago que confirma Mercado Pago puede llegar tarde, dos veces o por un monto que no cuadra con el pedido"
+  - "El plan gratuito de Supabase no da respaldos accesibles, y una base con meses de operación no tenía ninguno"
+  - "Aplicar 230 migraciones sobre una base ya en uso sin que los archivos y el registro remoto se desincronicen"
 solutions:
   - "Constraints y triggers en PostgreSQL: la base rechaza la escritura en vez de que la valide el formulario"
   - "La merma se registra por tueste como peso verde menos peso tostado, y el costo por kilo se calcula a partir de ahí"
   - "Row Level Security en todas las tablas, con el permiso aplicado en la base y no en la interfaz"
+  - "Cada pedido de la tienda es una venta del panel. El webhook de Mercado Pago se verifica por firma HMAC, y el pago se registra una sola vez en la base, que avisa de sobrepagos, montos distintos y pagos sobre pedidos cancelados"
+  - "Un workflow nocturno vuelca la base y el Storage, los cifra con age y cada lunes los restaura en un Supabase desechable y compara las filas"
   - "Un único camino documentado para aplicar migraciones, con un guardia automatizado que compara los archivos contra el registro remoto"
 results:
-  - "99 migraciones versionadas y un guardia de deriva que corre en CI"
-  - "86 tests unitarios y 9 suites de integración contra una base efímera construida desde cero en cada pull request"
-  - "Gates de Lighthouse en cada despliegue a producción: accesibilidad y buenas prácticas en 0.95, rendimiento en 0.60"
+  - "230 migraciones versionadas y un guardia de deriva en CI"
+  - "883 tests unitarios, 191 de componentes y 85 suites de integración contra una base efímera construida desde cero"
+  - "Minutos de GitHub Actions reducidos a la mitad tras una auditoría, sin quitar ninguna puerta de los pull requests"
+  - "Gates de Lighthouse: accesibilidad y buenas prácticas en 0.95, rendimiento en 0.60"
   - "Página de login reducida de 6,2 MB a unos 760 KB autohospedando la fuente de iconos y optimizando los logos"
 ---
 
 ## Descripción del Proyecto
 
-**Nebluna** es el sistema de inventario y ventas de una microtostadora de café de especialidad en Ciudad de México. Cubre el ciclo completo del producto: entrada de café verde, tueste, inventario a granel, empaque, venta por cuatro canales, envío y reportes. Está construido con **Next.js 16** (App Router) y **TypeScript** sobre **Supabase**, y sustituye a la hoja de cálculo con la que operaba el negocio.
+**Nebluna** es el sistema de operación y la tienda en línea de una microtostadora de café de especialidad en Ciudad de México. Cubre el ciclo completo del producto: entrada de café verde, tueste, inventario a granel, empaque, venta por canales configurables, tienda en línea, envío y reportes. Es un monorepo con dos apps **Next.js 16** (App Router) en **TypeScript** sobre una sola base de **Supabase**, y sustituye a la hoja de cálculo con la que operaba el negocio.
 
 ## Implementación Técnica
 
 ### Modelo de Datos e Integridad
 
-99 migraciones versionadas definen el esquema en **PostgreSQL**. Las reglas de negocio se imponen en la base y no en los formularios: constraints y triggers impiden que el stock quede en negativo, cada venta referencia una fila concreta de inventario empacado, y una mezcla descuenta de sus lotes de origen por una sola vía canónica. Las fechas de negocio se guardan como `DATE` y no como `TIMESTAMPTZ`, y las relaciones van siempre por clave foránea, nunca por coincidencia de texto.
+230 migraciones versionadas definen el esquema en **PostgreSQL**. Las reglas de negocio se imponen en la base y no en los formularios: constraints y triggers impiden que el stock quede en negativo, cada venta referencia una fila concreta de inventario empacado, y una mezcla descuenta de sus lotes de origen por una sola vía canónica. Los insumos se costean PEPS por capas, así que registrar una compra no reescribe el margen de meses ya reportados. Las fechas de negocio se guardan como `DATE` y no como `TIMESTAMPTZ`, y las relaciones van siempre por clave foránea, nunca por coincidencia de texto.
 
 ### Roles y Seguridad
 
-Dos roles con productos distintos: administración ve finanzas, costos y ajustes; cada promotor ve el catálogo, sus propias ventas y sus propias comisiones, y nada de lo que corresponde a los demás. La separación la imponen políticas de **Row Level Security** en cada tabla, así que se sostiene aunque falle un guard de ruta.
+Dos roles con productos distintos: administración ve finanzas, costos y ajustes; cada promotor ve el catálogo, sus propias ventas y sus propias comisiones, y nada de lo que corresponde a los demás. La separación la imponen políticas de **Row Level Security** en cada tabla, así que se sostiene aunque falle un guard de ruta. Los usuarios entran por invitación, y darlos de baja les cierra el acceso.
+
+### Tienda en Línea
+
+Una segunda app en `apps/tienda`, sobre la misma base y con su propio despliegue. El cliente recorre el catálogo, elige molido o en grano, paga por transferencia o con **Mercado Pago Checkout Pro** y sigue el pedido desde una liga. La cuenta es el correo verificado: se entra con un código de seis dígitos, sin registro, en tablas separadas del Auth del panel. Los pedidos y los códigos tienen un freno por IP, guardada como HMAC y no en claro. Los cupones, el umbral de envío gratis y las reseñas con liga pública se gestionan desde el panel, y el dueño recibe por correo, vía **Resend**, los avisos de pedidos, pagos y reseñas.
+
+### Bitácora de Tueste
+
+Cada tueste puede registrar su objetivo antes de tostar, el análisis del café verde, la curva y, después, una evaluación sensorial. La curva se captura a mano en el teléfono en tiempo real, con un reloj que sobrevive a recargar la página y la tasa de subida dibujada en vivo, o se importa de un archivo `.alog` de **Artisan**. Un tueste puede seguir una curva de referencia, y al registrar el siguiente tueste del mismo café la app enseña lo que se decidió la última vez. Las cataciones evalúan varios cafés a la vez, lotes del sistema o cafés invitados, con catadores externos invitados por enlace y cata a ciegas elegida por sesión.
 
 ### Interfaz
 
-**React Query** para el estado de servidor, **react-hook-form** con **Zod** para los formularios, y **shadcn/ui** sobre **Tailwind CSS 4**. Tres grupos de rutas: autenticación, dashboard, y un grupo de impresión que genera el ticket de venta en tamaño carta con su propia hoja de estilos. Mobile first, con las pantallas densas, reportes y conciliación, pensadas para escritorio.
+**React Query** para el estado de servidor, **react-hook-form** con **Zod** para los formularios, y **shadcn/ui** sobre **Tailwind CSS 4**. Gráficas en **Recharts**. Un grupo de impresión genera el ticket de venta en tamaño carta y la etiqueta de envío de 15 × 10 cm, también en PDF. Mobile first, con las pantallas densas, reportes y conciliación, pensadas para escritorio.
 
 ### Pruebas y CI
 
-86 tests unitarios y 9 suites de integración que cubren políticas de RLS, ciclo de venta, comisiones, re-empaque, conciliación de inventario, manejo de fechas y stock por SKU. Cuatro workflows de GitHub Actions: lint bloqueante a cero errores, integración contra un stack de Supabase levantado desde cero en el runner, auditoría de Lighthouse en cada despliegue a producción, y un guardia que compara las migraciones contra el registro remoto.
+883 tests unitarios, 191 de componentes y 85 suites de integración que cubren políticas de RLS, ciclo de venta, comisiones, re-empaque, conciliación, la tienda y sus pagos con Mercado Pago, y manejo de fechas. Cinco workflows de GitHub Actions: lint bloqueante a cero errores, integración contra un stack de Supabase levantado desde cero en el runner, auditoría semanal de Lighthouse, un guardia que compara las migraciones contra el registro remoto, y el respaldo nocturno. La integración solo corre cuando un pull request toca la base o sus tests.
 
 ## Funcionalidades
 
-- **Ventas**: alta guiada en cuatro pasos, cuatro canales (directo, promotor, WhatsApp e Instagram), precios de menudeo y mayoreo, cálculo de envío y ticket imprimible.
-- **Inventario**: stock empacado y a granel desglosado por lote, con indicador de frescura a 60 días y asignación de bolsas a promotores.
-- **Producción**: registro de tuestes con kg verde, kg tostado, merma y costo por kilo calculado, más mezclas construidas a partir de varios lotes de origen.
-- **Comisiones**: tasa sobre subtotal, solo en el canal promotor, con historial de liquidaciones por periodo.
+- **Ventas**: alta guiada, canales configurables con el porcentaje y la cuota fija que cobra cada uno (Mercado Libre incluido), precios de menudeo y mayoreo, pagos parciales, saldo a favor del cliente, cancelación y ticket imprimible.
+- **Tienda en línea**: catálogo y ficha de cada café, bolsa, checkout, Mercado Pago, cuenta del cliente con pedidos anteriores y direcciones, cupones y reseñas.
+- **Inventario**: stock empacado y a granel desglosado por lote, con reposo y límite de frescura configurable, y asignación de bolsas a promotores, que confirman en la app lo que reciben.
+- **Producción**: registro de tuestes con kg verde, kg tostado, merma y costo por kilo calculado, mezclas construidas a partir de varios lotes de origen, y la bitácora de tueste.
+- **Cataciones**: sesiones con varios cafés, cafés invitados, catadores externos y comparación con evaluaciones anteriores.
+- **Envíos**: la entrega la decide el canal, registro del envío con guía de rastreo y etiqueta propia.
+- **Finanzas**: comisiones con historial de liquidaciones, gastos del negocio repartidos entre tuestes, y resultado del periodo.
 - **Conciliación**: conteo físico de inventario y solicitudes de conteo a promotores.
 - **Reportes**: por canal, producto, cliente, frescura, rentabilidad, cobranza, precios y promotores.
