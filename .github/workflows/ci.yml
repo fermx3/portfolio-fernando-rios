@@ -6,9 +6,15 @@ on:
   pull_request:
     branches: [master]
 
+# A new push to the same branch or PR makes the running check stale.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   verify:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
 
