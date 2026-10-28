@@ -57,7 +57,7 @@ Los proyectos son MDX en `content/projects/`, con frontmatter validado por Zod e
 
 ## El asistente (`/api/ask`)
 
-La tarjeta de contacto es un chat sobre los proyectos. **Es la única ruta dinámica del sitio**; todo lo demás sigue siendo SSG y debe seguir siéndolo.
+La tarjeta de contacto es un chat sobre los proyectos. **Es la única ruta dinámica pública del sitio** (la otra, `/api/cron/keepalive`, solo responde al cron de Vercel); todo lo demás sigue siendo SSG y debe seguir siéndolo.
 
 - **Sin base vectorial.** El corpus va entero en el system prompt (`src/lib/assistant/corpus.ts`): los proyectos completos, cuerpo incluido, más el perfil de Fernando, que `buildProfile()` lee de `messages/{en,es}.json` para no duplicar lo que ya renderiza la sección About. Del orden de 20k tokens por idioma. Si crece mucho, lo primero que hay que revisar es esa decisión, no añadir retrieval por reflejo.
 - **La cifra de tokens se mide, no se estima.** Cambia con cada proyecto que se agrega o se reescribe, así que no confíes en el número de arriba: el handler registra `cache_read` y `cache_write` en cada petición, y la primera pregunta en frío de un idioma imprime el tamaño real de su prefijo cacheado.
@@ -74,6 +74,9 @@ Variables de entorno (todas opcionales; el asistente degrada un escalón por cad
 | `RESEND_API_KEY`                    | Responde preguntas pero no recoge contactos           |
 | `LEAD_TO_EMAIL` / `LEAD_FROM_EMAIL` | Usan `AUTHOR.email` y el dominio de pruebas de Resend |
 | `UPSTASH_REDIS_REST_URL` + `_TOKEN` | El rate limit cae a un contador por instancia         |
+| `CRON_SECRET`                       | El keepalive de Upstash rechaza al cron con 401       |
+
+> ⚠️ **Upstash borra las bases gratuitas inactivas**, y el rate limit solo la toca cuando alguien pregunta. Por eso `vercel.json` programa un cron diario a `/api/cron/keepalive` que escribe una clave. Si falta `CRON_SECRET` el cron falla en silencio y la base se vuelve a perder: revisa en Vercel → _Cron Jobs_ que la última ejecución dé 200.
 
 > ⚠️ **Con el dominio de pruebas de Resend, `LEAD_TO_EMAIL` tiene que ser la dirección de la cuenta de Resend**, no cualquier otra: `onboarding@resend.dev` solo entrega ahí. Si no coinciden, Resend responde **403 `validation_error`** y el asistente cae al correo en vez de registrar el lead. Se arregla poniendo esa dirección, o verificando `fernandorios.dev` y cambiando `LEAD_FROM_EMAIL`.
 
