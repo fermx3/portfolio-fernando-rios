@@ -101,18 +101,19 @@ export function ProjectGallery({ images, title }: ProjectGalleryProps) {
               key={type}
               className={
                 type === "mobile"
-                  ? "grid grid-cols-2 gap-4 sm:grid-cols-4"
+                  ? `grid grid-cols-2 gap-4 ${group.length > 3 ? "sm:grid-cols-4" : "sm:grid-cols-3"}`
                   : "grid grid-cols-1 gap-4 sm:grid-cols-2"
               }
             >
-              {group.map(({ item, index }) => (
+              {group.map(({ item, index }, position) => (
                 <button
                   key={item.src}
                   type="button"
                   onClick={() => setOpenIndex(index)}
+                  // An odd count would strand the last desktop shot; the first one spans instead.
                   className={`group relative overflow-hidden rounded-lg border border-border bg-muted focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
                     type === "mobile" ? "aspect-[9/16]" : "aspect-video"
-                  }`}
+                  } ${type === "web" && position === 0 && group.length % 2 === 1 ? "sm:col-span-2" : ""}`}
                   aria-label={t("project.galleryImageLabel", {
                     current: index + 1,
                     total: items.length,
