@@ -23,15 +23,19 @@ export function ProjectGallery({ images, title }: ProjectGalleryProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   // Plain strings default to "web"; objects declare their own orientation.
-  const items = useMemo<NormalizedImage[]>(
-    () =>
-      images.map((img) =>
-        typeof img === "string"
-          ? { src: img, type: "web" }
-          : { src: img.src, type: img.type ?? "web", alt: img.alt }
-      ),
-    [images]
-  );
+  // Web shots come first so the lightbox walks the images in the order the two
+  // grids show them.
+  const items = useMemo<NormalizedImage[]>(() => {
+    const normalized: NormalizedImage[] = images.map((img) =>
+      typeof img === "string"
+        ? { src: img, type: "web" }
+        : { src: img.src, type: img.type ?? "web", alt: img.alt }
+    );
+    return [
+      ...normalized.filter((item) => item.type === "web"),
+      ...normalized.filter((item) => item.type === "mobile"),
+    ];
+  }, [images]);
 
   const isOpen = openIndex !== null;
 
@@ -84,30 +88,54 @@ export function ProjectGallery({ images, title }: ProjectGalleryProps) {
     <div className="mb-8">
       <h2 className="text-2xl font-bold tracking-tight mb-4">{t("project.gallery")}</h2>
 
-      <div className="grid grid-cols-2 items-start gap-4 sm:grid-cols-3">
-        {items.map((item, index) => (
-          <button
-            key={item.src}
-            type="button"
-            onClick={() => setOpenIndex(index)}
-            className={`group relative overflow-hidden rounded-lg border border-border bg-muted focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
-              item.type === "mobile" ? "aspect-[9/16]" : "aspect-video"
-            }`}
-            aria-label={t("project.galleryImageLabel", {
-              current: index + 1,
-              total: items.length,
-            })}
-          >
-            <ImageWithPlaceholder
-              src={item.src}
-              alt={item.alt ?? `${title}, ${index + 1}`}
-              placeholderSeed={item.src}
-              fill
-              sizes="(max-width: 640px) 50vw, 33vw"
-              className="object-cover object-top transition-transform duration-300 group-hover:scale-105"
-            />
-          </button>
-        ))}
+      {/* One grid per orientation: mixing 16:9 and 9:16 tiles leaves ragged rows. */}
+      <div className="space-y-4">
+        {(["web", "mobile"] as const).map((type) => {
+          const group = items
+            .map((item, index) => ({ item, index }))
+            .filter(({ item }) => item.type === type);
+          if (!group.length) return null;
+
+          return (
+            <div
+              key={type}
+              className={
+                type === "mobile"
+                  ? `grid grid-cols-2 gap-4 ${group.length > 3 ? "sm:grid-cols-4" : "sm:grid-cols-3"}`
+                  : "grid grid-cols-1 gap-4 sm:grid-cols-2"
+              }
+            >
+              {group.map(({ item, index }, position) => (
+                <button
+                  key={item.src}
+                  type="button"
+                  onClick={() => setOpenIndex(index)}
+                  // An odd count would strand the last desktop shot; the first one spans instead.
+                  className={`group relative overflow-hidden rounded-lg border border-border bg-muted focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
+                    type === "mobile" ? "aspect-[9/16]" : "aspect-video"
+                  } ${type === "web" && position === 0 && group.length % 2 === 1 ? "sm:col-span-2" : ""}`}
+                  aria-label={t("project.galleryImageLabel", {
+                    current: index + 1,
+                    total: items.length,
+                  })}
+                >
+                  <ImageWithPlaceholder
+                    src={item.src}
+                    alt={item.alt ?? `${title}, ${index + 1}`}
+                    placeholderSeed={item.src}
+                    fill
+                    sizes={
+                      type === "mobile"
+                        ? "(max-width: 640px) 50vw, 25vw"
+                        : "(max-width: 640px) 100vw, 50vw"
+                    }
+                    className="object-cover object-top transition-transform duration-300 group-hover:scale-105"
+                  />
+                </button>
+              ))}
+            </div>
+          );
+        })}
       </div>
 
       <AnimatePresence>
