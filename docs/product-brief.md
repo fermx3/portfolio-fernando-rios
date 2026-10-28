@@ -149,6 +149,39 @@ Criterios de aceptación:
 >
 > Esa comprobación es la que decide el modelo, no la lista de arriba. Y con ella hay que rehacer la sección con la estructura que acabó teniendo la fase 1: contexto verificado, decisiones con su porqué, superficie de ataque y criterios comprobables. Aplica casi todo lo aprendido —rate limit, degradación, entrada no confiable— con un agravante: aquí el visitante **sube un fichero**, así que el riesgo es mayor que en el chat, no menor.
 
+### ~~Capturas de `nebluna-app`~~ · resuelto 2026-10-28
+
+> Resuelto: las 9 capturas de la tabla sustituyeron a las 7 de agosto, sacadas del demo local con la UI actual. Lo de abajo queda como guía para la próxima vez que cambie la UI.
+
+La entrada se reescribió el 2026-10-28 (tienda en línea, bitácora de tueste, cataciones, respaldos), pero las 7 imágenes son de agosto: enseñan el diseño anterior y nada de lo nuevo. Se sacan del demo local (seed de `supabase/seed_demo.sql`, usuario `demo-owner@nebluna.test`), nunca de producción. **Se sustituyen las 7, sin excepción**: ninguna imagen de la UI anterior se queda.
+
+Formatos, fijados por cómo las pinta el sitio:
+
+- **Escritorio: 1600 × 900 en `.jpg`** (calidad ~85). Tarjetas, portada y miniaturas son `aspect-video` con `object-cover`, así que una imagen que no sea 16:9 pierde los bordes. Las actuales son 1600 × 802 y se recortan.
+- **Móvil: 1206 px de ancho y 2144 px o más de alto, en `.png`** (viewport de 402 px a 3×, el iPhone 16 Pro de DevTools da 1206 × 2622). La miniatura es 9:16 con `object-top`: se ve la parte de arriba, el lightbox la enseña entera.
+
+| Archivo                     | Pantalla                                                                       | Por qué                                                              |
+| --------------------------- | ------------------------------------------------------------------------------ | -------------------------------------------------------------------- |
+| `cover.jpg`                 | Ficha de un tueste (`/produccion/<id>`): barra café verde → vendido y pestañas | Resume la trazabilidad por lote, que es la tesis del proyecto        |
+| `tienda.jpg`                | Home de la tienda (`apps/tienda`)                                              | Lo más visible de lo nuevo; la única pantalla pública                |
+| `curva.jpg`                 | Pestaña _Curva_ de un tueste con curva importada y sus hitos                   | La bitácora de tueste; el seed trae curvas y un perfil de referencia |
+| `catacion.jpg`              | Una sesión de cata con varios cafés                                            | Enseña la evaluación sensorial y los cafés invitados                 |
+| `reportes.jpg`              | Reportes, pestaña de rentabilidad o ventas por canal                           | El costo real por kilo y lo que cobra cada canal                     |
+| `inventario.jpg`            | Inventario por lote con la frescura                                            | El stock por lote y la frescura, a diario lo más consultado          |
+| `captura-curva.png` (móvil) | Tueste en curso capturando la curva en el teléfono                             | Es la pantalla pensada para el móvil, junto al tostador              |
+| `venta-nueva.png` (móvil)   | Alta de venta                                                                  | Lo que el equipo hace más a menudo desde el teléfono                 |
+| `tienda-movil.png` (móvil)  | Ficha de un café en la tienda, con molido o en grano                           | La tienda se compra sobre todo desde el teléfono                     |
+
+Antes de capturar:
+
+- El demo en `pnpm dev` deja ver el botón de Next.js («N», «Issues»): ocultarlo (`nextjs-portal { display: none }`) o capturar sobre `pnpm build && pnpm start`.
+- En dev cada ruta compila al primer acceso; esperar a que se vaya el esqueleto de carga.
+- El Inicio sale con ventas en $0 si el mes en curso cae fuera de los meses del seed: no usarlo de portada.
+- El seed trae dos curvas de Oaxaca Lavado, un perfil de referencia y un tueste en curso que lo sigue; su reloj arranca al correr el seed. No trae cataciones: hay que crear una sesión en el demo local.
+- La tienda corre aparte: `pnpm --filter @nebluna/tienda dev`, en el puerto 3020.
+
+Al sustituirlas: borrar las 7 de agosto (`cover.jpg`, `produccion.jpg`, `inventario.jpg`, `reportes.jpg`, `ventas.png`, `venta-nueva.png`, `inventario-movil.png`) antes de copiar las nuevas, aunque alguna repita nombre; reescribir `images[]` con `type` y `alt` en los dos idiomas; y correr `pnpm check:content`.
+
 ### ~~P3 — Deuda y código muerto~~ · resuelto 2026-08-16
 
 - **Código muerto**: `searchProjects` y `getProjectsByCategory` eliminadas; 6 dependencias MDX desinstaladas junto con `pageExtensions` y `experimental.mdxRs` (el pipeline real siempre fue `gray-matter` + `markdown-it`)
