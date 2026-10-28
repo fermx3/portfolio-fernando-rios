@@ -1,25 +1,42 @@
 ---
 title: "Tattoo Kim"
 date: "2026-03-11"
-summary: "Sitio web bilingüe para un estudio de tatuajes y piercings, con estética minimalista oscura y captura de leads vía WhatsApp."
+summary: "Sitio web bilingüe para un estudio de tatuajes y piercings, hecho con Next.js y next-intl, con captura de leads vía WhatsApp."
 category: "web-development"
 featured: false
 tags: ["Next.js", "Tailwind CSS", "next-intl", "MDX", "SEO"]
 objective: "Mostrar portafolios de artistas en dos idiomas y llevar las reservas a WhatsApp."
-theme: "Estética Minimalista Oscura"
 impact: "Ves el trabajo de cada tatuador en español o inglés, y al escribir por WhatsApp el mensaje ya viene puesto con el artista o el servicio que estabas mirando. El estudio actualiza perfiles y blog editando archivos de texto, sin depender de nadie."
 repoUrl: "https://github.com/fermx3/tattoo-kim"
 liveUrl: "https://www.tattookim.com.mx"
 coverImage: "/images/projects/tattoo-kim/cover.png"
+technologies:
+  - "Next.js 16"
+  - "React 19"
+  - "TypeScript"
+  - "Tailwind CSS 4"
+  - "next-intl"
+  - "MDX"
+  - "next-mdx-remote"
+  - "Gray Matter"
+  - "next-sitemap"
 images:
   - "/images/projects/tattoo-kim/hero.jpg"
   - "/images/projects/tattoo-kim/portfolio.jpg"
   - "/images/projects/tattoo-kim/artists.jpg"
+challenges:
+  - "Los slugs del blog cambian por idioma, lo que rompe los enlaces hreflang entre versiones"
+  - "Dos ubicaciones con números de WhatsApp distintos, y cada página necesita su propio mensaje"
+  - "Las reseñas de Google deben mostrarse aunque la Places API no responda"
+solutions:
+  - "Un translationSlug compartido en el frontmatter enlaza cada entrada con su traducción"
+  - "Un solo constructor de URL recibe ubicación, contexto e idioma y prellena el mensaje"
+  - "Respuestas de la Places API en caché, con reseñas de respaldo incluidas por idioma"
 ---
 
 ## Resumen
 
-Tattoo Kim es un estudio de tatuajes y piercings con ubicaciones en Playa del Carmen y Cancún. El sitio presenta portafolios de artistas, servicios, ubicaciones y un blog de cuidados en español e inglés, hecho con Next.js (App Router) y Tailwind CSS.
+El estudio trabaja en Playa del Carmen y Cancún. Los visitantes recorren artistas, servicios y guías de cuidados en cualquiera de los dos idiomas y reservan desde la página en la que están, sin llenar un formulario.
 
 ## Implementación Técnica
 

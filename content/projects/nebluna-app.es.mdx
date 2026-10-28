@@ -69,17 +69,17 @@ results:
 
 ## Resumen
 
-Nebluna sustituye a la hoja de cálculo de la tostadora. Administración y promotores usan el panel, los clientes la tienda, y ambas apps comparten los mismos lotes.
+Administración y promotores usan el panel; los clientes compran en la tienda.
 
 ## Implementación Técnica
 
 ### Modelo de Datos
 
-Cada venta apunta a un lote, y una mezcla descuenta de sus lotes de origen por una sola vía. Los insumos se costean PEPS: una compra nueva no reescribe márgenes pasados.
+Cada venta apunta a un lote; una mezcla descuenta de sus lotes de origen por una sola vía. Los insumos se costean PEPS: una compra nueva no reescribe márgenes pasados.
 
 ### Tienda en Línea
 
-Cada pedido se vuelve venta del panel y cada pago se registra una vez aunque llegue tarde o duplicado. El cliente paga por transferencia o Mercado Pago y entra con un código por correo.
+Cada pedido se vuelve venta del panel y cada pago se registra una vez aunque llegue tarde o duplicado. El cliente paga por transferencia o Mercado Pago y entra con código por correo.
 
 ### Bitácora de Tueste
 
@@ -91,7 +91,7 @@ Cada tueste registra objetivo, curva y evaluación sensorial. La curva se captur
 - **Tienda**: checkout, cuenta del cliente, cupones, reseñas.
 - **Inventario**: empacado y a granel por lote, con frescura.
 - **Producción**: tuestes, merma, mezclas.
-- **Cataciones**: sesiones a ciegas entre catadores.
+- **Cataciones**: sesiones a ciegas de varios cafés entre catadores.
 - **Envíos**: rastreo y etiqueta imprimible.
-- **Finanzas**: comisiones, gastos y resultado del periodo.
+- **Finanzas**: comisiones, gastos, resultado del periodo.
 - **Reportes**: por canal, producto, cliente y rentabilidad.

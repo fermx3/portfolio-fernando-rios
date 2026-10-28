@@ -1,7 +1,7 @@
 ---
 title: "Sitio Web de Portfolio"
 summary: "Portfolio bilingüe con Next.js, contenido en archivos Markdown validados con Zod y un asistente de IA que responde preguntas sobre los proyectos."
-description: "Sitio inglés/español con generación estática donde cada proyecto es un par de archivos Markdown. Incluye búsqueda, filtros por categoría y tag, galería con lightbox, tema claro/oscuro, metadatos SEO por idioma y una única ruta dinámica para un asistente de Claude con streaming."
+description: "Sitio inglés/español con generación estática donde cada proyecto es un par de archivos Markdown. Incluye búsqueda, filtros por categoría y tag, galería con lightbox, tema claro/oscuro, metadatos SEO por idioma y rutas de API para un asistente de Claude con streaming."
 objective: "Publicar proyectos en dos idiomas escribiendo archivos de contenido, no código."
 impact: "Publicar un proyecto es escribir dos archivos de texto, uno por idioma, y hacer push: la página, su entrada en el listado y las dos versiones se generan a partir de ellos. Los visitantes pueden preguntarle al asistente por cualquier proyecto en vez de leer cada página."
 date: "2026-01-08"
@@ -23,6 +23,7 @@ technologies:
   - "next-themes"
   - "Claude API"
   - "Resend"
+  - "Upstash Redis"
   - "Vercel"
 liveUrl: "https://www.fernandorios.dev/"
 repoUrl: "https://github.com/fermx3/portfolio-fernando-rios"
@@ -42,7 +43,7 @@ solutions:
   - "System prompt y tools definidos en servidor, roles en whitelist, límite por IP"
 results:
   - "Agregar un proyecto toma un archivo Markdown por idioma"
-  - "Todas las páginas salvo el endpoint del asistente se generan estáticamente"
+  - "Todas las páginas se generan estáticamente"
 ---
 
 ## Resumen
