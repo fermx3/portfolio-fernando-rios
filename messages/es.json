@@ -2,67 +2,66 @@
   "navigation": {
     "home": "Inicio",
     "projects": "Proyectos",
-    "about": "Acerca",
+    "about": "Sobre mí",
     "contact": "Contacto",
     "toggleMenu": "Abrir menú"
   },
   "hero": {
-    "name": "Fernando Rios",
-    "role": "ML Engineer y Desarrollador Full-Stack",
-    "specialties": "Machine Learning · Full-Stack · Sistemas en producción",
+    "name": "Fer Rios",
+    "role": "Desarrollador full-stack y ML Engineer",
     "description": "Del prototipo a producción: entreno el modelo, lo despliego y construyo la interfaz donde se usa.",
     "cta": {
-      "primary": "Ver Proyectos",
+      "primary": "Ver proyectos",
       "secondary": "Contactar"
     }
   },
   "projects": {
-    "title": "Proyectos Destacados",
-    "subtitle": "Una selección de mi trabajo reciente en ciencia de datos, aprendizaje automático y desarrollo full-stack",
-    "viewMore": "Ver Todos los Proyectos",
+    "title": "Proyectos destacados",
+    "subtitle": "Una selección de mi trabajo reciente en ciencia de datos, Machine Learning y desarrollo full-stack",
+    "viewMore": "Ver todos los proyectos",
     "filters": {
       "all": "Todos",
-      "data-science": "Ciencia de Datos",
-      "full-stack": "Full-Stack",
+      "data-science": "Ciencia de datos",
+      "full-stack": "Full-stack",
       "ml": "Machine Learning",
       "visualization": "Visualización",
-      "web-development": "Desarrollo Web",
-      "backend-development": "Desarrollo Backend",
+      "web-development": "Desarrollo web",
+      "backend-development": "Desarrollo backend",
       "categories": "Categorías",
       "tags": "Etiquetas",
       "activeFilters": "Filtros activos"
     },
-    "empty": "No Hay Proyectos Destacados",
-    "emptyDescription": "Actualmente no hay proyectos destacados para mostrar. ¡Vuelve pronto para ver nuevos desarrollos emocionantes!",
+    "empty": "No hay proyectos destacados",
+    "emptyDescription": "Por ahora no hay proyectos destacados.",
     "search": {
       "placeholder": "Buscar proyectos...",
       "clear": "Limpiar búsqueda"
     },
     "sort": {
       "featured": "Destacados",
-      "newest": "Más Recientes",
+      "newest": "Más recientes",
       "category": "Categoría"
     },
     "links": {
-      "demo": "Ver Demo",
-      "repo": "Ver Código",
-      "repoPrivate": "Repo Privado",
-      "details": "Leer Más"
+      "demo": "Ver demo",
+      "repo": "Ver código",
+      "repoPrivate": "Repo privado",
+      "details": "Leer más"
     },
     "page": {
-      "backToHome": "Volver al Inicio",
-      "backToProjects": "Volver a Proyectos",
-      "allProjects": "Todos los Proyectos",
-      "allProjectsDescription": "Explora mi portafolio completo de ciencia de datos y proyectos de desarrollo.",
+      "backToHome": "Volver al inicio",
+      "backToProjects": "Volver a proyectos",
+      "allProjects": "Todos los proyectos",
+      "allProjectsDescription": "Todos los proyectos, con filtros por categoría y tecnología.",
       "projectsFound": "proyectos encontrados",
       "projectFound": "proyecto encontrado",
       "clearAllFilters": "Limpiar todos los filtros"
     },
     "project": {
-      "viewDemo": "Ver Demo",
-      "viewCode": "Ver Código",
-      "viewCodePrivate": "Repositorio Privado",
-      "details": "Detalles del Proyecto",
+      "viewDemo": "Ver demo",
+      "viewCode": "Ver código",
+      "viewCodePrivate": "Repositorio privado",
+      "details": "Detalles del proyecto",
       "objective": "Objetivo",
       "theme": "Tema",
       "date": "Fecha",
@@ -73,8 +72,8 @@
       "galleryPrevious": "Imagen anterior",
       "galleryNext": "Imagen siguiente",
       "galleryImageLabel": "Imagen {current} de {total}",
-      "challenges": "El Reto",
-      "solutions": "El Enfoque",
+      "challenges": "Retos",
+      "solutions": "Cómo se resolvió",
       "results": "Resultados",
       "impact": "Impacto"
     },
@@ -84,27 +83,27 @@
     }
   },
   "about": {
-    "title": "Acerca de Mí",
+    "title": "Sobre mí",
     "aboutMe": "Sobre mí",
-    "role": "ML Engineer y Desarrollador Full-Stack",
-    "bio": "ML Engineer con experiencia end to end: entreno modelos, los despliego en producción y automatizo los pipelines con MLOps. Vengo del desarrollo full-stack, así que para mí un modelo no termina en una métrica de validación. Termina en una interfaz donde alguien lo usa para decidir algo.",
+    "role": "Desarrollador full-stack y ML Engineer",
+    "bio": "Llegué al Machine Learning desde el desarrollo web: cinco años como freelance full-stack, dos en Trust & Safety de TikTok y, en 2025, el bootcamp de Ciencia de Datos e IA de Le Wagon.",
     "expertise": {
       "title": "Qué puedo cubrir",
-      "body": "Puedo tomar un problema de datos, entrenar un modelo, desplegarlo en GCP o AWS con CI/CD y construir el dashboard donde lo usa el usuario final. El ciclo completo, del problema al producto."
+      "body": "Clasificación de imágenes con transfer learning en TensorFlow y pronóstico de demanda con Prophet, servidos con FastAPI y Docker, con dashboards en Streamlit; el pronóstico corre en GCP Cloud Run. En las apps web, CI con tests de integración y despliegue continuo en Vercel."
     },
     "experience": {
       "title": "Experiencia",
       "items": [
         {
           "organization": "TikTok",
-          "role": "QA Analyst, Trust & Safety",
-          "date": "Abril 2024 - Julio 2026",
-          "description": "Análisis de calidad sobre decisiones de moderación a escala, en una plataforma con una base de usuarios masiva."
+          "role": "QA Analyst, Trust & Safety · antes Content Moderator",
+          "date": "abril 2024 – julio 2026",
+          "description": "Moderación de contenido y, después, análisis de calidad sobre decisiones de moderación a escala."
         },
         {
           "organization": "Freelance",
           "role": "Desarrollador Full-Stack",
-          "date": "Septiembre 2021 - Presente",
+          "date": "septiembre 2021 – Presente",
           "description": "Construyendo y entregando aplicaciones web completas para clientes, de la base de datos a la interfaz."
         }
       ]
@@ -114,19 +113,19 @@
       "body": "Construyo Nebluna Café, mi marca de café tostado. De ahí salió Nebluna Analytics: el sistema de pronóstico de demanda que aparece en los proyectos, hecho para resolver un problema real del negocio. Abierto a roles de ML Engineer y a proyectos freelance de ML o data end to end."
     },
     "techStack": {
-      "title": "Stack Tecnológico",
+      "title": "Stack tecnológico",
       "frontend": "Frontend",
       "backend": "Backend",
       "data": "Datos y ML",
       "tools": "Herramientas"
     },
     "education": {
-      "title": "Educación y Certificaciones",
+      "title": "Educación y certificaciones",
       "items": [
         {
           "institution": "Le Wagon",
           "program": "Bootcamp de Ciencia de Datos e IA",
-          "date": "Graduado el 15 de Noviembre de 2025",
+          "date": "Graduado el 15 de noviembre de 2025",
           "topics": [
             "Python",
             "Deep Learning",
@@ -141,11 +140,11 @@
   },
   "contact": {
     "title": "Contacto",
-    "subtitle": "Hablemos sobre tu próximo proyecto u oportunidad de colaboración",
+    "subtitle": "Si buscas un ML Engineer o necesitas un proyecto freelance de Machine Learning o datos, escríbeme.",
     "assistant": {
-      "title": "Pregúntale a mi portfolio",
+      "title": "Pregúntale a mi portafolio",
       "aiLabel": "IA",
-      "intro": "Pregunta por los proyectos de este sitio y te respondo con lo que está escrito aquí, enlazando el proyecto del que sale la respuesta. Si prefieres hablar con Fernando, dímelo y le paso tus datos.",
+      "intro": "Pregunta por los proyectos de este sitio y te respondo con lo que está escrito aquí, enlazando el proyecto del que sale la respuesta. Si prefieres hablar con Fer, dímelo y le paso tus datos.",
       "placeholder": "Pregunta por un proyecto…",
       "send": "Enviar",
       "thinking": "Leyendo los proyectos…",
@@ -159,21 +158,21 @@
         "generic": "Algo falló de mi lado.",
         "rateLimited": "Van muchas preguntas en poco rato. Dale unos minutos.",
         "unavailable": "El asistente está fuera de servicio ahora mismo.",
-        "emailInstead": "Escríbele directamente a Fernando"
+        "emailInstead": "Escríbele directamente a Fer"
       }
     },
     "direct": {
       "title": "O contáctame directamente:",
-      "email": "Enviar Email",
+      "email": "Enviar email",
       "note": {
-        "title": "Respuesta Rápida",
-        "description": "Normalmente respondo los correos electrónicos en un plazo de 24 horas. ¡Hablemos sobre cómo podemos trabajar juntos!"
+        "title": "Correo directo",
+        "description": "Para propuestas concretas o si prefieres no usar el asistente."
       }
     }
   },
   "footer": {
     "copyright": "Construido con Next.js, TypeScript y Tailwind CSS",
-    "rights": "© {year} Fernando Rios. Todos los derechos reservados."
+    "rights": "© {year} Fer Rios. Todos los derechos reservados."
   },
   "theme": {
     "toggle": "Cambiar tema"
@@ -182,15 +181,15 @@
     "toggle": "Cambiar idioma"
   },
   "metadata": {
-    "title": "Fernando Ríos - ML Engineer y Desarrollador Full-Stack",
-    "description": "ML Engineer que entrena, despliega y monitorea modelos en producción. Full-stack Python, Cloud, MLOps. Ex-QA Analyst en TikTok, 5 años freelance.",
-    "siteName": "Portafolio de Fernando Ríos",
+    "title": "Fer Rios - Desarrollador full-stack y ML Engineer",
+    "description": "Desarrollador full-stack y ML Engineer: apps web con Next.js y modelos de visión por computadora y pronóstico servidos con FastAPI. Ex-QA Analyst en TikTok, 5 años freelance.",
+    "siteName": "Portafolio de Fer Rios",
     "keywords": [
       "ciencia de datos",
       "desarrollo full-stack",
       "machine learning",
       "desarrollo web",
-      "Fernando Ríos"
+      "Fer Rios"
     ]
   },
   "notFound": {

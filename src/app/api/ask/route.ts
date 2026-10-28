@@ -159,8 +159,8 @@ export async function POST(request: Request) {
 }
 
 const REFUSAL = {
-  en: "I can't help with that one. Ask me about Fernando's projects instead.",
-  es: "No puedo ayudarte con eso. Pregúntame por los proyectos de Fernando.",
+  en: "I can't help with that one. Ask me about Fer's projects instead.",
+  es: "No puedo ayudarte con eso. Pregúntame por los proyectos de Fer.",
 } as const;
 
 async function runTool(name: string, input: unknown, ip: string): Promise<string> {

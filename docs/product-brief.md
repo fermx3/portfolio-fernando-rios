@@ -181,12 +181,12 @@ Tras renderizar `challenges`/`solutions`/`results`, la página de proyecto pasó
   - Los otros 4 se resolvieron por **posición, no por recorte**: `## Impact` era la última sección del cuerpo, así que al renderizar las viñetas el cierre quedaba _antes_ de Reto/Enfoque/Resultados y la historia volvía a empezar tras la conclusión. Ahora es un campo `impact` del frontmatter que se renderiza al final de la página, con tratamiento visual propio
 - Cuerpos entre 204 y 752 palabras, media 464. Ninguno excesivo para una página de detalle
 
-## 5. Correcciones al README
+## ~~5. Correcciones al README~~ · resuelto 2026-10-28
 
-Dos afirmaciones del `README.md` que no se sostienen:
+Dos afirmaciones del `README.md` que no se sostenían. Resuelto:
 
-1. **"MDX Content Management"** — el pipeline real es **Markdown**: `gray-matter` para el frontmatter y `markdown-it` para el cuerpo, inyectado con `dangerouslySetInnerHTML`. No existe `mdx-components.tsx` y ninguna dependencia MDX se importa. El contenido no puede incluir JSX.
-2. **"SEO Optimized"** — cierto en SEO técnico de página aislada (Lighthouse SEO 100), pero un sitio bilingüe sin hreflang no está optimizado. Ver P1.
+1. ~~**"MDX Content Management"**~~ · resuelto 2026-10-28. El pipeline real es **Markdown**: `gray-matter` para el frontmatter y `markdown-it` para el cuerpo, inyectado con `dangerouslySetInnerHTML`. No existe `mdx-components.tsx` y ninguna dependencia MDX se importa; el contenido no puede incluir JSX. El README ya lo describe así: sin badge de MDX, y "Markdown Content" en Features y en el stack.
+2. ~~**"SEO Optimized"**~~ · resuelto 2026-10-28. Era cierto solo en SEO técnico de página aislada (Lighthouse SEO 100), porque el sitio no tenía hreflang. Con P1 resuelto, el README dice lo que hay: metadatos por idioma, hreflang y sitemap.
 
 ---
 

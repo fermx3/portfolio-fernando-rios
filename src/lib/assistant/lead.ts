@@ -12,7 +12,7 @@ const RESEND_ENDPOINT = "https://api.resend.com/emails";
 export const CAPTURE_LEAD_TOOL: Anthropic.Tool = {
   name: "capture_lead",
   description:
-    "Forward a visitor's contact details to Fernando. Call this only after the visitor has given you their name and their email address in the conversation. Never fill in an email you were not given.",
+    "Forward a visitor's contact details to Fer. Call this only after the visitor has given you their name and their email address in the conversation. Never fill in an email you were not given.",
   input_schema: {
     type: "object",
     properties: {
@@ -130,7 +130,7 @@ export async function captureLead(input: unknown): Promise<LeadResult> {
       };
     }
 
-    return { ok: true, message: "Delivered. Fernando will see it in his inbox." };
+    return { ok: true, message: "Delivered. Fer will see it in his inbox." };
   } catch {
     console.error("[assistant] resend request failed");
     return {

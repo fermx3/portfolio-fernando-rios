@@ -5,7 +5,7 @@ import { AUTHOR } from "@/lib/site";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-export const alt = "Fernando Rios";
+export const alt = "Fer Rios";
 
 // One image per locale, inherited by every page under [locale], so sharing any
 // URL yields a card with an image -- twitter:card was already declared as
