@@ -57,7 +57,7 @@ Los proyectos son MDX en `content/projects/`, con frontmatter validado por Zod e
 
 ## El asistente (`/api/ask`)
 
-La tarjeta de contacto es un chat sobre los proyectos. **Es la única ruta dinámica pública del sitio** (la otra, `/api/cron/keepalive`, solo responde al cron de Vercel); todo lo demás sigue siendo SSG y debe seguir siéndolo.
+La tarjeta de contacto es un chat sobre los proyectos. **Es la única ruta dinámica pública que ejecuta lógica propia.** Hay otras dos dinámicas: `/api/cron/keepalive`, que solo responde al cron de Vercel, y `/[locale]/opengraph-image`, que Next renderiza bajo demanda aunque declare `generateStaticParams` (la CDN cachea la imagen). Todas las páginas HTML son SSG y deben seguir siéndolo.
 
 - **Sin base vectorial.** El corpus va entero en el system prompt (`src/lib/assistant/corpus.ts`): los proyectos completos, cuerpo incluido, más el perfil de Fernando, que `buildProfile()` lee de `messages/{en,es}.json` para no duplicar lo que ya renderiza la sección About. Del orden de 20k tokens por idioma. Si crece mucho, lo primero que hay que revisar es esa decisión, no añadir retrieval por reflejo.
 - **La cifra de tokens se mide, no se estima.** Cambia con cada proyecto que se agrega o se reescribe, así que no confíes en el número de arriba: el handler registra `cache_read` y `cache_write` en cada petición, y la primera pregunta en frío de un idioma imprime el tamaño real de su prefijo cacheado.
