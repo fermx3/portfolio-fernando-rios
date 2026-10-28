@@ -1,10 +1,10 @@
 ---
 title: "Nebluna Inventory & Sales"
-summary: "Operations system and online store for a specialty coffee micro-roastery in Mexico City. Covers the full cycle, from green coffee and roasting to the order paid on the web, packaging, shipping and reporting. Two Next.js 16 apps on a single Supabase database."
-description: "A monorepo with two apps on the same PostgreSQL database: the operations panel, multi-role, and the public store, which takes payment through Mercado Pago and turns every order into a panel sale. The business rules are enforced in the database rather than in the forms: constraints and triggers prevent negative stock, every sale references a specific lot, and roasting shrinkage is measured per batch. 230 versioned migrations, Row Level Security on every table, and a CI pipeline that rebuilds the database from scratch for every pull request that touches it."
-objective: "Move the operation off a spreadsheet and onto a system where the database enforces the business rules; sell online without keeping a second inventory; and record each roast with enough data to repeat it or correct it."
-theme: "Operations, e-commerce and roast logging software for specialty coffee production."
-impact: "Lot-level traceability from the green coffee to the online order, a real cost per kilo with shrinkage and channel fees accounted for, and a roast log that shows what was decided last time before roasting the same coffee again."
+summary: "Operations system and online store for a specialty coffee micro-roastery in Mexico City, from green coffee and roasting to sales, shipping and reporting. Two Next.js apps on a single Supabase database."
+description: "A monorepo with the operations panel and the public store on the same PostgreSQL database. Business rules live in the database rather than in the forms, so stock, lots and costs stay consistent whichever app writes them."
+objective: "Move the operation off a spreadsheet, sell online without keeping a second inventory, and record each roast with enough data to repeat it."
+theme: "Operations, e-commerce and roast logging software for specialty coffee."
+impact: "Traceability by lot from the green coffee to the online order, a real cost per kilo, and a roast log that shows what was decided last time before roasting the same coffee again."
 date: "2026-08-20"
 status: "production"
 featured: true
@@ -17,17 +17,12 @@ technologies:
   - "Supabase"
   - "PostgreSQL"
   - "Row Level Security"
-  - "pnpm workspaces"
-  - "Mercado Pago Checkout Pro"
-  - "Resend"
+  - "Mercado Pago"
   - "React Query"
   - "Tailwind CSS 4"
   - "shadcn/ui"
-  - "Recharts"
-  - "React PDF"
   - "Zod"
   - "Vitest"
-  - "GitHub Actions"
   - "Vercel"
 repoUrl: "https://github.com/fermx3/nebluna"
 repoPrivate: true
@@ -59,65 +54,54 @@ images:
     type: "mobile"
     alt: "Coffee product page in the store, choosing ground or whole bean"
 challenges:
-  - "Stock cannot be allowed to go negative, and a spreadsheet has no way to prevent it"
-  - "Roasting loses 12 to 20% of the green weight, so cost per kilo depends on measuring shrinkage on every batch"
-  - "Administration and sales reps share the same data with opposing needs: one works in costs and margins, the others must not see them, or each other's"
-  - "The online store sells from the same stock as the panel, and a payment confirmed by Mercado Pago can arrive late, twice, or for an amount that does not match the order"
-  - "The free Supabase plan offers no accessible backups, and a database with months of operation had none"
-  - "Applying 230 migrations to a database already in use without the files and the remote registry drifting apart"
+  - "Stock cannot go negative, and a spreadsheet has no way to prevent it"
+  - "Cost per kilo depends on the weight lost in every roast"
+  - "Administration and sales reps share the same data, but only administration may see costs and margins"
+  - "The store sells from the same stock as the panel, and online payments can arrive late or more than once"
 solutions:
-  - "Constraints and triggers in PostgreSQL: the database refuses the write instead of the form validating it"
-  - "Shrinkage is recorded per roast as green weight in minus roasted weight out, and cost per kilo is derived from that"
-  - "Row Level Security on every table, with the permission enforced in the database rather than in the interface"
-  - "Every store order becomes a panel sale. The Mercado Pago webhook is verified by HMAC signature, and the payment is recorded once in the database, which flags overpayments, mismatched amounts and payments on cancelled orders"
-  - "A nightly workflow dumps the database and Storage, encrypts them with age, and every Monday restores them into a disposable Supabase and compares row counts"
-  - "A single documented path for applying migrations, with an automated guard that compares the files against the remote registry"
+  - "Constraints and triggers in PostgreSQL: the database refuses an invalid write instead of the form catching it"
+  - "Shrinkage is recorded per roast and the cost per kilo is derived from it"
+  - "Row Level Security on every table, so permissions hold in the database and not only in the interface"
+  - "Every store order becomes a panel sale, and each payment is recorded exactly once"
 results:
-  - "230 versioned migrations and a drift guard in CI"
-  - "883 unit tests, 191 component tests and 85 integration suites against an ephemeral database built from scratch"
-  - "GitHub Actions minutes cut in half after an audit, without dropping any pull request gate"
-  - "Lighthouse gates: accessibility and best practices at 0.95, performance at 0.60"
-  - "Login page cut from 6.2 MB to roughly 760 KB by self-hosting the icon font and optimizing the logos"
+  - "One database serving both the panel and the store"
+  - "Unit, component and integration tests, the latter against a database rebuilt from scratch in CI"
+  - "Versioned migrations with an automated check against production"
 ---
 
 ## Project Overview
 
-**Nebluna** is the operations system and online store of a specialty coffee micro-roastery in Mexico City. It covers the full product cycle: green coffee intake, roasting, bulk stock, packaging, sales across configurable channels, the online store, shipping and reporting. It is a monorepo with two **Next.js 16** (App Router) apps in **TypeScript** on a single **Supabase** database, and it replaces the spreadsheet the business had been running on.
+**Nebluna** is the operations system and online store of a specialty coffee micro-roastery in Mexico City. It covers green coffee intake, roasting, packaging, sales, shipping and reporting, and replaces the spreadsheet the business ran on. It is a monorepo with two **Next.js** apps in **TypeScript** on a single **Supabase** database.
 
 ## Technical Implementation
 
-### Data Model & Integrity
+### Data Model
 
-230 versioned migrations define the schema in **PostgreSQL**. Business rules are enforced in the database rather than in the forms: constraints and triggers prevent stock from going negative, every sale references a specific packaged-inventory row, and a blend deducts from its source lots through a single canonical path. Supplies are costed FIFO by layers, so registering a purchase does not rewrite the margin of months already reported. Business dates are stored as `DATE` rather than `TIMESTAMPTZ`, and rows are always related by foreign key, never by matching text.
+The schema lives in versioned **PostgreSQL** migrations. Business rules are enforced in the database: stock cannot go negative, every sale points to a specific lot, and a blend deducts from its source lots through a single path. Supplies are costed FIFO, so a new purchase does not rewrite past margins.
 
-### Roles & Security
+### Roles
 
-Two roles with different products: administration sees financials, costs and settings; each sales rep sees the catalogue, their own sales and their own commissions, and nothing belonging to anyone else. The separation is enforced by **Row Level Security** policies on every table, so it holds even if a route guard fails. New users join by invitation, and removing one closes their access.
+Administration sees finances, costs and settings. Each sales rep sees the catalogue, their own sales and their own commissions. **Row Level Security** enforces the split on every table.
 
 ### Online Store
 
-A second app in `apps/tienda`, on the same database and deployed separately. The customer browses the catalogue, picks ground or whole bean, pays by bank transfer or through **Mercado Pago Checkout Pro**, and follows the order from a link. The account is the verified email: the customer signs in with a six-digit code, with no registration, on tables separate from the panel's Auth. Orders and codes are rate limited per IP, stored as an HMAC rather than in plain text. Coupons, a free-shipping threshold and reviews with a public link are managed from the panel, and the owner is notified by email through **Resend** of orders, payments and reviews.
+A second app on the same database. Customers browse the catalogue, choose ground or whole bean, and pay by bank transfer or **Mercado Pago**. Each order becomes a sale in the panel, so there is only one inventory. Customers sign in with a code sent to their email, with no password. Coupons and reviews are managed from the panel.
 
-### Roast Log
+### Roast Log & Cupping
 
-Each roast can record its target before roasting, the green coffee analysis, the curve, and a sensory evaluation afterwards. The curve is captured by hand on the phone in real time, with a clock that survives a reload and the rate of rise drawn live, or imported from an **Artisan** `.alog` file. A roast can follow a reference curve, and when registering the next roast of the same coffee the app shows what was decided last time. Cupping sessions evaluate several coffees at once, system lots or guest coffees, with external tasters invited by link and blind tasting chosen per session.
-
-### Interface
-
-**React Query** for server state, **react-hook-form** with **Zod** for forms, and **shadcn/ui** over **Tailwind CSS 4**. Charts in **Recharts**. A print group renders a letter-sized sale ticket and a 15 × 10 cm shipping label, also as a PDF. Mobile first, with the dense screens, reports and reconciliation, designed for a desktop.
+Each roast can record a target, a curve and a sensory evaluation. The curve is captured on the phone during the roast or imported from **Artisan**, and can be compared against a reference profile. Cupping sessions evaluate several coffees side by side, blind if needed, including coffees from other roasters.
 
 ### Testing & CI
 
-883 unit tests, 191 component tests and 85 integration suites covering RLS policies, the sale lifecycle, commissions, repackaging, reconciliation, the store and its Mercado Pago payments, and date handling. Five GitHub Actions workflows: lint blocking at zero errors, integration against a Supabase stack built from scratch inside the runner, a weekly Lighthouse audit, a guard that compares the migrations against the remote registry, and the nightly backup. Integration only runs when a pull request touches the database or its tests.
+Unit, component and integration tests with **Vitest**. GitHub Actions runs lint, integration tests against a database built from scratch, a migration check against production, and a nightly encrypted backup.
 
 ## Functionality
 
-- **Sales**: a guided flow, configurable channels with the percentage and fixed fee each one charges (Mercado Libre included), retail and wholesale pricing, partial payments, customer credit, cancellation and a printable ticket.
-- **Online store**: catalogue and product page, bag, checkout, Mercado Pago, customer account with past orders and addresses, coupons and reviews.
-- **Inventory**: packaged and bulk stock broken down by lot, with resting time and a configurable freshness limit, and bag assignment to sales reps, who confirm receipt in the app.
-- **Production**: roast records with green weight, roasted weight, shrinkage and a derived cost per kilo, blends built from several source lots, and the roast log.
-- **Cupping**: sessions with several coffees, guest coffees, external tasters and comparison against previous evaluations.
-- **Shipping**: delivery decided by the channel, shipment record with tracking and its own label.
-- **Finance**: commissions with a settlement history, business expenses split across roasts, and the result for the period.
-- **Reconciliation**: physical inventory counts and count requests sent to sales reps.
-- **Reports**: by channel, product, customer, freshness, profitability, collections, pricing and sales rep.
+- **Sales**: guided flow, configurable channels, retail and wholesale pricing, partial payments and a printable ticket.
+- **Online store**: catalogue, checkout, Mercado Pago, customer account, coupons and reviews.
+- **Inventory**: packaged and bulk stock by lot, with freshness tracking.
+- **Production**: roasts, shrinkage, cost per kilo, blends and the roast log.
+- **Cupping**: multi-coffee sessions with comparison between tasters.
+- **Shipping**: shipment records with tracking and a printable label.
+- **Finance**: commissions, expenses and the result for each period.
+- **Reports**: by channel, product, customer, freshness and profitability.
