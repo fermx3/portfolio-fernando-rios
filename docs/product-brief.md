@@ -149,7 +149,9 @@ Criterios de aceptación:
 >
 > Esa comprobación es la que decide el modelo, no la lista de arriba. Y con ella hay que rehacer la sección con la estructura que acabó teniendo la fase 1: contexto verificado, decisiones con su porqué, superficie de ataque y criterios comprobables. Aplica casi todo lo aprendido —rate limit, degradación, entrada no confiable— con un agravante: aquí el visitante **sube un fichero**, así que el riesgo es mayor que en el chat, no menor.
 
-### Capturas de `nebluna-app` · pendiente
+### ~~Capturas de `nebluna-app`~~ · resuelto 2026-10-28
+
+> Resuelto: las 9 capturas de la tabla sustituyeron a las 7 de agosto, sacadas del demo local con la UI actual. Lo de abajo queda como guía para la próxima vez que cambie la UI.
 
 La entrada se reescribió el 2026-10-28 (tienda en línea, bitácora de tueste, cataciones, respaldos), pero las 7 imágenes son de agosto: enseñan el diseño anterior y nada de lo nuevo. Se sacan del demo local (seed de `supabase/seed_demo.sql`, usuario `demo-owner@nebluna.test`), nunca de producción. **Se sustituyen las 7, sin excepción**: ninguna imagen de la UI anterior se queda.
 
