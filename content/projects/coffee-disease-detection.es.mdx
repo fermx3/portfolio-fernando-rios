@@ -1,10 +1,9 @@
 ---
 title: "Coffee Disease Detection"
-summary: "Sistema de visión computacional que identifica enfermedades en plantas de café a partir de imágenes de hojas usando arquitecturas CNN, desplegado como API en producción."
-description: "Sistema de machine learning que clasifica imágenes de hojas de café en cinco categorías (saludable, Cercospora, Roya, Minador, Phoma) usando modelos VGG16, EfficientNet y CNN personalizado. Construido como proyecto final del bootcamp de Le Wagon, liderado por un equipo de cuatro personas desde el concepto hasta el despliegue en la nube."
-objective: "Construir un sistema de clasificación confiable que priorice el recall de detección de enfermedades, ayudando a los caficultores a identificar enfermedades de plantas lo suficientemente temprano para actuar."
-theme: "IA aplicada a agricultura de precisión y detección temprana de enfermedades."
-impact: "Le tomas una foto a una hoja y te dice si la planta está sana o enferma. No da solo la respuesta: dice qué tan seguro está, y avisa cuando duda. Está ajustado para preferir una falsa alarma antes que dejar pasar una enfermedad."
+summary: "Clasificador de visión computacional que detecta cuatro enfermedades de la hoja de café a partir de una foto, con transfer learning en TensorFlow y servido por un servicio FastAPI."
+description: "Clasifica hojas en cinco clases (saludable, Cercospora, Roya, Minador, Phoma). Compara VGG16, EfficientNetB0 y una CNN propia, registra los experimentos en MLflow y guarda los modelos en Google Cloud Storage. Proyecto final en equipo del bootcamp de Data Science & AI de Le Wagon."
+objective: "Detectar temprano enfermedades del café, aceptando falsas alarmas antes que infecciones no detectadas."
+impact: "Un caficultor fotografía una hoja y obtiene la clase predicha con la probabilidad de cada clase. El entrenamiento prefiere una falsa alarma a una enfermedad no detectada."
 date: "2025-11-15"
 status: "production"
 featured: true
@@ -12,12 +11,13 @@ category: "ml"
 tags: ["Visión Computacional","Deep Learning","Agricultura","CNN","TensorFlow","FastAPI","Streamlit"]
 technologies:
   - "TensorFlow/Keras"
-  - "VGG16 Transfer Learning"
+  - "VGG16"
   - "EfficientNetB0"
   - "FastAPI"
   - "Streamlit"
   - "MLflow"
   - "Docker"
+  - "Google Cloud Storage"
   - "Python"
 liveUrl: "https://coffeedd-web-lewagon.streamlit.app/"
 repoUrl: "https://github.com/fermx3/coffee-disease-detection"
@@ -26,77 +26,40 @@ images:
   - "/images/projects/coffee-disease-detection/disease-classification.jpg"
   - "/images/projects/coffee-disease-detection/streamlit-app.jpg"
 challenges:
-  - "Distinguir entre enfermedades de hojas de café visualmente similares"
-  - "Manejar un dataset desbalanceado donde algunas enfermedades están subrepresentadas"
-  - "Minimizar falsos negativos, ya que una enfermedad no detectada es peor que una falsa alarma"
-  - "Crear un pipeline de preprocesamiento robusto para imágenes capturadas en campo"
+  - "Enfermedades visualmente similares en un dataset desbalanceado"
+  - "Una enfermedad no detectada cuesta más que una falsa alarma"
+  - "Un aumento de datos agresivo puede borrar las señales de color de cada enfermedad"
 solutions:
-  - "Pesos de clase personalizados que penalizan la clasificación errónea de hojas saludables y aumentan la detección de enfermedades raras"
-  - "Enfoque multi-arquitectura comparando VGG16, EfficientNet y CNN personalizado ligero"
-  - "Aumento de datos que preserva las características visuales específicas de cada enfermedad"
-  - "Métrica de recall enfocada en enfermedades como objetivo principal de optimización"
+  - "Pesos de clase según la distribución del train, con refuerzo para la enfermedad más rara"
+  - "Métrica propia de recall de enfermedades que excluye la clase saludable, monitoreada al entrenar"
+  - "Solo flips horizontales y ajustes sutiles de brillo/contraste; tono y saturación intactos"
 results:
-  - "Más del 90% de recall en clases de enfermedad, minimizando detecciones fallidas"
-  - "API de producción desplegada en Google Cloud Platform vía Docker"
-  - "Seguimiento de experimentos MLflow para versionado y comparación de modelos"
-  - "Lideré un equipo de cuatro personas desde la propuesta de idea hasta el despliegue en producción"
+  - "96.8% de recall de enfermedades en el split de test con EfficientNetB0"
+  - "Modelos versionados en el registro de MLflow con etapas Staging y Production"
+  - "Lideré un equipo de cuatro personas en el proyecto"
 ---
 
-## Resumen del Proyecto
+## Resumen
 
-Coffee Disease Detection es un **sistema de visión computacional** que clasifica imágenes de hojas de café en cinco categorías: hojas saludables y cuatro enfermedades (Cercospora, Roya, Minador y Phoma) que pueden reducir significativamente el rendimiento de los cultivos si no se tratan a tiempo.
+Clasifica la foto de una hoja de café como saludable o como una de cuatro enfermedades. El entrenamiento y la selección de modelo apuntan al recall de las clases de enfermedad.
 
-Construido por un equipo de cuatro personas bajo mi liderazgo, desde la preparación del dataset y el entrenamiento de modelos hasta el desarrollo de la API y el despliegue en la nube. Fue uno de los dos proyectos seleccionados como proyecto final en el bootcamp de Data Science & AI de Le Wagon.
+## Implementación Técnica
 
-## El Problema
+### Modelos
 
-Los caficultores frecuentemente identifican enfermedades demasiado tarde, cuando el daño visible ya es extenso. Las cuatro enfermedades objetivo se presentan de forma distinta:
+VGG16 y EfficientNetB0 con pesos de ImageNet, más una CNN propia ligera. El entrenamiento va en dos fases, base congelada y luego fine-tuning, con dropout, early stopping y una tasa de aprendizaje elegida según el tamaño del dataset. El cargador detecta la arquitectura por las capas del modelo guardado.
 
-1. **Cercospora** - enfermedad fúngica que causa manchas marrones en las hojas
-2. **Roya** - pústulas naranjas/amarillas en el envés de las hojas
-3. **Minador** - larvas de insecto que crean túneles visibles a través del tejido de la hoja
-4. **Phoma** - enfermedad fúngica que causa muerte del tejido foliar
+### Datos
 
-Algunas se ven similares en etapas tempranas. El sistema necesita detectar enfermedades temprano, lo que significa optimizar para recall sobre precisión. Una falsa alarma es preferible a una infección no detectada.
+Las imágenes se llevan a 224x224 con letterboxing y se dividen por clase en train, validación y test.
 
-## Arquitectura de Modelos
+### Servicio
 
-### Comparación Multi-Arquitectura
-En lugar de comprometerse con un solo modelo, el proyecto entrena y compara tres arquitecturas:
+FastAPI valida el formato de la imagen, ejecuta la inferencia sobre un modelo en caché y devuelve la clase más la probabilidad de cada clase. La API se distribuye como imagen Docker; los modelos entrenados se suben a Google Cloud Storage.
 
-- **VGG16 Transfer Learning** - pre-entrenado en ImageNet, fine-tuned con medidas anti-overfitting (dropout, early stopping). Proporciona rendimiento base estable.
-- **EfficientNetB0** - optimizado para el balance precisión-eficiencia. Modelo más pequeño con rendimiento competitivo.
-- **CNN Personalizado** - arquitectura ligera diseñada para datasets más pequeños. Útil como benchmark y para despliegue con recursos limitados.
+## Funcionalidad
 
-Cada modelo usa detección automática de arquitectura para carga fluida en tiempo de inferencia.
-
-### Optimización Enfocada en Enfermedades
-
-El insight clave: en una tarea de clasificación médica/agrícola, el costo de los errores es asimétrico. No detectar una enfermedad (falso negativo) es mucho peor que marcar una hoja saludable (falso positivo). El pipeline de entrenamiento refleja esto:
-
-- **Pesos de clase personalizados** que reducen el peso de la clase saludable y aumentan los pesos de enfermedades raras, forzando al modelo a aprender características de enfermedades de forma más agresiva.
-- **Métrica de recall de enfermedades** - una métrica personalizada de TensorFlow que mide recall exclusivamente en clases de enfermedad, ignorando la precisión de clasificación saludable.
-- **Tasas de aprendizaje adaptativas** basadas en tamaño de dataset, con entrenamiento multi-fase (extracción de características congelada, luego fine-tuning completo).
-
-### Pipeline de Datos
-- Preprocesamiento letterboxing a 224x224 manteniendo la relación de aspecto
-- Aumento (rotación, flip, brillo, contraste) que preserva patrones específicos de enfermedades
-- Splitting automático train/validación/test con estratificación
-- Análisis de distribución de clases para informar la estrategia de pesos
-
-## Despliegue
-
-### Backend FastAPI
-Una API RESTful acepta imágenes vía carga de archivos o codificación base64, ejecuta inferencia y retorna la clase predicha con scores de confianza. La API incluye caché de producción para optimización de carga del modelo y manejo integral de errores.
-
-### Frontend Streamlit
-Una [aplicación web](https://github.com/fermx3/coffeedd-web) separada proporciona una interfaz simple de subir-y-predecir, haciendo el sistema accesible a usuarios sin conocimiento técnico.
-
-### Infraestructura
-- **Docker** para despliegue reproducible y containerizado
-- **Google Cloud Platform** para inferencia escalable basada en la nube
-- **MLflow** para seguimiento de experimentos, registro de modelos y versionado
-
-## Equipo y Alcance
-
-Un equipo de cuatro personas a lo largo del ciclo completo: recolección de datos, experimentación de modelos, desarrollo de API y despliegue en producción. Liderazgo del proyecto, cubriendo la dirección técnica, la distribución de tareas y la estructura y documentación del repositorio.
+- Endpoint de carga de imágenes y health check que indica si el modelo está cargado
+- [App de Streamlit](https://github.com/fermx3/coffeedd-web) aparte para subir fotos y predecir
+- Evaluación con matriz de confusión y análisis de falsos negativos
+- Comandos de entrenamiento, evaluación y predicción como targets de Make

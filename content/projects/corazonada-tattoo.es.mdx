@@ -1,10 +1,9 @@
 ---
 title: "Corazonada Tattoo"
-summary: "Sitio web full-stack para un estudio privado de tatuajes con portfolios dinámicos de artistas, sistema de citas y blog integrado."
-description: "Sitio web completo para Corazonada Tattoo, un estudio privado de tatuajes en Playa del Carmen, México. Construido con Next.js y MongoDB, el sitio gestiona portfolios rotativos de artistas invitados, maneja reservas de citas con notificaciones por email y publica contenido de cuidado de tatuajes a través de un blog, todo con animaciones fluidas de Framer Motion."
-objective: "Darle al estudio una presencia digital profesional que muestre a los artistas invitados, agilice la reserva de citas y genere confianza con clientes potenciales antes de que visiten."
-theme: "Estudio de tatuajes moderno con paleta de colores rosa y verde y animaciones fluidas."
-impact: "El estudio ya no depende de Instagram para mostrar su trabajo y recibir citas. Ahora tiene su propio sitio, y cada tatuador invitado tiene una página con lo suyo junto al equipo de casa."
+summary: "Sitio web para un estudio privado de tatuajes en Playa del Carmen, hecho con Next.js y MongoDB, con portfolios de artistas invitados, blog de cuidados y contacto por WhatsApp."
+description: "Los perfiles de artistas y las entradas del blog viven en MongoDB y se renderizan como páginas estáticas. La portada combina un hero con video, un carrusel automático del estudio, la cuadrícula de artistas invitados y las entradas destacadas."
+objective: "Mostrar el trabajo de artistas residentes e invitados y llevar las reservas a WhatsApp."
+impact: "El estudio ya no depende de Instagram para mostrar su trabajo. Cada tatuador invitado tiene una página con su portfolio junto al equipo de casa."
 date: "2024-06-11"
 status: "production"
 featured: false
@@ -18,7 +17,7 @@ technologies:
   - "MongoDB"
   - "Tailwind CSS"
   - "Embla Carousel"
-  - "Nodemailer"
+  - "sanitize-html"
 liveUrl: "https://corazonada-tattoo.vercel.app/"
 repoUrl: "https://github.com/fermx3/corazonada-tattoo"
 coverImage: "/images/projects/corazonada-tattoo/cover.jpg"
@@ -28,68 +27,35 @@ images:
   - "/images/projects/corazonada-tattoo/gallery.jpg"
   - "/images/projects/corazonada-tattoo/blog.jpg"
 challenges:
-  - "Gestionar portfolios dinámicos de artistas donde la cantidad de imágenes y artistas invitados cambia frecuentemente"
-  - "Crear experiencias de galería fluidas con vistas modales y navegación por carrusel"
-  - "Implementar un flujo de reservas con validación de formularios y notificaciones por email"
-  - "Construir un diseño responsivo que se sienta nativo en móvil, donde la mayoría de los clientes navegan"
+  - "Los artistas invitados rotan seguido, cada uno con su perfil y portfolio"
+  - "Las imágenes del portfolio deben verse a tamaño completo en móvil y escritorio"
+  - "Los likes del blog no deben inflarse con clics repetidos"
 solutions:
-  - "Sistema de artistas y portfolios respaldado por MongoDB con galerías de imágenes dinámicas"
-  - "Integración de Embla Carousel para navegación de imágenes fluida y touch-friendly"
-  - "Server Actions para procesamiento de formularios con validación Zod y notificaciones Nodemailer"
-  - "Tailwind CSS con layouts de grid responsivo personalizados y enfoque mobile-first"
-results:
-  - "Presencia digital profesional para el estudio, reemplazando redes sociales como canal principal de reservas"
-  - "Proceso de reserva de citas optimizado reduciendo el ida y vuelta con clientes potenciales"
-  - "Los artistas invitados pueden agregarse y rotarse sin cambios de código"
-  - "Experiencia optimizada para móvil para la mayoría de la audiencia del estudio"
+  - "Documentos de artistas en MongoDB, con una página estática generada por artista"
+  - "Cuadrícula de imágenes que abre un carrusel Embla en bucle dentro de un modal"
+  - "Server Action que cuenta un like por visitante, registrado con una cookie"
 ---
 
-## Resumen del Proyecto
+## Resumen
 
-Corazonada Tattoo es un **estudio privado de tatuajes** en Playa del Carmen, México. "Privado" significa solo con cita: cada cliente tiene tiempo dedicado con el artista, y no se aceptan walk-ins. El sitio web sirve como la forma principal en que los clientes potenciales descubren el estudio, previsualian el trabajo de los artistas y reservan sesiones.
+Corazonada Tattoo es un estudio solo con cita en Playa del Carmen que recibe artistas invitados de forma rotativa. El sitio presenta el estudio, sus artistas y un blog de cuidados del tatuaje en español, con un botón flotante de WhatsApp como canal de contacto.
 
-El estudio regularmente recibe artistas invitados de diferentes ciudades y países. El sitio necesitaba manejar esta rotación de forma fluida: los artistas van y vienen, cada uno con su propio portfolio, biografía e información de reserva.
+## Implementación Técnica
 
-## Sistema de Portfolio de Artistas
+### Capa de datos
+Server Actions consultan las colecciones de artistas y entradas. Las rutas de artistas y entradas se generan con `generateStaticParams`, y un slug desconocido devuelve 404.
 
-Cada artista tiene una página dedicada con su biografía, especialización y una galería de su trabajo. El sistema está respaldado por MongoDB, así que agregar un nuevo artista invitado o actualizar un portfolio no requiere un despliegue. Es una operación de datos.
+### Páginas de artista
+Cada perfil combina una imagen de portada, una tarjeta con la biografía y una cuadrícula de portfolio. Los artistas marcados como privados quedan fuera del listado de invitados y se sirven con `noindex`.
 
-### Experiencia de Galería
-Los portfolios de tatuajes son inherentemente visuales. La galería usa Embla Carousel para navegación horizontal y abre imágenes en una vista modal para inspección detallada. En móvil, los gestos táctiles se sienten nativos: deslizar para navegar, las interacciones de pinch se manejan con gracia, y el modal se adapta al tamaño de pantalla.
+### Blog
+El HTML de cada entrada guardado en la base se sanitiza antes de renderizarse. El contador de likes se actualiza con una Server Action que revalida la página de la entrada.
 
-### Imágenes de Alta Resolución
-La fotografía de tatuajes necesita detalle. Las imágenes se sirven a través del componente Image de Next.js con dimensionamiento responsivo y carga diferida para equilibrar calidad contra rendimiento de carga de página.
+## Funcionalidad
 
-## Flujo de Reservas
-
-El sistema de reserva de citas recopila información del cliente a través de un formulario de contacto validado:
-- **Esquemas Zod** validan el input antes del envío
-- **Server Actions** procesan el formulario y almacenan el envío en MongoDB
-- **Nodemailer** envía emails de confirmación tanto al estudio como al cliente
-- **Integración WhatsApp** proporciona un canal de contacto directo alternativo
-
-El formulario captura suficiente detalle (artista preferido, idea del tatuaje, ubicación, tamaño) para reducir el ida y vuelta de la consulta inicial.
-
-## Blog
-
-Un blog integrado publica contenido de cuidado de tatuajes: guías de cuidado posterior para tatuajes nuevos, spotlights de artistas y actualizaciones del estudio. Esto sirve tanto como herramienta de generación de confianza para clientes potenciales como motor SEO para descubrimiento orgánico.
-
-## Arquitectura Técnica
-
-### Frontend
-- **Next.js** con App Router para SSR/SSG y rendimiento óptimo
-- **React** con hooks modernos y arquitectura orientada a componentes
-- **Framer Motion** para transiciones de página, animaciones de scroll y elementos interactivos
-- **Tailwind CSS** para estilado responsivo con la paleta de colores personalizada del estudio (rosa, verde, tinta)
-
-### Backend
-- **MongoDB** almacenando perfiles de artistas, imágenes de portfolio, envíos de contacto y contenido del blog
-- **Server Actions** para manejo de formularios y operaciones de base de datos
-- **Nodemailer** para emails transaccionales vía SMTP
-- **Next.js Image** con optimización, carga diferida y formatos responsivos
-
-### Componentes Clave
-- **Sección hero** con fondo de video y llamada a la acción clara
-- **Grid de artistas** con carga dinámica y filtrado por disponibilidad
-- **Sistema de galería** con Embla Carousel, vista modal y controles de navegación
-- **Formularios de contacto** con validación multi-paso y feedback de confirmación
+- Hero con video y llamada a reservar
+- Carrusel automático del estudio
+- Cuadrícula de artistas invitados y página por perfil
+- Modal de portfolio con carrusel en bucle
+- Blog con entradas destacadas y contador de likes
+- Botón flotante de WhatsApp

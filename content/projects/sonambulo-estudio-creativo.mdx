@@ -1,22 +1,22 @@
 ---
 title: "Sonámbulo Estudio Creativo"
-summary: "Corporate website for a creative studio with scroll-driven animations, interactive capability showcases, and a dynamic case study portfolio."
-description: "Full design and development of the corporate website for Sonámbulo Estudio Creativo, a multidisciplinary creative studio specializing in branding, route-to-market strategy, and digital products. The site uses scroll-triggered animations, sticky sections, and responsive interactions to communicate the studio's capabilities."
-objective: "Design an immersive website that communicates the studio's value proposition through motion, structure, and storytelling, turning a corporate site into an experience."
-theme: "Modern corporate with bold lime accents and fluid animations."
-impact: "On a computer the cards react to your cursor; on a phone, to your touch. It is the same code, and the site works out which one you are using. The animations follow your scrolling and switch off once they leave the screen, so nothing stutters."
+summary: "Corporate website for a creative studio, built with Next.js, TypeScript and Framer Motion, with scroll-driven sections and case study pages."
+description: "One-page home with a sticky scroll sequence, expandable capability and process cards, and a client section. Case study pages are generated from a JSON data file, each with a hero, insight cards and an image carousel."
+objective: "Present the studio's services and case studies through scroll-driven motion."
+impact: "On a computer the cards react to the cursor; on a phone, to a tap, from the same components. Each case study has its own page."
 date: "2025-11-13"
 status: "completed"
 featured: true
 category: "web-development"
 tags: ["Next.js","React","Framer Motion","TypeScript","Animation"]
 technologies:
-  - "Next.js 14"
+  - "Next.js"
   - "React"
   - "TypeScript"
   - "Framer Motion"
-  - "CSS3/SCSS"
-  - "Responsive Design"
+  - "Tailwind CSS"
+  - "SCSS"
+  - "Lenis"
 liveUrl: "https://www.estudiosonambulo.com/"
 repoUrl: "https://github.com/fermx3/sonambulo-web-2.0"
 coverImage: "/images/projects/sonambulo-estudio-creativo/cover.jpg"
@@ -26,69 +26,37 @@ images:
   - "/images/projects/sonambulo-estudio-creativo/capabilities.jpg"
   - "/images/projects/sonambulo-estudio-creativo/portfolio.jpg"
 challenges:
-  - "Orchestrating complex scroll-driven animations without sacrificing performance"
-  - "Building a sticky scroll system where content transforms as the user navigates"
-  - "Supporting both touch and hover interactions across devices"
-  - "Keeping 60fps with multiple concurrent animated elements"
+  - "Sequencing text and images across a long scroll without page navigation"
+  - "Cards must work with hover on desktop and tap on touch screens"
+  - "The desktop sticky sequence does not fit small screens"
 solutions:
-  - "Framer Motion with custom scroll progress hooks for GPU-accelerated animations"
-  - "Custom sticky section system with progress tracking and content morphing"
-  - "Device detection layer that swaps interaction models between touch and pointer"
-  - "Lazy loading, Next.js Image optimization, and animation batching"
-results:
-  - "Immersive web experience running at 60fps across devices"
-  - "High Lighthouse scores for performance, accessibility, and SEO"
-  - "Dynamic portfolio system for presenting client case studies"
-  - "Mobile-first design with native touch gesture support"
+  - "Sticky container driven by Framer Motion scroll progress values"
+  - "Pointer media queries switch each card between hover and tap"
+  - "Separate mobile section with in-view reveals instead of scroll-linked motion"
 ---
 
-## Project Overview
+## Overview
 
-Sonámbulo Estudio Creativo is a **multidisciplinary creative studio** that calls itself a "super group of creatives, advertisers, marketers and idea nerds." They work across branding, route-to-market strategy, and digital products. The website needed to reflect that energy: not a standard corporate brochure, but an experience that communicates what the studio does through how the site itself behaves.
+Sonámbulo is a creative studio working in branding, route-to-market strategy and digital products. The site is a Spanish one-page home plus a page per case study.
 
-## Animation Architecture
+## Technical Implementation
 
-The site is built around scroll-driven interactions. Rather than decorative transitions, animations serve a structural purpose: they control how content reveals, how sections connect, and how the user discovers the studio's capabilities.
+### Scroll sequence
+On desktop, the About section pins a sticky viewport and maps scroll progress to the opacity, position, scale and rotation of each text block. Lenis smooths wheel scrolling.
 
-### Scroll Progress System
-A custom hook tracks viewport scroll position and maps it to animation progress values. This drives sticky sections where content transforms as the user scrolls: text morphs, images slide in, and the value proposition unfolds step by step without requiring clicks or navigation.
+### Input-aware cards
+Capability and process cards expand on hover with a fine pointer and toggle on tap on touch devices. Both respond to Enter and Space and expose `aria-expanded`.
 
-### Performance Strategy
-Multiple animated elements running concurrently can easily drop frames. The site maintains 60fps through:
-- GPU-accelerated transforms via Framer Motion's `motion` components
-- Animation batching to avoid layout thrashing
-- Intersection Observer-based activation so off-screen elements don't consume resources
-- Next.js Image with lazy loading for heavy visual assets
+### Case studies
+Routes under `/portfolio/[slug]` read from a JSON file and build metadata and Open Graph images per client.
 
-## Key Sections
+### Cursor and motion
+A custom cursor follows the pointer with spring physics and changes state over links, buttons and images. CSS animations stop under `prefers-reduced-motion`.
 
-### Hero and About
-A sticky scroll section where the studio's positioning reveals progressively. As the user scrolls, text blocks transform and images transition, telling the story from "who we are" to "what we believe" without a single page navigation.
+## Features
 
-### Capabilities
-Three areas of specialization presented as interactive cards:
-- **SNMBL Channel Development** - Business strategy and trade marketing
-- **SNMBL Data & Intelligence Center** - Dashboards and web/mobile development
-- **SNMBL Ideas Lab** - Creative strategy and brand building
-
-Each card expands on hover (desktop) or tap (mobile) to reveal detailed service descriptions.
-
-### Dynamic Portfolio
-A case study system with per-client hero sections, responsive image carousels, insight cards with varied layouts, and fluid navigation between projects.
-
-## Technical Details
-
-### Frontend
-- **Next.js 14** with App Router and React Server Components
-- **TypeScript** for type safety across the component tree
-- **Framer Motion** as the animation engine, with `useScroll`, `useTransform`, and `useInView` hooks
-- **Custom hooks** for scroll tracking, device detection, and intersection observation
-
-### Responsive Interaction Layer
-The site detects input type (touch vs. pointer) and adjusts interaction patterns accordingly. On desktop, cards respond to hover with 3D perspective transforms. On mobile, the same cards use tap-to-expand with optimized touch gesture handling. A single component codebase serves both experiences through conditional interaction hooks.
-
-### Design System
-- Cohesive visual identity using the studio's brand colors (lime, blue, ink)
-- Montserrat and Darker Grotesque typography
-- Asterisk-based iconography as a recurring visual motif
-- SCSS with component-scoped modules and shared variables
+- Sticky scroll About sequence on desktop
+- Expandable capability and process cards
+- Case study pages with insight cards and image carousel
+- Custom animated cursor
+- Smooth scrolling

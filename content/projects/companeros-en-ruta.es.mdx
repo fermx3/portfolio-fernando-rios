@@ -1,13 +1,34 @@
 ---
 title: "Compañeros en Ruta"
 date: "2026-07-06"
-summary: "SaaS multi-tenant de grado de producción para logística y distribución de marcas: una web app en Next.js más apps nativas para iOS y Android, que comparten un motor de lealtad basado en QR y un núcleo de seguridad estricto sobre PostgreSQL + RLS."
+summary: "SaaS multi-tenant para distribución de marcas y venta en campo en México: una web app en Next.js y dos apps móviles con Expo sobre una sola base de Supabase."
+description: "Un monorepo Turborepo con seis dashboards por rol, una app para el personal de campo con visitas y canje por QR, y una app de cliente con puntos y promociones. Tipos y schemas Zod viven en un paquete compartido por las tres apps."
 category: "full-stack"
 featured: true
 tags: ["Next.js", "React", "Expo", "React Native", "Supabase", "PostgreSQL", "RLS", "TypeScript", "Tailwind CSS"]
-objective: "Entregar un SaaS escalable y multiplataforma para redes de distribución, web y móvil nativo, con aislamiento multi-tenant estricto, herramientas para operación en campo y métricas operativas en tiempo real a través de seis roles distintos."
-theme: "Enterprise Modern SaaS"
-impact: "Seis tipos de usuario trabajan en el mismo sistema, cada uno viendo solo lo suyo. Esa separación la impone la base de datos, no el código, así que un error de programación no puede filtrar los datos de una empresa a otra. La web y las apps de iOS y Android funcionan igual."
+objective: "Operar rutas de distribución, visitas en campo y lealtad de clientes en un sistema."
+theme: "Distribución de marcas y venta en campo"
+impact: "Marcas, distribuidores, personal de campo y clientes trabajan en un mismo sistema, cada uno viendo solo sus datos. La base impone ese aislamiento, así que un error en una consulta de la aplicación no expone los datos de una empresa a otra."
+technologies:
+  - "Next.js 16"
+  - "React 19"
+  - "TypeScript"
+  - "Expo"
+  - "React Native"
+  - "NativeWind"
+  - "Supabase"
+  - "PostgreSQL"
+  - "Row Level Security"
+  - "Turborepo"
+  - "Tailwind CSS 4"
+  - "React Hook Form"
+  - "Zod"
+  - "Recharts"
+  - "Jest"
+  - "Playwright"
+  - "MSW"
+  - "EAS Build"
+  - "Vercel"
 repoUrl: "https://github.com/fermx3/companeros-en-ruta"
 repoPrivate: true
 liveUrl: "https://companeros-en-ruta.vercel.app"
@@ -19,33 +40,33 @@ images:
     type: "mobile"
 ---
 
-## Descripción del Proyecto
+## Resumen
 
-**Compañeros en Ruta** es una plataforma SaaS integral y multi-tenant para logística a gran escala y distribución de marcas. Está construida sobre una filosofía de **verdad basada en el esquema**, donde la estructura de la base de datos PostgreSQL dicta las capacidades y los límites de seguridad de la aplicación. La plataforma atiende seis roles distintos (Admin, Brand Manager, Supervisor, Promotor, Asesor de Ventas y Cliente), cada uno con su propia experiencia protegida. Se distribuye como un **monorepo Turborepo**: una web app en Next.js más apps nativas para iOS y Android, todas compartiendo lógica tipada y un único backend en Supabase.
+Seis roles comparten la plataforma: admin, brand manager, supervisor, promotor, asesor de ventas y cliente. Cada uno tiene dashboard web; personal de campo y clientes tienen además app nativa.
 
-## Excelencia Técnica
+## Implementación Técnica
 
-### Multi-Tenancy y Seguridad
-El núcleo de la aplicación es su implementación de **Row Level Security (RLS)** en Supabase. Cada tabla está gobernada por políticas que garantizan un aislamiento absoluto de datos entre inquilinos (marcas, distribuidores y zonas). La capa de políticas se consolidó por rendimiento a ~135 políticas que impulsan **88 rutas de API**, con guardias de rol aplicadas en los seis layouts de dashboard.
+### Multi-Tenancy
 
-### Stack Moderno
-La plataforma corre sobre **Next.js 16 (App Router, Turbopack)** y **React 19**, con estilos en **Tailwind CSS 4** y **shadcn/ui** bajo un sistema de diseño propio. Los formularios se validan de extremo a extremo con **react-hook-form + Zod**, y los dashboards visualizan métricas con **Recharts**.
+Row Level Security en todas las tablas y un filtro por tenant en cada consulta como defensa en profundidad. URLs, exportaciones y QR usan IDs públicos, no internos.
 
-### Diseño Orientado a Base de Datos
-El proyecto mantiene un mapeo 1:1 entre el esquema de PostgreSQL y los tipos de TypeScript para seguridad de tipos completa. Los flujos operativos complejos, desde evaluaciones de visita 7Ps hasta la redención de QR y la facturación a distribuidores, se manejan con integridad transaccional y migraciones versionadas.
+### Apps Móviles
 
-### Entrega Multiplataforma
-Además de la web app, la plataforma incluye dos **apps móviles nativas construidas con Expo y React Native** (SDK 54), una para el personal en campo y otra para clientes, que comparten código a través del monorepo. La app del personal aprovecha la cámara del dispositivo para escanear QR, la geolocalización para evidencia con GPS y las notificaciones push. Las builds se publican a iOS y Android mediante **EAS Build**, y se prueban activamente en dispositivos reales.
+La app del personal escanea QR y adjunta fotos con GPS a las visitas. Ambas reciben notificaciones push y se publican en iOS y Android con EAS Build.
 
-### Probado y Verificado
-La confiabilidad se respalda con un stack completo de pruebas: **Playwright** para flujos end-to-end, **Vitest / Jest + Testing Library** para unidades y **MSW** para simular APIs.
+### Lealtad
 
-## Funcionalidades Clave
+El asesor escanea el QR del cliente para canjear una promoción y el canje se registra para la facturación distribuidor-marca. Cada cliente acumula puntos, niveles y membresías por marca.
 
-- **Dashboards por Rol**: Seis experiencias protegidas (Admin, Marca, Supervisor, Promotor, Asesor de Ventas, Cliente), cada una con flujos a medida y KPIs en tiempo real.
-- **Lealtad y Redención por QR**: Generación de QR del lado del cliente y un escáner a pantalla completa impulsan un motor de lealtad con puntos, tiers y membresías, con seguimiento de redención para la facturación distribuidor-a-marca.
-- **Promociones y Encuestas**: Promociones y encuestas creadas por la marca con un flujo de aprobación de admin en 48 h, banners de cupones y segmentación dinámica.
-- **Segmentación de Audiencia**: Un campo JSONB `targeting_criteria` impulsa el filtrado de audiencia del lado del servidor y la estimación de alcance en promociones, encuestas y planes de comunicación.
-- **Operación en Campo**: Un wizard de evaluación de visita en 3 etapas con evidencia fotográfica geolocalizada (GPS), auto-guardado y pantallas mobile-first para promotores en campo.
-- **Notificaciones en Tiempo Real**: Campana de notificaciones in-app con alertas toast y sonido, conectada a los eventos operativos vía Supabase realtime.
-- **Exportación de Datos**: Exportaciones segmentadas empaquetadas como archivos ZIP para reporteo y análisis.
+### Pruebas
+
+Jest, Testing Library, MSW, Playwright y una suite para las reglas de acceso de la base.
+
+## Funcionalidad
+
+- **Visitas**: wizard de evaluación en tres etapas (precios, inventario, POP) con autoguardado.
+- **Promociones y encuestas**: creadas por marcas, publicadas tras aprobación de admin.
+- **Segmentación**: audiencias con estimación de alcance.
+- **Operación**: pedidos, tickets y envíos de exhibiciones.
+- **Notificaciones**: alertas in-app en tiempo real.
+- **Exportación**: datasets segmentados en archivos ZIP.

@@ -1,26 +1,29 @@
 ---
 title: "Portfolio Website"
-summary: "Bilingual portfolio site built with Next.js 16, a file-based Markdown content pipeline, and type-safe architecture for showcasing data science and full-stack projects."
-description: "Professional portfolio website with English/Spanish support, Markdown-driven project pages, dark/light theming, and interactive project filtering. Built with Next.js 16, React 19, TypeScript, and Tailwind CSS 4, deployed on Vercel with static generation for performance."
-objective: "Create a maintainable, bilingual portfolio that makes it easy to add new projects and presents technical work clearly across devices and languages."
-theme: "Modern, clean design with smooth animations and professional presentation."
-impact: "To publish a project I write two text files, one per language, and push. The page, its entry in the list and both language versions build themselves. If I leave a field out, the site refuses to build, so I find out before publishing instead of after."
+summary: "Bilingual portfolio built with Next.js, file-based Markdown content validated by Zod, and an AI assistant that answers questions about the projects."
+description: "Statically generated English/Spanish site where each project is a pair of Markdown files. Includes search, category and tag filters, an image gallery with lightbox, light/dark theme, per-locale SEO metadata, and one dynamic route for a streaming Claude assistant."
+objective: "Publish projects in two languages by writing content files, not code."
+impact: "Publishing a project means writing two text files, one per language, and pushing: the page, its listing entry and both language versions build from them. Visitors can ask the assistant about any project instead of reading every page."
 date: "2026-01-08"
 status: "production"
 featured: true
 category: "web-development"
-tags: ["Next.js","React","TypeScript","Tailwind CSS","Markdown","Internationalization"]
+tags: ["Next.js","React","TypeScript","Tailwind CSS","Markdown","Internationalization","LLM"]
 technologies:
-  - "Next.js 16 (App Router)"
+  - "Next.js 16"
   - "React 19"
-  - "TypeScript 5"
+  - "TypeScript"
   - "Tailwind CSS 4"
-  - "Markdown content pipeline"
-  - "next-intl (i18n)"
+  - "next-intl"
+  - "markdown-it"
+  - "Gray Matter"
+  - "Zod"
   - "Framer Motion"
   - "Radix UI"
-  - "Zod Validation"
-  - "Vercel Deployment"
+  - "next-themes"
+  - "Claude API"
+  - "Resend"
+  - "Vercel"
 liveUrl: "https://www.fernandorios.dev/"
 repoUrl: "https://github.com/fermx3/portfolio-fernando-rios"
 coverImage: "/images/projects/portfolio-website/cover.jpg"
@@ -30,66 +33,39 @@ images:
   - "/images/projects/portfolio-website/project-detail.jpg"
   - "/images/projects/portfolio-website/dark-theme.jpg"
 challenges:
-  - "Building a content system where adding a new project requires only an MDX file, not code changes"
-  - "Supporting two languages without duplicating layout logic or component code"
-  - "Balancing animation richness with fast load times across devices"
-  - "Maintaining accessibility standards alongside custom interactive components"
+  - "Adding a project should require content files only, no code changes"
+  - "Two languages without duplicating layout or components"
+  - "A public LLM endpoint receiving untrusted conversation history"
 solutions:
-  - "Markdown pipeline with Zod-validated frontmatter for type-safe, file-based content management"
-  - "next-intl with locale-based routing, keeping a single component tree for both languages"
-  - "Framer Motion animations with Intersection Observer-based activation and code splitting"
-  - "Radix UI primitives for accessible interactive components (dialogs, dropdowns, toggles)"
+  - "Markdown files with Zod-validated frontmatter, read and rendered at build time"
+  - "next-intl locale routing over a single component tree"
+  - "Server-owned system prompt and tools, whitelisted roles, per-IP rate limit"
 results:
-  - "95+ Lighthouse scores across performance, accessibility, SEO, and best practices"
-  - "Adding a new project takes one MDX file per language, no deployment configuration needed"
-  - "Seamless English/Spanish switching with localized content, metadata, and URLs"
-  - "Responsive design tested across mobile, tablet, and desktop breakpoints"
+  - "Adding a project takes one Markdown file per language"
+  - "Every page except the assistant endpoint is statically generated"
 ---
 
-## Project Overview
+## Overview
 
-This is the site you're looking at. It's a **bilingual portfolio** that presents my work in data science, machine learning, and full-stack development. The technical goal was straightforward: build a site where adding a new project means writing an MDX file, not touching application code.
+This site. It presents Fernando's projects in English and Spanish and includes a chat assistant that answers questions about them and can forward a visitor's contact details.
 
-## Content Architecture
+## Technical Implementation
 
-### MDX-Based Project Pages
-Each project lives as a pair of `.mdx` files (one per language) in the `content/projects/` directory. The frontmatter is validated against a Zod schema at build time, so type errors and missing fields are caught before deployment, not in production.
+### Content
 
-The body is plain Markdown: headings, lists, tables and code blocks. It is parsed at build time and rendered to HTML, so a project page is as easy to write as a blog post while the frontmatter above it stays a typed data model.
+Projects live in `content/projects/` as `<slug>.mdx` and `<slug>.es.mdx`. Gray Matter extracts the frontmatter, Zod validates it, and `markdown-it` renders the body; the slug comes from the file name. A CI script checks images, EN/ES parity and tag rules.
 
-### Automatic Route Generation
-Next.js App Router generates project pages dynamically from the content directory. Adding a new project creates its route, adds it to the project listing, and makes it available in both languages, all from the file system.
+### Internationalization
 
-## Internationalization
+next-intl serves `/en` and `/es` from one component tree. Sitemap, canonical URLs, `hreflang`, Open Graph images and JSON-LD are generated per locale.
 
-The site uses **next-intl** for localization with `/en` and `/es` route prefixes. A single component tree serves both languages. Translations live in JSON message files, and content-level translation happens through the paired MDX files. SEO metadata (titles, descriptions, Open Graph tags) is generated per-locale with proper `hreflang` attributes.
+### Assistant
 
-## Technical Stack
+A Node.js route streams Claude responses. The system prompt, cached as a stable prefix, holds every project plus the profile. A contact tool sends visitor details through Resend; if a service is missing, the assistant degrades to the next fallback.
 
-### Frontend
-- **Next.js 16** with App Router and Static Site Generation
-- **React 19** with concurrent features and Suspense boundaries
-- **TypeScript 5** across the entire codebase
-- **Tailwind CSS 4** with a custom design system (spacing, colors, typography)
+## Features
 
-### Interactive Layer
-- **Framer Motion** for page transitions, scroll animations, and hover interactions
-- **Radix UI** for accessible primitives (theme toggle, navigation menu, dialog)
-- **Dark/light theming** with system preference detection and manual override
-
-### Content Pipeline
-- **Markdown** parsed with `markdown-it`, not an MDX compiler: the content is prose, so it has no need for JSX
-- **Gray Matter** for frontmatter extraction
-- **Zod schemas** for build-time validation of project metadata
-- File-based routing for zero-configuration page generation
-
-## Deployment
-
-The site runs on **Vercel** with automatic deployments from the GitHub repository. Static Site Generation means pages are pre-rendered at build time, resulting in fast load times and strong SEO without a runtime server.
-
-## Design Decisions
-
-- **No CMS**: MDX files in the repo are the content source. This keeps the stack simple and version-controlled.
-- **Radix UI over custom components**: accessibility is built-in rather than bolted on.
-- **Tailwind over CSS Modules**: utility-first approach keeps styling colocated and consistent.
-- **SSG over SSR**: portfolio content changes infrequently, so static generation is the right tradeoff.
+- Search with category and tag filters in the active language
+- Gallery with lightbox, grouped into web and mobile screenshots
+- Light/dark theme following the system preference
+- Scroll-triggered animations with Framer Motion

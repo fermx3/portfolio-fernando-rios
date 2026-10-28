@@ -1,17 +1,17 @@
 ---
 title: "Nebluna Inventario y Ventas"
-summary: "Sistema de operación y tienda en línea para una microtostadora de café de especialidad en Ciudad de México, del café verde y el tueste a la venta, el envío y los reportes. Dos apps Next.js sobre una sola base de Supabase."
-description: "Un monorepo con el panel de operación y la tienda pública sobre la misma base PostgreSQL. Las reglas de negocio viven en la base y no en los formularios, así que el stock, los lotes y los costos se mantienen coherentes la escriba la app que la escriba."
-objective: "Sacar la operación de una hoja de cálculo, vender en línea sin llevar un segundo inventario y registrar cada tueste con datos suficientes para repetirlo."
-theme: "Software de operación, comercio electrónico y bitácora de tueste para café de especialidad."
-impact: "Trazabilidad por lote desde el café verde hasta el pedido en línea, un costo real por kilo y una bitácora que enseña lo que se decidió la última vez antes de volver a tostar el mismo café."
+summary: "Sistema de operación y tienda en línea para una microtostadora de café de especialidad en Ciudad de México: dos apps Next.js sobre una sola base de Supabase."
+description: "Cubre la entrada de café verde, el tueste, el empaque, la venta, el envío y los reportes. Las reglas de negocio viven en constraints y triggers de PostgreSQL, así que stock, lotes y costos se mantienen coherentes la escriba la app que la escriba."
+objective: "Sustituir una hoja de cálculo y vender en línea sin un segundo inventario."
+theme: "Tueste y venta de café de especialidad"
+impact: "La tostadora rastrea cada lote desde el café verde hasta el pedido en línea y conoce su costo real por kilo. Antes de volver a tostar un café, la bitácora enseña lo que se decidió la última vez."
 date: "2026-08-20"
 status: "production"
 featured: true
 category: "full-stack"
 tags: ["Next.js", "React", "TypeScript", "Supabase", "PostgreSQL", "RLS", "Gestión de Inventario", "Comercio Electrónico", "Mercado Pago", "Tailwind CSS"]
 technologies:
-  - "Next.js 16 (App Router)"
+  - "Next.js 16"
   - "React 19"
   - "TypeScript"
   - "Supabase"
@@ -54,54 +54,44 @@ images:
     type: "mobile"
     alt: "Ficha de un café en la tienda, eligiendo molido o en grano"
 challenges:
-  - "El stock no puede quedar en negativo, y una hoja de cálculo no tiene forma de impedirlo"
+  - "El stock nunca puede quedar en negativo"
   - "El costo por kilo depende del peso que se pierde en cada tueste"
-  - "Administración y promotores comparten los mismos datos, pero solo administración puede ver costos y márgenes"
-  - "La tienda vende del mismo stock que el panel, y los pagos en línea pueden llegar tarde o más de una vez"
+  - "Los promotores comparten datos con administración pero no deben ver costos ni márgenes"
 solutions:
-  - "Constraints y triggers en PostgreSQL: la base rechaza una escritura inválida en vez de que la detecte el formulario"
-  - "La merma se registra por tueste y el costo por kilo se calcula a partir de ella"
-  - "Row Level Security en todas las tablas, así que los permisos se sostienen en la base y no solo en la interfaz"
-  - "Cada pedido de la tienda se convierte en una venta del panel, y cada pago se registra una sola vez"
+  - "Constraints y triggers en la base rechazan las escrituras inválidas"
+  - "Se registra la merma de cada tueste y de ella sale el costo por kilo"
+  - "Row Level Security en todas las tablas"
 results:
-  - "Una sola base para el panel y la tienda"
-  - "Tests unitarios, de componentes y de integración, estos últimos contra una base reconstruida desde cero en CI"
-  - "Migraciones versionadas con una comprobación automática contra producción"
+  - "Una sola base y un solo inventario para el panel y la tienda"
+  - "Tests de integración contra una base reconstruida desde cero en CI"
+  - "Migraciones versionadas con una comprobación automática de desfase contra producción"
 ---
 
-## Descripción del Proyecto
+## Resumen
 
-**Nebluna** es el sistema de operación y la tienda en línea de una microtostadora de café de especialidad en Ciudad de México. Cubre la entrada de café verde, el tueste, el empaque, la venta, el envío y los reportes, y sustituye a la hoja de cálculo con la que operaba el negocio. Es un monorepo con dos apps **Next.js** en **TypeScript** sobre una sola base de **Supabase**.
+Nebluna sustituye a la hoja de cálculo de la tostadora. Administración y promotores usan el panel, los clientes la tienda, y ambas apps comparten los mismos lotes.
 
 ## Implementación Técnica
 
 ### Modelo de Datos
 
-El esquema vive en migraciones versionadas de **PostgreSQL**. Las reglas de negocio se imponen en la base: el stock no puede quedar en negativo, cada venta apunta a un lote concreto y una mezcla descuenta de sus lotes de origen por una sola vía. Los insumos se costean PEPS, así que una compra nueva no reescribe márgenes pasados.
-
-### Roles
-
-Administración ve finanzas, costos y ajustes. Cada promotor ve el catálogo, sus propias ventas y sus propias comisiones. **Row Level Security** impone esa separación en cada tabla.
+Cada venta apunta a un lote, y una mezcla descuenta de sus lotes de origen por una sola vía. Los insumos se costean PEPS: una compra nueva no reescribe márgenes pasados.
 
 ### Tienda en Línea
 
-Una segunda app sobre la misma base. El cliente recorre el catálogo, elige molido o en grano y paga por transferencia o con **Mercado Pago**. Cada pedido se convierte en una venta del panel, así que solo hay un inventario. El cliente entra con un código que le llega al correo, sin contraseña. Los cupones y las reseñas se gestionan desde el panel.
+Cada pedido se vuelve venta del panel y cada pago se registra una vez aunque llegue tarde o duplicado. El cliente paga por transferencia o Mercado Pago y entra con un código por correo.
 
-### Bitácora de Tueste y Cataciones
+### Bitácora de Tueste
 
-Cada tueste puede registrar un objetivo, una curva y una evaluación sensorial. La curva se captura en el teléfono durante el tueste o se importa de **Artisan**, y se puede comparar con un perfil de referencia. Las cataciones evalúan varios cafés lado a lado, a ciegas si hace falta, incluidos cafés de otras tostadurías.
+Cada tueste registra objetivo, curva y evaluación sensorial. La curva se captura en el teléfono o se importa de Artisan y se compara con un perfil de referencia.
 
-### Pruebas y CI
+## Funcionalidad
 
-Tests unitarios, de componentes y de integración con **Vitest**. GitHub Actions corre el lint, los tests de integración contra una base construida desde cero, una comprobación de las migraciones contra producción y un respaldo cifrado cada noche.
-
-## Funcionalidades
-
-- **Ventas**: alta guiada, canales configurables, precios de menudeo y mayoreo, pagos parciales y ticket imprimible.
-- **Tienda en línea**: catálogo, checkout, Mercado Pago, cuenta del cliente, cupones y reseñas.
-- **Inventario**: stock empacado y a granel por lote, con seguimiento de frescura.
-- **Producción**: tuestes, merma, costo por kilo, mezclas y bitácora de tueste.
-- **Cataciones**: sesiones con varios cafés y comparación entre catadores.
-- **Envíos**: registro de envíos con guía de rastreo y etiqueta imprimible.
-- **Finanzas**: comisiones, gastos y resultado de cada periodo.
-- **Reportes**: por canal, producto, cliente, frescura y rentabilidad.
+- **Ventas**: menudeo y mayoreo, pagos parciales, ticket imprimible.
+- **Tienda**: checkout, cuenta del cliente, cupones, reseñas.
+- **Inventario**: empacado y a granel por lote, con frescura.
+- **Producción**: tuestes, merma, mezclas.
+- **Cataciones**: sesiones a ciegas entre catadores.
+- **Envíos**: rastreo y etiqueta imprimible.
+- **Finanzas**: comisiones, gastos y resultado del periodo.
+- **Reportes**: por canal, producto, cliente y rentabilidad.

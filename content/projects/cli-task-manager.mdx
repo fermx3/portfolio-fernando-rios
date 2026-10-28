@@ -1,10 +1,9 @@
 ---
 title: "CLI Task Manager"
-summary: "A Python CLI tool to add, categorize, complete, and delete tasks with persistent local JSON storage."
-description: "A command-line interface application that allows users to manage tasks directly from the terminal. It supports adding tasks with categories, listing all tasks, marking tasks as completed, and deleting them. Data persists between sessions using a local JSON file."
-objective: "Build a practical, lightweight CLI utility for personal task management that demonstrates clean Python scripting and data persistence."
-theme: "Technical and minimalist CLI tool aesthetic."
-impact: "You jot down tasks from the terminal and they are still there next time. They live in a text file you can open or copy yourself. Nothing to install, no account to create."
+summary: "Python command-line tool to add, categorize, complete and delete tasks, stored in a local JSON file."
+description: "Task dataclass with UUID and creation timestamp. Operations return new lists instead of mutating state; storage is a separate module."
+objective: "Manage a personal to-do list from the terminal without an external service."
+impact: "You jot down tasks from the terminal and they are still there next time. They live in a JSON file you can open or copy yourself, with no account to create."
 date: "2026-04-03"
 status: "completed"
 featured: false
@@ -13,39 +12,38 @@ tags: ["Python","CLI","Automation"]
 technologies:
   - "Python 3.12"
   - "Argparse"
-  - "JSON (local persistence)"
+  - "JSON"
   - "UUID"
 repoUrl: "https://github.com/fermx3/cli_task_manager"
 coverImage: "/images/projects/cli-task-manager/cover.png"
 challenges:
-  - "Designing a simple yet flexible data model for tasks that supports categories and completion status"
-  - "Implementing reliable data persistence between sessions using a local JSON file"
-  - "Creating an intuitive CLI interface with clear subcommands for each operation"
+  - "Persisting UUIDs and datetimes in plain JSON"
+  - "Handling unknown or malformed IDs without a traceback"
 solutions:
-  - "Used Python dictionaries with UUID-based identifiers stored in a JSON file for lightweight persistence"
-  - "Leveraged argparse subcommands to create a clean, Unix-style CLI interface"
-  - "Implemented category support as optional metadata to keep task creation simple yet flexible"
+  - "asdict on save; UUID and datetime rebuilt on load"
+  - "ValueError on lookup, printed as an error message"
 results:
-  - "A functional CLI task manager that works entirely offline with zero external dependencies"
-  - "Clean terminal output with visual indicators for task completion status"
-  - "Demonstrated proficiency in Python scripting and CLI application design"
+  - "No third-party dependencies: runs on the Python standard library"
 ---
 
-## Project Overview
+## Overview
 
-**CLI Task Manager** is a command-line application built in Python that lets you manage your to-do list directly from the terminal. It supports the full task lifecycle: adding, listing, completing, and deleting tasks, all persisted locally in a JSON file.
+Python command-line app that keeps a to-do list in `tasks.json`. The file is written to the working directory after every change.
 
 ## Technical Implementation
 
-### Task Operations
-The tool provides four core subcommands:
-- **`add`**: Create a new task with an optional category
-- **`list`**: Display all tasks with their status, date, category, and ID
-- **`complete`**: Mark a task as done using its UUID
-- **`delete`**: Remove a task permanently by its UUID
+### Data Model
+Fields: title, optional category, UUID, creation timestamp, completion flag. Updates use `dataclasses.replace`.
 
-### Data Persistence
-Tasks are stored in a local JSON file, making the tool completely self-contained with no need for a database or external service. Each task is identified by a UUID, ensuring unique identification even across sessions.
+### Storage
+A missing file loads as an empty list, so the first run needs no setup.
 
-### CLI Design
-The interface uses Python's `argparse` module with subcommands, following Unix CLI conventions. The output is clean and readable, showing completion status with `[X]` and `[ ]` indicators.
+### CLI
+Each `argparse` subcommand maps to a handler that loads, applies the change and saves.
+
+## Features
+
+- `add "<title>" --category <name>` creates a task; category is optional
+- `list` prints status (`[X]` / `[ ]`), title, date, category and ID
+- `complete <id>` marks a task as done
+- `delete <id>` removes a task

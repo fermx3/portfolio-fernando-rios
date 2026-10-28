@@ -1,10 +1,9 @@
 ---
 title: "Corazonada Tattoo"
-summary: "Full-stack website for a private tattoo studio with dynamic artist portfolios, appointment booking, and an integrated blog."
-description: "Complete website for Corazonada Tattoo, a private tattoo studio in Playa del Carmen, Mexico. Built with Next.js and MongoDB, the site manages rotating guest artist portfolios, handles appointment bookings with email notifications, and publishes tattoo care content through a blog, all with smooth Framer Motion animations."
-objective: "Give the studio a professional digital presence that showcases guest artists, streamlines appointment booking, and builds trust with potential clients before they visit."
-theme: "Modern tattoo studio with pink and green color palette and smooth animations."
-impact: "The studio no longer depends on Instagram to show its work and take bookings. It has its own site now, and each guest artist gets a page with their work next to the resident team's."
+summary: "Website for a private tattoo studio in Playa del Carmen, built with Next.js and MongoDB, with guest artist portfolios, a care blog and WhatsApp contact."
+description: "Artist profiles and blog posts live in MongoDB and are rendered as static pages. The home page combines a video hero, an autoplay studio carousel, the guest artist grid and featured posts."
+objective: "Show resident and guest artists' work and route booking requests to WhatsApp."
+impact: "The studio no longer depends on Instagram to show its work. Each guest artist gets a page with their portfolio next to the resident team's."
 date: "2024-06-11"
 status: "production"
 featured: false
@@ -18,7 +17,7 @@ technologies:
   - "MongoDB"
   - "Tailwind CSS"
   - "Embla Carousel"
-  - "Nodemailer"
+  - "sanitize-html"
 liveUrl: "https://corazonada-tattoo.vercel.app/"
 repoUrl: "https://github.com/fermx3/corazonada-tattoo"
 coverImage: "/images/projects/corazonada-tattoo/cover.jpg"
@@ -28,68 +27,35 @@ images:
   - "/images/projects/corazonada-tattoo/gallery.jpg"
   - "/images/projects/corazonada-tattoo/blog.jpg"
 challenges:
-  - "Managing dynamic artist portfolios where the number of images and guest artists changes frequently"
-  - "Creating smooth gallery experiences with modal views and carousel navigation"
-  - "Implementing a booking flow with form validation and email notifications"
-  - "Building a responsive design that feels native on mobile where most clients browse"
+  - "Guest artists rotate often, each with their own profile and portfolio"
+  - "Portfolio images need full-size viewing on mobile and desktop"
+  - "Blog likes should not be inflated by repeated clicks"
 solutions:
-  - "MongoDB-backed artist and portfolio system with dynamic image galleries"
-  - "Embla Carousel integration for smooth, touch-friendly image navigation"
-  - "Server Actions for form processing with Zod validation and Nodemailer notifications"
-  - "Tailwind CSS with custom responsive grid layouts and mobile-first approach"
-results:
-  - "Professional digital presence for the studio, replacing social media as the primary booking channel"
-  - "Streamlined appointment booking reducing back-and-forth with potential clients"
-  - "Guest artists can be added and rotated without code changes"
-  - "Mobile-optimized experience for the majority of the studio's audience"
+  - "Artist documents in MongoDB, with one static page generated per artist"
+  - "Image grid that opens a looping Embla carousel inside a modal"
+  - "Server Action that counts one like per visitor, tracked by cookie"
 ---
 
-## Project Overview
+## Overview
 
-Corazonada Tattoo is a **private tattoo studio** in Playa del Carmen, Mexico. "Private" means appointment-only: each client gets dedicated time with the artist, and there are no walk-ins. The website serves as the primary way potential clients discover the studio, preview artists' work, and book sessions.
+Corazonada Tattoo is an appointment-only studio in Playa del Carmen that hosts rotating guest artists. The site presents the studio, its artists and a tattoo care blog in Spanish, with a floating WhatsApp button as the contact channel.
 
-The studio regularly hosts guest artists from different cities and countries. The site needed to handle this rotation smoothly: artists come and go, each with their own portfolio, bio, and booking information.
+## Technical Implementation
 
-## Artist Portfolio System
+### Data layer
+Server Actions query the artist and post collections. Artist and post routes are generated with `generateStaticParams`, and unknown slugs return 404.
 
-Each artist has a dedicated page with their biography, specialization, and a gallery of their work. The system is backed by MongoDB, so adding a new guest artist or updating a portfolio doesn't require a deployment. It's a data operation.
+### Artist pages
+Each profile combines a cover image, a bio card and a portfolio grid. Artists flagged as private are left out of the guest listing and served with `noindex`.
 
-### Gallery Experience
-Tattoo portfolios are inherently visual. The gallery uses Embla Carousel for horizontal navigation and opens images in a modal view for detailed inspection. On mobile, touch gestures feel native: swipe to navigate, pinch interactions are handled gracefully, and the modal adapts to screen size.
+### Blog
+Post HTML stored in the database is sanitized before rendering. The like counter updates through a Server Action that revalidates the post page.
 
-### High-Resolution Images
-Tattoo photography needs detail. Images are served through Next.js Image component with responsive sizing and lazy loading to balance quality against page load performance.
+## Features
 
-## Booking Flow
-
-The appointment booking system collects client information through a validated contact form:
-- **Zod schemas** validate input before submission
-- **Server Actions** process the form and store the submission in MongoDB
-- **Nodemailer** sends confirmation emails to both the studio and the client
-- **WhatsApp integration** provides an alternative direct contact channel
-
-The form captures enough detail (preferred artist, tattoo idea, placement, size) to reduce the initial consultation back-and-forth.
-
-## Blog
-
-An integrated blog publishes tattoo care content: aftercare guides for new tattoos, artist spotlights, and studio updates. This serves both as a trust-building tool for potential clients and as an SEO driver for organic discovery.
-
-## Technical Architecture
-
-### Frontend
-- **Next.js** with App Router for SSR/SSG and optimal performance
-- **React** with modern hooks and component-driven architecture
-- **Framer Motion** for page transitions, scroll animations, and interactive elements
-- **Tailwind CSS** for responsive styling with the studio's custom color palette (pink, green, ink)
-
-### Backend
-- **MongoDB** storing artist profiles, portfolio images, contact submissions, and blog content
-- **Server Actions** for form handling and database operations
-- **Nodemailer** for transactional emails via SMTP
-- **Next.js Image** optimization with lazy loading and responsive formats
-
-### Key Components
-- **Hero section** with video background and clear call-to-action
-- **Artist grid** with dynamic loading and filtering by availability
-- **Gallery system** with Embla Carousel, modal viewing, and navigation controls
-- **Contact forms** with multi-step validation and confirmation feedback
+- Video hero with booking call to action
+- Autoplay studio carousel
+- Guest artist grid and individual profile pages
+- Portfolio modal with looping carousel
+- Blog with featured posts and like counter
+- Floating WhatsApp button
