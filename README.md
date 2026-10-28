@@ -1,24 +1,23 @@
-# 🚀 Fernando Ríos - Portfolio
+# 🚀 Fer Rios - Portfolio
 
 [![Next.js](https://img.shields.io/badge/Next.js-16.1-black?style=flat-square&logo=next.js)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19.2-blue?style=flat-square&logo=react)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4.0-38bdf8?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
-[![MDX](https://img.shields.io/badge/MDX-3.1-1e293b?style=flat-square&logo=mdx)](https://mdxjs.com/)
 
-> Modern, multilingual portfolio showcasing data science, machine learning, and full-stack development projects with a focus on clean design and performance.
+> Bilingual (EN/ES) portfolio of full-stack development and machine learning projects, with an AI assistant that answers questions about them.
 
 ## ✨ Features
 
 - **🌍 Multilingual Support** - English/Spanish with `next-intl`
 - **📱 Responsive Design** - Mobile-first approach with Tailwind CSS
-- **🎨 Modern UI/UX** - Clean, professional design with smooth animations
-- **📝 MDX Content Management** - Type-safe project content with Zod validation
+- **📝 Markdown Content** - Markdown files parsed with `gray-matter` and rendered with `markdown-it`, frontmatter validated with Zod
 - **🎯 Project Showcase** - Filterable portfolio with detailed project pages
+- **💬 Ask my portfolio** - A Claude assistant that answers questions about the projects and can forward a visitor's contact details
 - **🌙 Dark/Light Theme** - Theme switching with `next-themes`
 - **⚡ Performance Optimized** - Next.js 16 with App Router and SSG
 - **🏗️ Type Safety** - Full TypeScript implementation
-- **📊 SEO Optimized** - Dynamic metadata and sitemap generation
+- **📊 SEO** - Per-locale metadata, hreflang and sitemap
 
 ## 🛠️ Tech Stack
 
@@ -31,13 +30,13 @@
 ### Styling & UI
 
 - **Tailwind CSS 4** - Utility-first CSS framework
-- **Framer Motion** - Smooth animations and transitions
+- **Framer Motion** - Scroll-triggered animations
 - **Radix UI** - Accessible component primitives
 - **Lucide React** - Beautiful icon library
 
 ### Content & Internationalization
 
-- **MDX** - Markdown with JSX for rich content
+- **markdown-it** - Markdown rendering for project bodies
 - **next-intl** - Internationalization for Next.js
 - **Gray Matter** - Frontmatter parsing
 - **Zod** - Runtime type validation
@@ -145,7 +144,7 @@ Reusable skills live in `.claude/skills/`:
 
 ### Project Management
 
-- **Type-safe MDX**: Project content with frontmatter validation
+- **Validated content**: Markdown with Zod-checked frontmatter
 - **Dynamic routing**: Automatic page generation from content
 - **Category filtering**: Smart project organization
 - **Featured projects**: Highlighted work on homepage
@@ -153,7 +152,7 @@ Reusable skills live in `.claude/skills/`:
 ### Responsive Design
 
 - **Mobile-first**: Optimized for all screen sizes
-- **Progressive enhancement**: Smooth experience across devices
+- **Progressive enhancement**: Works across devices
 - **Performance focused**: Optimized images and lazy loading
 
 ### Internationalization
@@ -162,26 +161,9 @@ Reusable skills live in `.claude/skills/`:
 - **Dynamic content**: Localized project descriptions
 - **SEO optimized**: Proper hreflang and meta tags
 
-## 🌟 Featured Projects
+## 🌟 Projects
 
-The homepage highlights the six most recent featured projects:
-
-- **📈 Nebluna Analytics** - Demand forecasting for coffee shops with Prophet + FastAPI on GCP Cloud Run
-- **🚌 Compañeros en Ruta** - Cross-platform web and mobile app
-- **💼 Portfolio Website** - This site
-- **☕ Coffee Disease Detection** - ML system for agricultural disease detection
-- **🎭 Sonámbulo Estudio Creativo** - Creative studio website
-- **📱 PerfectApp** - Smart data center platform with VGG16 integration
-
-Ten projects are published in total; the rest are on the projects page.
-
-Each project includes:
-
-- Detailed technical documentation
-- Live demos and repository links
-- Technology stack breakdown
-- Challenges and solutions
-- Visual galleries and screenshots
+The published projects, with filters by category and technology, are at [fernandorios.dev/en/projects](https://www.fernandorios.dev/en/projects).
 
 ## 🔧 Customization
 
@@ -276,7 +258,7 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ## 📞 Contact
 
-**Fernando Ríos**
+**Fer Rios**
 
 - Portfolio: [fernandorios.dev](https://www.fernandorios.dev/)
 - GitHub: [@fermx3](https://github.com/fermx3)

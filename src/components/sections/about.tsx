@@ -32,7 +32,7 @@ const techStack = {
   frontend: ["React", "Next.js", "TypeScript", "Tailwind CSS"],
   backend: ["Node.js", "Python", "FastAPI", "PostgreSQL", "MongoDB"],
   data: ["Pandas", "NumPy", "Scikit-learn", "TensorFlow", "Jupyter"],
-  tools: ["Git", "Docker", "AWS", "Vercel", "VS Code", "Google Colab", "GCP"],
+  tools: ["Git", "Docker", "Vercel", "VS Code", "Google Colab", "GCP"],
 };
 
 export async function About({ locale }: AboutProps) {
@@ -65,7 +65,7 @@ export async function About({ locale }: AboutProps) {
                       ></div>
                     </div>
                   </div>
-                  <h3 className="font-bold text-xl mb-2">Fernando Rios</h3>
+                  <h3 className="font-bold text-xl mb-2">Fer Rios</h3>
                   <p className="text-muted-foreground text-sm">{t("role")}</p>
 
                   {/* Social Links - Compact horizontal */}

@@ -7,9 +7,8 @@
     "toggleMenu": "Toggle menu"
   },
   "hero": {
-    "name": "Fernando Rios",
-    "role": "ML Engineer & Full-Stack Developer",
-    "specialties": "Machine Learning · Full-Stack · Production Systems",
+    "name": "Fer Rios",
+    "role": "Full-Stack Developer & ML Engineer",
     "description": "From prototype to production: I train the model, deploy it and build the interface where it gets used.",
     "cta": {
       "primary": "View Projects",
@@ -33,7 +32,7 @@
       "activeFilters": "Active filters"
     },
     "empty": "No Featured Projects",
-    "emptyDescription": "There are currently no featured projects to display. Check back later for exciting new developments!",
+    "emptyDescription": "There are no featured projects to show right now.",
     "search": {
       "placeholder": "Search projects...",
       "clear": "Clear search"
@@ -53,7 +52,7 @@
       "backToHome": "Back to Home",
       "backToProjects": "Back to Projects",
       "allProjects": "All Projects",
-      "allProjectsDescription": "Explore my complete portfolio of data science and development projects.",
+      "allProjectsDescription": "Every project, with filters by category and technology.",
       "projectsFound": "projects found",
       "projectFound": "project found",
       "clearAllFilters": "Clear all filters"
@@ -73,8 +72,8 @@
       "galleryPrevious": "Previous image",
       "galleryNext": "Next image",
       "galleryImageLabel": "Image {current} of {total}",
-      "challenges": "The Challenge",
-      "solutions": "The Approach",
+      "challenges": "Challenges",
+      "solutions": "How it was solved",
       "results": "Results",
       "impact": "Impact"
     },
@@ -86,25 +85,25 @@
   "about": {
     "title": "About Me",
     "aboutMe": "About Me",
-    "role": "ML Engineer & Full-Stack Developer",
-    "bio": "ML Engineer with end-to-end experience: I train models, deploy them to production and automate the pipelines with MLOps. I came up through full-stack development, so to me a model does not end at a validation metric. It ends in an interface where someone uses it to decide something.",
+    "role": "Full-Stack Developer & ML Engineer",
+    "bio": "I came to Machine Learning from web development: five years as a freelance full-stack developer, two in Trust & Safety at TikTok and, in 2025, Le Wagon's Data Science & AI bootcamp.",
     "expertise": {
       "title": "What I can cover",
-      "body": "I can take a data problem, train a model, deploy it to GCP or AWS with CI/CD, and build the dashboard the end user works in. The full cycle, from problem to product."
+      "body": "Image classification with TensorFlow transfer learning and demand forecasting with Prophet, served through FastAPI and Docker, with Streamlit dashboards; the forecast runs on GCP Cloud Run. On the web side, CI with integration tests and continuous deployment on Vercel."
     },
     "experience": {
       "title": "Experience",
       "items": [
         {
           "organization": "TikTok",
-          "role": "QA Analyst, Trust & Safety",
-          "date": "April 2024 - July 2026",
-          "description": "Quality analysis of moderation decisions at scale, on a platform with a massive user base."
+          "role": "QA Analyst, Trust & Safety · previously Content Moderator",
+          "date": "April 2024 – July 2026",
+          "description": "Content moderation, then quality analysis of moderation decisions at scale."
         },
         {
           "organization": "Freelance",
           "role": "Full-Stack Developer",
-          "date": "September 2021 - Present",
+          "date": "September 2021 – Present",
           "description": "Building and shipping complete web applications for clients, from the database to the interface."
         }
       ]
@@ -141,11 +140,11 @@
   },
   "contact": {
     "title": "Get In Touch",
-    "subtitle": "Let's discuss your next project or collaboration opportunity",
+    "subtitle": "If you're hiring an ML Engineer or need a freelance Machine Learning or data project, get in touch.",
     "assistant": {
       "title": "Ask my portfolio",
       "aiLabel": "AI",
-      "intro": "Ask about the projects on this site and I'll answer from what's actually written here, with a link to the project I'm drawing on. If you'd rather talk to Fernando, say so and I'll pass along your details.",
+      "intro": "Ask about the projects on this site and I'll answer from what's actually written here, with a link to the project I'm drawing on. If you'd rather talk to Fer, say so and I'll pass along your details.",
       "placeholder": "Ask about a project…",
       "send": "Send",
       "thinking": "Reading the projects…",
@@ -159,21 +158,21 @@
         "generic": "Something went wrong on my side.",
         "rateLimited": "That's a lot of questions in a short window. Give it a few minutes.",
         "unavailable": "The assistant is offline right now.",
-        "emailInstead": "Email Fernando directly"
+        "emailInstead": "Email Fer directly"
       }
     },
     "direct": {
       "title": "Or reach out directly:",
       "email": "Send Email",
       "note": {
-        "title": "Quick Response",
-        "description": "I typically respond to emails within 24 hours. Let's discuss how we can work together!"
+        "title": "Direct Email",
+        "description": "For concrete proposals, or if you'd rather not use the assistant."
       }
     }
   },
   "footer": {
     "copyright": "Built with Next.js, TypeScript, and Tailwind CSS",
-    "rights": "© {year} Fernando Rios. All rights reserved."
+    "rights": "© {year} Fer Rios. All rights reserved."
   },
   "theme": {
     "toggle": "Toggle theme"
@@ -182,15 +181,15 @@
     "toggle": "Change language"
   },
   "metadata": {
-    "title": "Fernando Rios - ML Engineer & Full-Stack Developer",
-    "description": "ML Engineer who trains, deploys and monitors models in production. Full-stack Python, Cloud, MLOps. Ex-QA Analyst at TikTok, 5 years freelance.",
-    "siteName": "Fernando Rios Portfolio",
+    "title": "Fer Rios - Full-Stack Developer & ML Engineer",
+    "description": "Full-stack developer and ML Engineer: web apps built with Next.js, and computer vision and forecasting models served through FastAPI. Ex-QA Analyst at TikTok, 5 years freelance.",
+    "siteName": "Fer Rios Portfolio",
     "keywords": [
       "data science",
       "full-stack development",
       "machine learning",
       "web development",
-      "Fernando Rios"
+      "Fer Rios"
     ]
   },
   "notFound": {

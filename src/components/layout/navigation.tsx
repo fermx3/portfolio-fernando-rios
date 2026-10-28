@@ -28,7 +28,7 @@ export function Navigation() {
       <Container>
         <div className="flex h-16 items-center justify-between">
           <Link href="/" className="text-xl font-bold" onClick={() => setIsOpen(false)}>
-            Fernando Rios
+            Fer Rios
           </Link>
 
           {/* Desktop Navigation */}

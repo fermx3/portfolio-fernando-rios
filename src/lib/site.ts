@@ -6,7 +6,7 @@ import { routing } from "@/i18n/routing";
 export const SITE_URL = "https://www.fernandorios.dev";
 
 export const AUTHOR = {
-  name: "Fernando Rios",
+  name: "Fer Rios",
   email: "hola@fernandorios.dev",
   github: "https://github.com/fermx3",
   linkedin: "https://www.linkedin.com/in/riosafernando/",

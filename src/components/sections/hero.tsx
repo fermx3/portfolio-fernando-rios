@@ -32,12 +32,6 @@ export function Hero() {
             <span className="block text-muted-foreground mt-2">{t("role")}</span>
           </h1>
 
-          <div className="fade-in-up" style={{ animationDelay: "0.08s" }}>
-            <p className="mt-5 text-base font-medium tracking-wide sm:text-lg">
-              {t("specialties")}
-            </p>
-          </div>
-
           <div className="fade-in-up" style={{ animationDelay: "0.16s" }}>
             <p className="mt-5 max-w-2xl text-xl text-muted-foreground sm:text-2xl">
               {t("description")}
