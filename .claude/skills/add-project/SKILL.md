@@ -9,6 +9,8 @@ Crear un proyecto son **dos archivos**, nunca uno. Si solo creas el `.mdx` en in
 
 ## Antes de escribir nada
 
+Lee `docs/content-guidelines.md`. Ahí están los topes por campo, la estructura del cuerpo y las reglas de confidencialidad.
+
 Pregunta al usuario lo que no puedas deducir del repo del proyecto:
 
 1. **Slug** — kebab-case, será la URL (`/en/projects/<slug>`). Debe coincidir con el nombre de archivo.
@@ -57,17 +59,17 @@ Reglas: nombre **sin versión** (`Next.js`, no `Next.js 16`) · **no repitas la 
 ```yaml
 ---
 title: "<Título>"
-summary: "<Una o dos frases: qué es y con qué está construido>"
-description: "<Párrafo: alcance técnico completo>"
-objective: "<Qué problema resuelve y para quién>"
-theme: "<Una línea que enmarca el dominio>"
-impact: "<Cierre: qué cambió el proyecto y para quién. Se renderiza al final de la página>"
+summary: "<Qué es y con qué está construido>" # 1 frase, ≤ 30 palabras
+description: "<Alcance técnico que summary no dice>" # ≤ 45 palabras
+objective: "<Problema que resuelve>" # ≤ 15 palabras
+theme: "<Dominio>" # ≤ 8 palabras; omitir si no aporta
+impact: "<Qué cambió y para quién>" # ≤ 2 frases; cierre de la página
 date: "YYYY-MM-DD"
 status: "production" # enum: completed | production | archived (NO se traduce)
 featured: false
 category: "web-development"
 tags: ["Tag Uno", "Tag Dos"]
-technologies:
+technologies: # único lugar del stack; sin descripciones
   - "Tecnología"
 liveUrl: "https://..." # omitir si no hay demo
 repoUrl: "https://github.com/fermx3/<repo>"
@@ -76,11 +78,11 @@ coverImage: "/images/projects/<slug>/cover.png"
 images:
   - "/images/projects/<slug>/captura.png"
   - { src: "/images/projects/<slug>/movil.png", type: "mobile", alt: "..." }
-challenges:
+challenges: # máx. 3, ≤ 15 palabras c/u; pareados con solutions por índice
   - "<Problema real que hubo que resolver>"
-solutions:
+solutions: # máx. 3, ≤ 15 palabras c/u
   - "<Cómo se resolvió>"
-results:
+results: # máx. 3; solo verificables en el repo
   - "<Resultado concreto y verificable>"
 ---
 ```
@@ -89,33 +91,9 @@ results:
 
 ## Cuerpo
 
-### Tono — no negociable
+Tono, estructura, tope de 200 palabras y confidencialidad: **[`docs/content-guidelines.md`](../../../docs/content-guidelines.md). Léelo antes de redactar; es obligatorio.**
 
-El texto **describe qué hace el proyecto y con qué está construido**. No cuenta la historia de cómo se llegó ahí.
-
-Fuera: aperturas de ensayo ("la parte interesante nunca fue el CRUD"), aforismos de cierre ("un pronóstico sin su error es una suposición con un gráfico"), frases que desinflan lo que el proyecto _no_ era, metáforas, y guiones largos. Fuera también los volúmenes de operación y el detalle interno del negocio del cliente.
-
-Quien lee un portfolio escanea, no lee un artículo: la narrativa alarga sin añadir información. Y el cuerpo entero viaja al system prompt del asistente (`src/lib/assistant/corpus.ts`), así que cada frase de relleno se paga en cada petición.
-
-Regla práctica antes de commitear: si una frase no aporta un hecho técnico o una funcionalidad, bórrala.
-
-### Estructura
-
-El modelo es `companeros-en-ruta.mdx` o `nebluna-app.mdx`. **No** `nebluna-analytics.mdx`, que es ensayístico y quedó de una etapa anterior.
-
-```markdown
-## Project Overview # un párrafo: qué es, qué cubre, con qué
-
-## Technical Implementation
-
-### <Un bloque por área: datos, seguridad, interfaz, pruebas>
-
-## Functionality # lista de viñetas, una por módulo
-```
-
-`## Challenges & Solutions` y `## Results` **no** se escriben en el cuerpo: salen de los arrays del frontmatter y la página los renderiza después.
-
-En el `.es.mdx`, traduce también los encabezados.
+El ejemplo a seguir es `content/projects/portfolio-website.mdx` (y su `.es.mdx`).
 
 ## Imágenes
 
@@ -131,5 +109,7 @@ pnpm build
 Cuenta las rutas generadas: deben aparecer **dos nuevas** (`/en/projects/<slug>` y `/es/projects/<slug>`).
 
 > ⚠️ **Trampa crítica:** `getAllProjects()` envuelve todo en `try/catch` y devuelve `[]` al fallar. **Un frontmatter inválido en tu proyecto nuevo borra la lista completa de proyectos del sitio**, sin ningún error en consola ni en el build. Si tras agregar el proyecto la página `/projects` sale vacía, el culpable es tu frontmatter — no un bug de la UI.
+
+Reporta el número de palabras de cada archivo (`wc -w`) y confirma que el cuerpo, lo que va después del segundo `---`, queda en ≤ 200.
 
 Después corre la skill `verify` para cerrar con lint, typecheck y paridad EN/ES.
