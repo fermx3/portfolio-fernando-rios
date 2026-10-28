@@ -42,13 +42,13 @@ images:
 
 ## Resumen
 
-Seis roles comparten la plataforma: admin, brand manager, supervisor, promotor, asesor de ventas y cliente. Cada uno tiene dashboard web; personal de campo y clientes tienen además app nativa.
+Seis roles comparten la plataforma: admin, brand manager, supervisor, promotor, asesor de ventas y cliente. Cada uno tiene dashboard web; personal de campo y clientes, también app nativa.
 
 ## Implementación Técnica
 
 ### Multi-Tenancy
 
-Row Level Security en todas las tablas y un filtro por tenant en cada consulta como defensa en profundidad. URLs, exportaciones y QR usan IDs públicos, no internos.
+Row Level Security en todas las tablas y un filtro por tenant en cada consulta como defensa en profundidad. URLs, exportaciones y QR usan IDs públicos, no internos. Una suite aparte prueba esas reglas.
 
 ### Apps Móviles
 
@@ -56,11 +56,7 @@ La app del personal escanea QR y adjunta fotos con GPS a las visitas. Ambas reci
 
 ### Lealtad
 
-El asesor escanea el QR del cliente para canjear una promoción y el canje se registra para la facturación distribuidor-marca. Cada cliente acumula puntos, niveles y membresías por marca.
-
-### Pruebas
-
-Jest, Testing Library, MSW, Playwright y una suite para las reglas de acceso de la base.
+El asesor canjea una promoción escaneando el QR del cliente, y el canje se registra para facturación distribuidor-marca. Cada cliente acumula puntos, niveles y membresías por marca.
 
 ## Funcionalidad
 
@@ -69,4 +65,4 @@ Jest, Testing Library, MSW, Playwright y una suite para las reglas de acceso de 
 - **Segmentación**: audiencias con estimación de alcance.
 - **Operación**: pedidos, tickets y envíos de exhibiciones.
 - **Notificaciones**: alertas in-app en tiempo real.
-- **Exportación**: datasets segmentados en archivos ZIP.
+- **Exportación**: datasets segmentados en ZIP.

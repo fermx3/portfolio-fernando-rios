@@ -1,7 +1,7 @@
 ---
 title: "Coffee Disease Detection"
 summary: "Computer vision classifier that detects four coffee leaf diseases from a photo, built with TensorFlow transfer learning and served through a FastAPI service."
-description: "Classifies leaf images into five classes (healthy, Cercospora, Leaf Rust, Miner, Phoma). Compares VGG16, EfficientNetB0 and a custom CNN, tracks runs in MLflow and stores models in Google Cloud Storage. Team final project at Le Wagon's Data Science & AI bootcamp."
+description: "Classifies leaf images into five classes (healthy, Cercospora, Leaf Rust, Miner, Phoma), comparing VGG16, EfficientNetB0 and a custom CNN with runs tracked in MLflow. Final project of Le Wagon's Data Science & AI bootcamp, built by a team of four that I led."
 objective: "Catch coffee leaf diseases early, accepting false alarms over missed infections."
 impact: "A grower photographs a leaf and gets the predicted class with the probability of each class. Training favors a false alarm over a missed disease."
 date: "2025-11-15"
@@ -36,12 +36,11 @@ solutions:
 results:
   - "96.8% disease recall on the test split with EfficientNetB0"
   - "Models versioned in the MLflow registry with Staging and Production stages"
-  - "Led a team of four through the project"
 ---
 
 ## Overview
 
-Classifies a coffee leaf photo as healthy or as one of four diseases. Training and model selection target recall on the disease classes.
+Classifies a coffee leaf photo as healthy or as one of four diseases.
 
 ## Technical Implementation
 

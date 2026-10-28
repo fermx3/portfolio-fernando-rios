@@ -1,25 +1,42 @@
 ---
 title: "Tattoo Kim"
 date: "2026-03-11"
-summary: "Bilingual tattoo and piercing studio website with a dark minimal aesthetic and WhatsApp-first lead capture."
+summary: "Bilingual website for a tattoo and piercing studio, built with Next.js and next-intl, with WhatsApp-first lead capture."
 category: "web-development"
 featured: false
 tags: ["Next.js", "Tailwind CSS", "next-intl", "MDX", "SEO"]
 objective: "Showcase artist portfolios in two languages and route bookings to WhatsApp."
-theme: "Minimalist Dark Aesthetic"
 impact: "You browse each artist's work in Spanish or English, and a WhatsApp message arrives already written with the artist or service you were viewing. The studio updates profiles and blog posts by editing text files, without depending on anyone."
 repoUrl: "https://github.com/fermx3/tattoo-kim"
 liveUrl: "https://www.tattookim.com.mx"
 coverImage: "/images/projects/tattoo-kim/cover.png"
+technologies:
+  - "Next.js 16"
+  - "React 19"
+  - "TypeScript"
+  - "Tailwind CSS 4"
+  - "next-intl"
+  - "MDX"
+  - "next-mdx-remote"
+  - "Gray Matter"
+  - "next-sitemap"
 images:
   - "/images/projects/tattoo-kim/hero.jpg"
   - "/images/projects/tattoo-kim/portfolio.jpg"
   - "/images/projects/tattoo-kim/artists.jpg"
+challenges:
+  - "Blog slugs differ per language, which breaks hreflang links between versions"
+  - "Two locations with separate WhatsApp numbers, and each page needs its own message"
+  - "Google reviews must render even when the Places API is unavailable"
+solutions:
+  - "A shared translationSlug in the frontmatter maps each post to its translation"
+  - "One URL builder takes location, page context and locale and pre-fills the message"
+  - "Cached Places API responses, with bundled fallback reviews per language"
 ---
 
 ## Overview
 
-Tattoo Kim is a tattoo and piercing studio with locations in Playa del Carmen and Cancún. The site presents artist portfolios, services, locations and an aftercare blog in Spanish and English, built with Next.js (App Router) and Tailwind CSS.
+The studio works from Playa del Carmen and Cancún. Visitors browse artists, services and aftercare guides in either language and book from the page they are on, without filling out a form.
 
 ## Technical Implementation
 

@@ -1,7 +1,7 @@
 ---
 title: "Portfolio Website"
 summary: "Bilingual portfolio built with Next.js, file-based Markdown content validated by Zod, and an AI assistant that answers questions about the projects."
-description: "Statically generated English/Spanish site where each project is a pair of Markdown files. Includes search, category and tag filters, an image gallery with lightbox, light/dark theme, per-locale SEO metadata, and one dynamic route for a streaming Claude assistant."
+description: "Statically generated English/Spanish site where each project is a pair of Markdown files. Includes search, category and tag filters, an image gallery with lightbox, light/dark theme, per-locale SEO metadata, and API routes for a streaming Claude assistant."
 objective: "Publish projects in two languages by writing content files, not code."
 impact: "Publishing a project means writing two text files, one per language, and pushing: the page, its listing entry and both language versions build from them. Visitors can ask the assistant about any project instead of reading every page."
 date: "2026-01-08"
@@ -23,6 +23,7 @@ technologies:
   - "next-themes"
   - "Claude API"
   - "Resend"
+  - "Upstash Redis"
   - "Vercel"
 liveUrl: "https://www.fernandorios.dev/"
 repoUrl: "https://github.com/fermx3/portfolio-fernando-rios"
@@ -42,7 +43,7 @@ solutions:
   - "Server-owned system prompt and tools, whitelisted roles, per-IP rate limit"
 results:
   - "Adding a project takes one Markdown file per language"
-  - "Every page except the assistant endpoint is statically generated"
+  - "Every page is statically generated"
 ---
 
 ## Overview
