@@ -1,10 +1,9 @@
 ---
 title: "Log Analyser"
-summary: "Herramienta modular CLI en Python para el filtrado y análisis de archivos logs a gran escala con regex de alto rendimiento y reportes estructurados."
-description: "Una herramienta de interfaz de línea de comandos (CLI) robusta diseñada para procesar y analizar archivos de logs de servidor. Demuestra un procesamiento de texto de alto rendimiento utilizando solo la librería estándar de Python, con una arquitectura modular que separa la lógica de parseo del análisis de datos y la generación de reportes."
-objective: "Crear una utilidad ligera y sin dependencias externas para ayudar a los desarrolladores a identificar rápidamente patrones de error y estadísticas de logs en archivos de texto masivos."
-theme: "Estética técnica y minimalista de herramienta CLI."
-impact: "Abre archivos de log enormes, más grandes que la memoria de la máquina, y te dice cuántos errores hay y cuáles se repiten más. No hay que instalar nada más que Python. Para leer otro formato se cambia una línea."
+summary: "Herramienta de línea de comandos en Python que analiza un archivo de log y reporta el conteo por nivel y los mensajes de error más frecuentes."
+description: "Tres módulos separan parseo, análisis y reporte, con argparse en el punto de entrada."
+objective: "Resumir niveles y errores recurrentes de un log sin revisarlo a mano."
+impact: "Convierte un archivo de log en un conteo por nivel y un ranking de los errores más repetidos. No hay que instalar nada más que Python."
 date: "2026-03-19"
 status: "completed"
 featured: false
@@ -12,48 +11,37 @@ category: "backend-development"
 tags: ["Python","CLI","Automatización"]
 technologies:
   - "Python 3.10+"
-  - "Regex (módulo re)"
-  - "Collections (Counter)"
+  - "Regex"
+  - "collections.Counter"
   - "Argparse"
-  - "F-strings (salida formateada)"
 repoUrl: "https://github.com/fermx3/log_analyser"
 coverImage: "/images/projects/log-analyser/cover.jpg"
 challenges:
-  - "Procesar eficientemente archivos de logs potencialmente masivos sin cargar todo el contenido en memoria"
-  - "Crear un patrón de regex flexible que pueda manejar variaciones en el formato de logs (marcas de tiempo, mensajes de varias palabras)"
-  - "Implementar un diseño modular utilizando solo la librería estándar de Python para garantizar cero dependencias externas"
+  - "Extraer marca de tiempo, nivel y mensaje de varias palabras de cada línea"
+  - "Que el formato del log sea fácil de cambiar"
 solutions:
-  - "Implementación de lectura línea por línea con expresiones regulares pre-compiladas utilizando grupos de captura con nombre para un parseo de alta velocidad"
-  - "Uso de `collections.Counter` de Python para un análisis de frecuencia rápido de niveles de log y mensajes de error"
-  - "Diseño de una arquitectura desacoplada (Parser -> Analyzer -> Reporter) para permitir pruebas independientes y extensibilidad"
+  - "Regex precompilada con grupos de captura con nombre, devuelta como dict por línea"
+  - "Todo el formato vive en un solo patrón en parser.py"
 results:
-  - "Una herramienta CLI rápida y confiable que genera reportes estructurados en segundos"
-  - "Demostración de competencia en ingeniería de Python core y principios de arquitectura de software"
-  - "Proporciona una utilidad reutilizable para tareas de DevOps y depuración de backend"
+  - "Sin dependencias de terceros: funciona con la librería estándar de Python"
 ---
 
-## Descripción del Proyecto
+## Resumen
 
-**Log Analyser** es una utilidad CLI especializada creada para resolver un problema común de los desarrolladores: extraer información significativa de archivos de logs voluminosos y desordenados. En lugar de buscar manualmente entre miles de líneas, esta herramienta proporciona un resumen estructurado de los niveles de log y los mensajes de error más frecuentes.
+Log Analyser lee un archivo de log pasado como argumento (`python main.py logs/sample.log`) e imprime un resumen de entradas por nivel y los mensajes de error más frecuentes.
 
 ## Implementación Técnica
 
-El proyecto se construyó con un enfoque en **código limpio** y **rendimiento**, utilizando un enfoque modular que sigue el Principio de Responsabilidad Única.
+### Parseo
+`parser.py` lee el archivo línea por línea y reconoce `YYYY-MM-DD HH:MM:SS NIVEL mensaje` para `INFO`, `WARNING` y `ERROR`. Las líneas que no coinciden se omiten; si el archivo no existe registra un aviso y termina.
 
-### Parseo de Alto Rendimiento
-El corazón de la herramienta es un parser robusto que utiliza **expresiones regulares pre-compiladas**. Mediante el uso de **grupos de captura con nombre** (ej. `(?P<level>...)`), el parser extrae eficientemente:
-- **Marcas de tiempo (Timestamps)**
-- **Niveles de severidad** (INFO, WARNING, ERROR, CRITICAL)
-- **Contenido del mensaje**
+### Análisis
+`analyzer.py` cuenta las entradas por nivel con `Counter` y ordena los mensajes `ERROR` con `most_common()`, los 5 primeros por defecto.
 
-El uso de generadores (procesamiento línea por línea) asegura que la herramienta pueda manejar archivos mucho más grandes que la memoria RAM disponible sin degradación del rendimiento.
+### Reporte
+`reporter.py` imprime columnas alineadas con formato de f-strings.
 
-### Análisis de Datos
-El análisis estadístico usa `collections.Counter` de Python, que da un conteo casi instantáneo de las ocurrencias de logs y una identificación eficiente de los `n` mensajes de error más frecuentes mediante el método `.most_common()`.
+## Funcionalidad
 
-### Arquitectura Modular
-El código está organizado estrictamente en cuatro módulos clave:
-1.  **`parser.py`**: Maneja la extracción de texto y la coincidencia de regex.
-2.  **`analyzer.py`**: Realiza cálculos estadísticos sobre los datos parseados.
-3.  **`reporter.py`**: Formatea e imprime el reporte final utilizando alineación avanzada con f-strings.
-4.  **`main.py`**: Actúa como orquestador y maneja los argumentos de la CLI mediante `argparse`.
+- Conteo de entradas por nivel de log
+- Los 5 mensajes de error más frecuentes con su número de apariciones

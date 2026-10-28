@@ -1,26 +1,29 @@
 ---
 title: "Sitio Web de Portfolio"
-summary: "Portfolio bilingüe construido con Next.js 16, un pipeline de contenido Markdown basado en archivos y arquitectura type-safe para mostrar proyectos de ciencia de datos y desarrollo full-stack."
-description: "Sitio web de portfolio profesional con soporte Inglés/Español, páginas de proyectos generadas desde Markdown, temas claro/oscuro y filtrado interactivo de proyectos. Construido con Next.js 16, React 19, TypeScript y Tailwind CSS 4, desplegado en Vercel con generación estática para rendimiento."
-objective: "Crear un portfolio bilingüe y mantenible que facilite agregar nuevos proyectos y presente trabajo técnico de forma clara en todos los dispositivos e idiomas."
-theme: "Diseño moderno y limpio con animaciones fluidas y presentación profesional."
-impact: "Para publicar un proyecto escribo dos archivos de texto, uno por idioma, y hago push. La página, su entrada en el listado y las dos versiones se generan solas. Si me falta un dato, el sitio no compila: me entero antes de publicar, no después."
+summary: "Portfolio bilingüe con Next.js, contenido en archivos Markdown validados con Zod y un asistente de IA que responde preguntas sobre los proyectos."
+description: "Sitio inglés/español con generación estática donde cada proyecto es un par de archivos Markdown. Incluye búsqueda, filtros por categoría y tag, galería con lightbox, tema claro/oscuro, metadatos SEO por idioma y una única ruta dinámica para un asistente de Claude con streaming."
+objective: "Publicar proyectos en dos idiomas escribiendo archivos de contenido, no código."
+impact: "Publicar un proyecto es escribir dos archivos de texto, uno por idioma, y hacer push: la página, su entrada en el listado y las dos versiones se generan a partir de ellos. Los visitantes pueden preguntarle al asistente por cualquier proyecto en vez de leer cada página."
 date: "2026-01-08"
 status: "production"
 featured: true
 category: "web-development"
-tags: ["Next.js","React","TypeScript","Tailwind CSS","Markdown","Internacionalización"]
+tags: ["Next.js","React","TypeScript","Tailwind CSS","Markdown","Internacionalización","LLM"]
 technologies:
-  - "Next.js 16 (App Router)"
+  - "Next.js 16"
   - "React 19"
-  - "TypeScript 5"
+  - "TypeScript"
   - "Tailwind CSS 4"
-  - "Pipeline de contenido Markdown"
-  - "next-intl (i18n)"
+  - "next-intl"
+  - "markdown-it"
+  - "Gray Matter"
+  - "Zod"
   - "Framer Motion"
   - "Radix UI"
-  - "Validación Zod"
-  - "Despliegue Vercel"
+  - "next-themes"
+  - "Claude API"
+  - "Resend"
+  - "Vercel"
 liveUrl: "https://www.fernandorios.dev/"
 repoUrl: "https://github.com/fermx3/portfolio-fernando-rios"
 coverImage: "/images/projects/portfolio-website/cover.jpg"
@@ -30,66 +33,39 @@ images:
   - "/images/projects/portfolio-website/project-detail.jpg"
   - "/images/projects/portfolio-website/dark-theme.jpg"
 challenges:
-  - "Construir un sistema de contenido donde agregar un proyecto nuevo requiere solo un archivo MDX, no cambios de código"
-  - "Soportar dos idiomas sin duplicar lógica de layout o código de componentes"
-  - "Equilibrar la riqueza de animaciones con tiempos de carga rápidos en todos los dispositivos"
-  - "Mantener estándares de accesibilidad junto con componentes interactivos personalizados"
+  - "Agregar un proyecto debe requerir solo archivos de contenido, sin cambios de código"
+  - "Dos idiomas sin duplicar layout ni componentes"
+  - "Un endpoint público de LLM que recibe historial de conversación no confiable"
 solutions:
-  - "Pipeline Markdown con frontmatter validado por Zod para gestión de contenido type-safe basada en archivos"
-  - "next-intl con enrutamiento basado en locale, manteniendo un solo árbol de componentes para ambos idiomas"
-  - "Animaciones Framer Motion con activación basada en Intersection Observer y code splitting"
-  - "Primitivos Radix UI para componentes interactivos accesibles (diálogos, dropdowns, toggles)"
+  - "Archivos Markdown con frontmatter validado por Zod, leídos y renderizados en build"
+  - "Enrutamiento por locale de next-intl sobre un solo árbol de componentes"
+  - "System prompt y tools definidos en servidor, roles en whitelist, límite por IP"
 results:
-  - "Puntuaciones Lighthouse 95+ en rendimiento, accesibilidad, SEO y mejores prácticas"
-  - "Agregar un proyecto nuevo toma un archivo MDX por idioma, sin configuración de despliegue necesaria"
-  - "Cambio fluido Inglés/Español con contenido, metadatos y URLs localizados"
-  - "Diseño responsivo probado en breakpoints de móvil, tablet y escritorio"
+  - "Agregar un proyecto toma un archivo Markdown por idioma"
+  - "Todas las páginas salvo el endpoint del asistente se generan estáticamente"
 ---
 
-## Resumen del Proyecto
+## Resumen
 
-Este es el sitio que estás viendo. Es un **portfolio bilingüe** que presenta mi trabajo en ciencia de datos, machine learning y desarrollo full-stack. El objetivo técnico era directo: construir un sitio donde agregar un proyecto nuevo signifique escribir un archivo MDX, no tocar código de aplicación.
+Este sitio. Presenta los proyectos de Fernando en inglés y español e incluye un asistente de chat que responde preguntas sobre ellos y puede reenviar los datos de contacto de un visitante.
 
-## Arquitectura de Contenido
+## Implementación Técnica
 
-### Páginas de Proyecto Basadas en MDX
-Cada proyecto existe como un par de archivos `.mdx` (uno por idioma) en el directorio `content/projects/`. El frontmatter se valida contra un esquema Zod en tiempo de build, así que los errores de tipos y campos faltantes se detectan antes del despliegue, no en producción.
+### Contenido
 
-El cuerpo es Markdown plano: encabezados, listas, tablas y bloques de código. Se parsea en tiempo de build y se renderiza a HTML, así que una página de proyecto se escribe con la facilidad de un post de blog mientras el frontmatter de arriba sigue siendo un modelo de datos tipado.
+Los proyectos viven en `content/projects/` como `<slug>.mdx` y `<slug>.es.mdx`. Gray Matter extrae el frontmatter, Zod lo valida y `markdown-it` renderiza el cuerpo; el slug sale del nombre del archivo. Un script de CI verifica imágenes, paridad EN/ES y reglas de tags.
 
-### Generación Automática de Rutas
-Next.js App Router genera páginas de proyectos dinámicamente desde el directorio de contenido. Agregar un nuevo proyecto crea su ruta, lo agrega al listado de proyectos y lo hace disponible en ambos idiomas, todo desde el sistema de archivos.
+### Internacionalización
 
-## Internacionalización
+next-intl sirve `/en` y `/es` desde un solo árbol de componentes. Sitemap, URLs canónicas, `hreflang`, imágenes Open Graph y JSON-LD se generan por idioma.
 
-El sitio usa **next-intl** para localización con prefijos de ruta `/en` y `/es`. Un solo árbol de componentes sirve ambos idiomas. Las traducciones viven en archivos de mensajes JSON, y la traducción a nivel de contenido ocurre a través de los archivos MDX pareados. Los metadatos SEO (títulos, descripciones, tags Open Graph) se generan por locale con atributos `hreflang` apropiados.
+### Asistente
 
-## Stack Técnico
+Una ruta Node.js transmite en streaming las respuestas de Claude. El system prompt, cacheado como prefijo estable, contiene todos los proyectos y el perfil. Una tool de contacto envía los datos del visitante con Resend; si falta un servicio, el asistente degrada al siguiente respaldo.
 
-### Frontend
-- **Next.js 16** con App Router y Static Site Generation
-- **React 19** con features concurrentes y boundaries de Suspense
-- **TypeScript 5** en todo el codebase
-- **Tailwind CSS 4** con un sistema de diseño personalizado (spacing, colores, tipografía)
+## Funcionalidad
 
-### Capa Interactiva
-- **Framer Motion** para transiciones de página, animaciones de scroll e interacciones hover
-- **Radix UI** para primitivos accesibles (toggle de tema, menú de navegación, diálogos)
-- **Temas claro/oscuro** con detección de preferencia del sistema y override manual
-
-### Pipeline de Contenido
-- **Markdown** procesado con `markdown-it`, no un compilador MDX: el contenido es prosa y no necesita JSX
-- **Gray Matter** para extracción de frontmatter
-- **Esquemas Zod** para validación en build-time de metadatos de proyectos
-- Enrutamiento basado en archivos para generación de páginas sin configuración
-
-## Despliegue
-
-El sitio corre en **Vercel** con despliegues automáticos desde el repositorio GitHub. Static Site Generation significa que las páginas se pre-renderizan en tiempo de build, resultando en tiempos de carga rápidos y SEO fuerte sin un servidor en runtime.
-
-## Decisiones de Diseño
-
-- **Sin CMS**: los archivos MDX en el repo son la fuente de contenido. Esto mantiene el stack simple y con control de versiones.
-- **Radix UI sobre componentes personalizados**: la accesibilidad está incorporada desde el inicio, no añadida después.
-- **Tailwind sobre CSS Modules**: el enfoque utility-first mantiene los estilos colocados y consistentes.
-- **SSG sobre SSR**: el contenido del portfolio cambia poco, así que la generación estática es el tradeoff correcto.
+- Búsqueda con filtros por categoría y tag en el idioma activo
+- Galería con lightbox, agrupada en capturas web y móvil
+- Tema claro/oscuro según la preferencia del sistema
+- Animaciones al hacer scroll con Framer Motion

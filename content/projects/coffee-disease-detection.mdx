@@ -1,10 +1,9 @@
 ---
 title: "Coffee Disease Detection"
-summary: "Computer vision system that identifies diseases in coffee plants from leaf images using CNN architectures, deployed as a production API."
-description: "Machine learning system that classifies coffee leaf images into five categories (healthy, Cercospora, Leaf Rust, Miner, Phoma) using VGG16, EfficientNet, and custom CNN models. Built as a Le Wagon bootcamp final project, led by a four-person team from concept to cloud deployment."
-objective: "Build a reliable classification system that prioritizes disease detection recall, helping coffee farmers identify plant diseases early enough to act."
-theme: "Agricultural AI with focus on precision farming and disease prevention."
-impact: "Take a photo of a leaf and it tells you whether the plant is healthy or sick. It does not just give an answer: it says how sure it is, and warns you when it is not. It is tuned to prefer a false alarm over missing a real disease."
+summary: "Computer vision classifier that detects four coffee leaf diseases from a photo, built with TensorFlow transfer learning and served through a FastAPI service."
+description: "Classifies leaf images into five classes (healthy, Cercospora, Leaf Rust, Miner, Phoma). Compares VGG16, EfficientNetB0 and a custom CNN, tracks runs in MLflow and stores models in Google Cloud Storage. Team final project at Le Wagon's Data Science & AI bootcamp."
+objective: "Catch coffee leaf diseases early, accepting false alarms over missed infections."
+impact: "A grower photographs a leaf and gets the predicted class with the probability of each class. Training favors a false alarm over a missed disease."
 date: "2025-11-15"
 status: "production"
 featured: true
@@ -12,12 +11,13 @@ category: "ml"
 tags: ["Computer Vision","Deep Learning","Agriculture","CNN","TensorFlow","FastAPI","Streamlit"]
 technologies:
   - "TensorFlow/Keras"
-  - "VGG16 Transfer Learning"
+  - "VGG16"
   - "EfficientNetB0"
   - "FastAPI"
   - "Streamlit"
   - "MLflow"
   - "Docker"
+  - "Google Cloud Storage"
   - "Python"
 liveUrl: "https://coffeedd-web-lewagon.streamlit.app/"
 repoUrl: "https://github.com/fermx3/coffee-disease-detection"
@@ -26,77 +26,40 @@ images:
   - "/images/projects/coffee-disease-detection/disease-classification.jpg"
   - "/images/projects/coffee-disease-detection/streamlit-app.jpg"
 challenges:
-  - "Distinguishing between visually similar coffee leaf diseases"
-  - "Handling an imbalanced dataset where some diseases are underrepresented"
-  - "Minimizing false negatives, since a missed disease is worse than a false alarm"
-  - "Creating a preprocessing pipeline robust enough for field-captured images"
+  - "Visually similar diseases in an imbalanced dataset"
+  - "A missed disease costs more than a false alarm"
+  - "Aggressive augmentation can erase the color cues that identify a disease"
 solutions:
-  - "Custom class weighting that penalizes healthy misclassification and boosts rare disease detection"
-  - "Multi-architecture approach comparing VGG16, EfficientNet, and a custom lightweight CNN"
-  - "Data augmentation that preserves disease-specific visual characteristics"
-  - "Disease-focused recall metric as the primary optimization target"
+  - "Class weights from the train distribution, with a boost for the rarest disease"
+  - "Custom disease-recall metric that excludes the healthy class, monitored during training"
+  - "Horizontal flips and subtle brightness/contrast only; hue and saturation untouched"
 results:
-  - "Greater than 90% recall on disease classes, minimizing missed detections"
-  - "Production API deployed on Google Cloud Platform via Docker"
-  - "MLflow experiment tracking for model versioning and performance comparison"
-  - "Led a four-person team from idea pitch to production deployment"
+  - "96.8% disease recall on the test split with EfficientNetB0"
+  - "Models versioned in the MLflow registry with Staging and Production stages"
+  - "Led a team of four through the project"
 ---
 
-## Project Overview
+## Overview
 
-Coffee Disease Detection is a **computer vision system** that classifies coffee leaf images into five categories: healthy leaves and four diseases (Cercospora, Leaf Rust, Miner, and Phoma) that can significantly reduce crop yields if left untreated.
+Classifies a coffee leaf photo as healthy or as one of four diseases. Training and model selection target recall on the disease classes.
 
-Built by a team of four under my lead, from dataset preparation and model training through API development and cloud deployment. It was one of two projects selected as a final project at Le Wagon's Data Science & AI bootcamp.
+## Technical Implementation
 
-## The Problem
+### Models
 
-Coffee farmers often identify diseases too late, when visible damage is already extensive. The four target diseases present differently:
+VGG16 and EfficientNetB0 with ImageNet weights, plus a lightweight custom CNN. Training runs in two phases, frozen base then fine-tuning, with dropout, early stopping and a learning rate chosen by dataset size. The loader detects the architecture from the saved model's layers.
 
-1. **Cercospora** - fungal disease causing brown spots on leaves
-2. **Leaf Rust (Roya)** - orange/yellow pustules on leaf undersides
-3. **Miner** - insect larvae creating visible tunnels through leaf tissue
-4. **Phoma** - fungal blight causing leaf necrosis
+### Data
 
-Some of these look similar in early stages. The system needs to catch diseases early, which means optimizing for recall over precision. A false alarm is preferable to a missed infection.
+Images are letterboxed to 224x224 and split per class into train, validation and test sets.
 
-## Model Architecture
+### Serving
 
-### Multi-Architecture Comparison
-Rather than committing to a single model, the project trains and compares three architectures:
+FastAPI validates the image format, runs inference on a cached model and returns the top class plus every class probability. The API ships as a Docker image; trained models are uploaded to Google Cloud Storage.
 
-- **VGG16 Transfer Learning** - pre-trained on ImageNet, fine-tuned with anti-overfitting measures (dropout, early stopping). Provides stable baseline performance.
-- **EfficientNetB0** - optimized for the accuracy-efficiency tradeoff. Smaller model with competitive performance.
-- **Custom CNN** - lightweight architecture designed for smaller datasets. Useful as a benchmark and for resource-constrained deployment.
+## Features
 
-Each model uses automatic architecture detection for seamless loading at inference time.
-
-### Disease-Focused Optimization
-
-The key insight: in a medical/agricultural classification task, the cost of errors is asymmetric. Missing a disease (false negative) is far worse than flagging a healthy leaf (false positive). The training pipeline reflects this:
-
-- **Custom class weights** reduce the weight of the healthy class and increase weights for rare diseases, forcing the model to learn disease features more aggressively.
-- **Disease recall metric** - a custom TensorFlow metric that measures recall exclusively across disease classes, ignoring healthy classification accuracy.
-- **Adaptive learning rates** based on dataset size, with multi-phase training (frozen feature extraction, then full fine-tuning).
-
-### Data Pipeline
-- Letterboxing preprocessing to 224x224 maintaining aspect ratio
-- Augmentation (rotation, flip, brightness, contrast) that preserves disease-specific patterns
-- Automatic train/validation/test splitting with stratification
-- Class distribution analysis to inform weighting strategy
-
-## Deployment
-
-### FastAPI Backend
-A RESTful API accepts images via file upload or base64 encoding, runs inference, and returns the predicted class with confidence scores. The API includes production caching for model loading optimization and comprehensive error handling.
-
-### Streamlit Frontend
-A separate [web application](https://github.com/fermx3/coffeedd-web) provides a simple upload-and-predict interface, making the system accessible to users without technical knowledge.
-
-### Infrastructure
-- **Docker** containerization for reproducible deployment
-- **Google Cloud Platform** for scalable cloud-based inference
-- **MLflow** for experiment tracking, model registry, and versioning
-
-## Team & Scope
-
-A four-person team over the full lifecycle: data collection, model experimentation, API development and production deployment. Project lead, covering technical direction, task distribution across the team and the repository's structure and documentation.
+- Image upload endpoint and health check that reports whether the model is loaded
+- Separate [Streamlit app](https://github.com/fermx3/coffeedd-web) for upload and prediction
+- Evaluation with confusion matrix and false-negative analysis
+- Train, evaluate and predict commands through Make targets

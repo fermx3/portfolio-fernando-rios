@@ -1,22 +1,22 @@
 ---
 title: "Sonámbulo Estudio Creativo"
-summary: "Sitio web corporativo para un estudio creativo con animaciones accionadas por scroll, showcases interactivos de capacidades y portfolio dinámico de casos de estudio."
-description: "Diseño y desarrollo completo del sitio web corporativo de Sonámbulo Estudio Creativo, un estudio creativo multidisciplinario especializado en branding, estrategia de ruta al mercado y productos digitales. El sitio usa animaciones activadas por scroll, secciones sticky e interacciones responsivas para comunicar las capacidades del estudio."
-objective: "Diseñar un sitio web inmersivo que comunique la propuesta de valor del estudio a través de movimiento, estructura y narrativa, convirtiendo un sitio corporativo en una experiencia."
-theme: "Corporativo moderno con acentos lima audaces y animaciones fluidas."
-impact: "En computadora las tarjetas reaccionan al cursor; en el celular, al tocarlas. Es el mismo código: el sitio detecta con qué lo estás usando. Las animaciones siguen el scroll y se apagan al salir de pantalla, así nada se traba."
+summary: "Sitio corporativo para un estudio creativo, hecho con Next.js, TypeScript y Framer Motion, con secciones guiadas por scroll y páginas de casos de estudio."
+description: "Home de una sola página con una secuencia sticky de scroll, tarjetas expandibles de capacidades y proceso, y una sección de clientes. Las páginas de casos se generan desde un archivo JSON, cada una con hero, tarjetas de insights y carrusel de imágenes."
+objective: "Presentar los servicios y casos del estudio mediante movimiento guiado por scroll."
+impact: "En computadora las tarjetas reaccionan al cursor; en el celular, al tocarlas, con los mismos componentes. Cada caso de estudio tiene su propia página."
 date: "2025-11-13"
 status: "completed"
 featured: true
 category: "web-development"
 tags: ["Next.js","React","Framer Motion","TypeScript","Animación"]
 technologies:
-  - "Next.js 14"
+  - "Next.js"
   - "React"
   - "TypeScript"
   - "Framer Motion"
-  - "CSS3/SCSS"
-  - "Diseño Responsivo"
+  - "Tailwind CSS"
+  - "SCSS"
+  - "Lenis"
 liveUrl: "https://www.estudiosonambulo.com/"
 repoUrl: "https://github.com/fermx3/sonambulo-web-2.0"
 coverImage: "/images/projects/sonambulo-estudio-creativo/cover.jpg"
@@ -26,69 +26,37 @@ images:
   - "/images/projects/sonambulo-estudio-creativo/capabilities.jpg"
   - "/images/projects/sonambulo-estudio-creativo/portfolio.jpg"
 challenges:
-  - "Orquestar animaciones complejas accionadas por scroll sin sacrificar rendimiento"
-  - "Construir un sistema de scroll sticky donde el contenido se transforma mientras el usuario navega"
-  - "Soportar interacciones tanto táctiles como hover en distintos dispositivos"
-  - "Mantener 60fps con múltiples elementos animados concurrentes"
+  - "Secuenciar texto e imágenes a lo largo de un scroll largo sin navegar"
+  - "Las tarjetas deben funcionar con hover en escritorio y con toque en pantallas táctiles"
+  - "La secuencia sticky de escritorio no cabe en pantallas pequeñas"
 solutions:
-  - "Framer Motion con hooks personalizados de progreso de scroll para animaciones aceleradas por GPU"
-  - "Sistema de secciones sticky personalizado con seguimiento de progreso y transformación de contenido"
-  - "Capa de detección de dispositivos que intercambia modelos de interacción entre touch y pointer"
-  - "Carga diferida, optimización de imágenes Next.js y agrupación de animaciones"
-results:
-  - "Experiencia web inmersiva funcionando a 60fps en todos los dispositivos"
-  - "Puntuaciones altas de Lighthouse en rendimiento, accesibilidad y SEO"
-  - "Sistema de portfolio dinámico para presentar casos de estudio de clientes"
-  - "Diseño mobile-first con soporte nativo de gestos táctiles"
+  - "Contenedor sticky controlado por el progreso de scroll de Framer Motion"
+  - "Media queries de puntero cambian cada tarjeta entre hover y toque"
+  - "Sección móvil aparte que se revela al entrar en pantalla, sin scroll ligado"
 ---
 
-## Resumen del Proyecto
+## Resumen
 
-Sonámbulo Estudio Creativo es un **estudio creativo multidisciplinario** que se autodefine como un "super grupo de creativos, publicitarios, mercadólogos y nerds de ideas." Trabajan en branding, estrategia de ruta al mercado y productos digitales. El sitio web necesitaba reflejar esa energía: no un folleto corporativo estándar, sino una experiencia que comunica lo que el estudio hace a través de cómo el sitio mismo se comporta.
+Sonámbulo es un estudio creativo que trabaja en branding, estrategia de ruta al mercado y productos digitales. El sitio es una home de una sola página en español más una página por caso de estudio.
 
-## Arquitectura de Animación
+## Implementación Técnica
 
-El sitio está construido alrededor de interacciones accionadas por scroll. En lugar de transiciones decorativas, las animaciones cumplen un propósito estructural: controlan cómo se revela el contenido, cómo se conectan las secciones y cómo el usuario descubre las capacidades del estudio.
+### Secuencia de scroll
+En escritorio, la sección About fija un viewport sticky y traduce el progreso del scroll a opacidad, posición, escala y rotación de cada bloque. Lenis suaviza el scroll de rueda.
 
-### Sistema de Progreso de Scroll
-Un hook personalizado rastrea la posición del scroll en el viewport y la mapea a valores de progreso de animación. Esto impulsa secciones sticky donde el contenido se transforma mientras el usuario hace scroll: el texto se transforma, las imágenes se deslizan y la propuesta de valor se despliega paso a paso sin requerir clicks ni navegación.
+### Tarjetas según el tipo de entrada
+Las tarjetas de capacidades y proceso se expanden con hover si hay puntero fino y con un toque en pantallas táctiles. Ambas responden a Enter y Espacio y exponen `aria-expanded`.
 
-### Estrategia de Rendimiento
-Múltiples elementos animados corriendo concurrentemente pueden fácilmente perder frames. El sitio mantiene 60fps mediante:
-- Transforms acelerados por GPU vía los componentes `motion` de Framer Motion
-- Agrupación de animaciones para evitar layout thrashing
-- Activación basada en Intersection Observer para que los elementos fuera de pantalla no consuman recursos
-- Next.js Image con carga diferida para assets visuales pesados
+### Casos de estudio
+Las rutas bajo `/portfolio/[slug]` leen de un archivo JSON y generan metadatos e imágenes Open Graph por cliente.
 
-## Secciones Principales
+### Cursor y movimiento
+Un cursor propio sigue al puntero con física de resorte y cambia sobre enlaces, botones e imágenes. Las animaciones CSS se detienen con `prefers-reduced-motion`.
 
-### Hero y Acerca de
-Una sección de scroll sticky donde el posicionamiento del estudio se revela progresivamente. Mientras el usuario hace scroll, los bloques de texto se transforman y las imágenes transicionan, contando la historia desde "quiénes somos" hasta "en qué creemos" sin una sola navegación de página.
+## Funcionalidad
 
-### Capacidades
-Tres áreas de especialización presentadas como tarjetas interactivas:
-- **SNMBL Channel Development** - Estrategia de negocio y trade marketing
-- **SNMBL Data & Intelligence Center** - Dashboards y desarrollo web/móvil
-- **SNMBL Ideas Lab** - Estrategia creativa y construcción de marca
-
-Cada tarjeta se expande al hacer hover (desktop) o tap (móvil) para revelar descripciones detalladas de servicios.
-
-### Portfolio Dinámico
-Un sistema de casos de estudio con secciones hero por cliente, carruseles de imágenes responsivos, tarjetas de insights con layouts variados y navegación fluida entre proyectos.
-
-## Detalles Técnicos
-
-### Frontend
-- **Next.js 14** con App Router y React Server Components
-- **TypeScript** para seguridad de tipos en todo el árbol de componentes
-- **Framer Motion** como motor de animación, con hooks `useScroll`, `useTransform` y `useInView`
-- **Hooks personalizados** para seguimiento de scroll, detección de dispositivos y observación de intersección
-
-### Capa de Interacción Responsiva
-El sitio detecta el tipo de input (touch vs. pointer) y ajusta los patrones de interacción. En desktop, las tarjetas responden al hover con transformaciones de perspectiva 3D. En móvil, las mismas tarjetas usan tap-to-expand con manejo optimizado de gestos táctiles. Un solo codebase de componentes sirve ambas experiencias a través de hooks de interacción condicionales.
-
-### Sistema de Diseño
-- Identidad visual cohesiva usando los colores de marca del estudio (lima, azul, tinta)
-- Tipografía Montserrat y Darker Grotesque
-- Iconografía basada en asteriscos como motivo visual recurrente
-- SCSS con módulos a nivel de componente y variables compartidas
+- Secuencia sticky en el About de escritorio
+- Tarjetas expandibles de capacidades y proceso
+- Páginas de casos con tarjetas de insights y carrusel de imágenes
+- Cursor animado propio
+- Scroll suavizado

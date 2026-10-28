@@ -1,10 +1,9 @@
 ---
 title: "PerfectApp"
-summary: "B2B sales force automation and customer loyalty platform for the CPG industry with multi-role dashboards, field visit tracking, and a points-based rewards system."
-description: "PerfectApp is a multi-tenant SaaS platform that digitizes route-to-market operations for consumer packaged goods companies. It connects field sales reps, coordinators, administrators, and retail clients through role-specific dashboards, a structured visit workflow, order validation, loyalty point tracking, and automated data exports."
-objective: "Replace fragmented spreadsheet-based workflows with a centralized platform that tracks field execution, automates order validation, and incentivizes retail clients through a loyalty program."
-theme: "Data-driven operational platform with role-based access and real-time field execution tracking."
-impact: "Sales reps fill in the visit form from their phone, often with a bad signal. If the connection drops or the page reloads, they do not lose what they had typed. Without that, everything after it, orders, points and reports, would have no data to work with."
+summary: "Multi-tenant B2B platform for consumer goods route-to-market: field visit tracking, order validation and a points-based loyalty program, built with Next.js and MongoDB."
+description: "Server-rendered app with role-guarded areas for administrators, field reps, coordinators, retail clients and analysts. A three-step visit form feeds purchase orders, validated orders credit loyalty points, and sales, price and inventory data export as CSV."
+objective: "Replace spreadsheet tracking of field visits, orders and client loyalty with one platform."
+impact: "Sales reps fill in the visit form on their phone, often with weak signal, and a reload or dropped connection no longer loses what they typed. Orders, points and reports all start from that form."
 date: "2024-07-01"
 status: "production"
 featured: false
@@ -18,7 +17,10 @@ technologies:
   - "Prisma"
   - "NextAuth.js"
   - "Redux Toolkit"
-  - "Node.js"
+  - "React Hook Form"
+  - "Zod"
+  - "Vercel Blob"
+  - "Nodemailer"
   - "SCSS Modules"
 liveUrl: "https://www.ruta-perfectapp.com/"
 repoUrl: "https://github.com/fermx3/perfectapp"
@@ -27,99 +29,43 @@ images:
   - "/images/projects/perfectapp/hero.jpg"
   - "/images/projects/perfectapp/dashboard.jpg"
 challenges:
-  - "Digitizing a paper and spreadsheet-based field operation with multiple stakeholder roles"
-  - "Designing a loyalty points system that rewards purchase behavior fairly"
-  - "Building complex database queries for quota tracking and sales rollups across SKUs, zones, and client tiers"
-  - "Handling multi-step visit forms that must survive page refreshes in unreliable field conditions"
+  - "Five user roles needing different data and permissions in one app"
+  - "Visit forms must survive page reloads on unreliable mobile connections"
+  - "Quota progress and sales rollups across zones, SKUs and client tiers"
 solutions:
-  - "Role-based architecture with distinct user types, each with dedicated dashboards and permissions"
-  - "Configurable points system with admin-validated order flow and quota-based bonuses"
-  - "Optimized database aggregation pipelines for real-time quota calculations and data exports"
-  - "Persistent multi-step visit wizard that preserves form state across 3 stages of field data collection"
+  - "Server-side session and role checks on every protected page and API route"
+  - "Redux Toolkit state persisted locally across the three visit steps"
+  - "MongoDB aggregation pipelines scoped by company and zone"
 results:
-  - "Fully operational platform serving CPG field teams across multiple zones in Mexico"
-  - "Automated order validation replacing manual spreadsheet reconciliation"
-  - "Loyalty program driving measurable repeat purchases from retail clients"
-  - "CSV data exports enabling downstream analytics for trade and marketing teams"
+  - "Validated orders credit loyalty points automatically"
+  - "Sales, price and inventory data exportable as CSV"
 ---
 
-## Project Overview
+## Overview
 
-PerfectApp is a **B2B sales force automation and customer loyalty platform** built for consumer packaged goods (CPG) companies operating in Mexico. The public-facing landing page introduces the product, but behind authentication lies a full operational system that connects field sales representatives, coordinators, administrators, and retail store owners through role-specific interfaces.
+PerfectApp connects field sales reps, coordinators, administrators and retail clients. Each role has a private area behind a public landing page.
 
-The platform digitizes the entire route-to-market workflow: field reps visit retail clients, log competitor data and inventory, place purchase orders, and collect photographic evidence through a structured multi-step form. Administrators validate orders, award loyalty points, and manage the promotional calendar. Retail clients track their purchase progress, accumulate points, and redeem rewards.
+## Technical Implementation
 
-## System Architecture
+### Access Control
 
-### Multi-Role Access Control
+Next.js Pages Router with NextAuth.js credential sessions. Each protected page checks the role in `getServerSideProps` before loading data; API routes do too.
 
-The platform serves multiple user roles, each with its own section of the application and server-side access enforcement:
+### Multi-Company Data
 
-- **Admin** - Back-office management panel with operational modules for prospect validation, order approval, point management, promotional calendar, and data exports.
-- **Field Rep** - Dashboard with monthly quota progress, client effectiveness metrics, and a multi-step visit registration wizard for logging field data.
-- **Coordinator** - Supervisor view for monitoring individual field reps' performance, quotas, and activity.
-- **Retail Client** - Loyalty portal showing purchase progress against quota, points balance, promotional banners, and a rewards catalog.
-- **Analyst** - Read-only access to summary dashboards and CSV data exports.
+Each user belongs to a company, which scopes queries and configuration (SKUs, competitors, promotions) within one deployment.
 
-### Multi-Tenant Design
+### Visit Workflow
 
-The system supports multiple companies from a single deployment. Data isolation between tenants is handled at the application layer through session-scoped queries, so each company sees only its own data without needing separate infrastructure.
+Reps record competitor prices with photos, inventory, the purchase order or reason for no purchase, and communication material execution. Photos go to Vercel Blob; submitting stores the visit and a pending order, and a summary is emailed.
 
-## Key Features
+### Loyalty Points
 
-### Field Visit Workflow
+Points are valued per client tier and SKU. Admins credit them on validation and can double them for clients over their monthly quota.
 
-The core operational loop of the platform. Field reps complete a 3-stage form during each client visit:
+## Features
 
-1. **Assessment** - competitor products, pricing, and photographic evidence.
-2. **Inventory and Orders** - inventory check, purchase order creation with SKU selection and promotion application, or reason for no purchase.
-3. **Communication** - communication plan execution status, materials check, and evidence photos.
-
-The form state persists across page refreshes using Redux Toolkit with local persistence, which is critical for field reps working on mobile devices with spotty connectivity. On submission, the system creates a visit record and a pending order, and sends a summary notification to relevant stakeholders.
-
-### Loyalty Points System
-
-The loyalty program incentivizes retail clients to maintain consistent purchase volumes:
-
-- Points are awarded when administrators validate purchase orders.
-- Point values are configurable per product and client tier.
-- Clients who exceed their monthly purchase quota can earn bonus multipliers.
-- Points can be redeemed for physical rewards through a catalog in the client portal.
-- The validation flow ensures that points are only credited after orders are reviewed and approved.
-
-### Admin Operations
-
-The admin panel centralizes back-office tasks:
-
-- Review and approve pending orders to trigger point awards.
-- Validate new client prospects submitted by field reps and onboard them into the system.
-- Configure promotional calendars, point values, and client-facing banners.
-- Export sales, pricing, and inventory data as CSV files for offline analysis.
-- Monitor quota attainment across zones and flag clients who exceeded targets.
-
-## Technical Decisions
-
-### Database Layer
-
-The project uses MongoDB with Prisma for schema definition and type generation. Complex business queries (quota calculations, sales rollups across multiple dimensions, cross-collection joins) are handled through optimized aggregation pipelines that would be hard to express through a standard ORM query API.
-
-### State Management
-
-Redux Toolkit manages application state, with local persistence for the visit wizard. This solves a real problem: field reps in rural areas lose connectivity mid-visit, and the form needs to survive a page refresh without losing data.
-
-### Server-Side Rendering
-
-Every authenticated page loads data on the server and passes it as props. This ensures that users always see fresh data and that role-based access is enforced before any content reaches the client.
-
-## Technical Stack
-
-| Layer | Technology |
-|---|---|
-| Framework | Next.js 14 (SSR) |
-| Database | MongoDB + Prisma |
-| Auth | NextAuth.js |
-| State | Redux Toolkit |
-| Forms | React Hook Form + Zod |
-| Styling | SCSS Modules |
-| Deploy | Vercel |
-
+- Rep dashboard with monthly quota progress
+- Coordinator view: quota per rep and purchasing clients
+- Client portal with points balance, promotional banners and rewards catalog
+- Admin panel: order approval, prospect validation, monthly promotions and messages to reps
