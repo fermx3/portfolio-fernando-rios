@@ -30,7 +30,10 @@ export function Navigation() {
   const active = activeKey(usePathname());
 
   return (
-    <nav className="sticky top-0 z-50 bg-background/85 backdrop-blur supports-backdrop-filter:bg-background/70">
+    // Solid, not translucent: over the anchor module (ink in light, cream in
+    // dark) a see-through bar took on its colour and the logo, the language
+    // switch and the theme button lost their contrast.
+    <nav className="sticky top-0 z-50 bg-background">
       <Container>
         <div className="flex h-16 items-center justify-between">
           <Link
