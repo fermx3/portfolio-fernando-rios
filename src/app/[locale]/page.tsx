@@ -12,7 +12,6 @@ import { FeaturedProject } from "@/components/projects/featured-project";
 import { AllProjectsLink } from "@/components/projects/all-projects-link";
 import { JsonLd } from "@/components/seo/json-ld";
 import { getAllProjects, getHomeProjects } from "@/lib/content";
-import { corpusProjects } from "@/lib/assistant/prompt";
 import { AUTHOR, SITE_URL, absoluteUrl, languageAlternates } from "@/lib/site";
 
 interface Props {
@@ -65,10 +64,7 @@ export default async function HomePage({ params }: Props) {
         <Bento>
           <Hero />
           <Module as="section" span={2} tone="anchor" aria-label={tc("title")}>
-            {/* The project list is read here and passed down: it is what lets
-                the assistant's citations be validated without a second round
-                trip. */}
-            <AskPortfolio projects={corpusProjects(locale)} />
+            <AskPortfolio />
           </Module>
 
           {lead && <FeaturedProject project={lead} size="lead" id="projects" />}

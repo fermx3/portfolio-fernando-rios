@@ -175,13 +175,22 @@
       "suggestions": {
         "first": "What has he built with computer vision?",
         "second": "Which projects went to production?",
-        "third": "What does he use for the backend?"
+        "third": "What does he use for the backend?",
+        "talk": "I'd like to talk to Fer"
       },
       "errors": {
         "generic": "Something went wrong on my side.",
         "rateLimited": "That's a lot of questions in a short window. Give it a few minutes.",
         "unavailable": "The assistant is offline right now.",
         "emailInstead": "Email Fer directly"
+      },
+      "close": "Close",
+      "resume": "Back to the conversation",
+      "viewProject": "view project",
+      "states": {
+        "limit": "Limit",
+        "offline": "Offline",
+        "error": "Error"
       }
     },
     "direct": {

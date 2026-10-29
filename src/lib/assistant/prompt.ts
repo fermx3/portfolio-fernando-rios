@@ -69,7 +69,7 @@ ${projects.length} projects. Sections are in alphabetical order, not chronologic
 ${text}`;
 }
 
-/** slug → title, for the client to label citation links. */
+/** The citable projects, for the client to render citations. */
 export function corpusProjects(locale: string) {
   return buildCorpus(locale).projects;
 }
