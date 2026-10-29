@@ -1,8 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ImageWithPlaceholder } from "@/components/ui/image-with-placeholder";
-import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { ProjectImage } from "@/types/project";
@@ -40,6 +39,10 @@ export function ProjectGallery({ images, title, id }: ProjectGalleryProps) {
   }, [images]);
 
   const isOpen = openIndex !== null;
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  // The image stays rendered while the dialog fades out after closing.
+  const [shownIndex, setShownIndex] = useState(0);
+  if (openIndex !== null && openIndex !== shownIndex) setShownIndex(openIndex);
 
   const close = useCallback(() => setOpenIndex(null), []);
 
@@ -62,25 +65,28 @@ export function ProjectGallery({ images, title, id }: ProjectGalleryProps) {
     setOpenIndex((current) => (current === null ? current : (current + 1) % items.length));
   }, [items.length]);
 
-  // Keyboard navigation + body scroll lock while the lightbox is open
+  // A native modal <dialog>: focus is trapped and Escape closes it (onClose
+  // below). Arrows still need a listener, plus the page scroll lock.
   useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+    if (isOpen && !dialog.open) dialog.showModal();
+    if (!isOpen && dialog.open) dialog.close();
     if (!isOpen) return;
 
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") close();
-      else if (event.key === "ArrowLeft") prev();
+      if (event.key === "ArrowLeft") prev();
       else if (event.key === "ArrowRight") next();
     };
 
     document.addEventListener("keydown", onKeyDown);
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
 
     return () => {
       document.removeEventListener("keydown", onKeyDown);
-      document.body.style.overflow = previousOverflow;
+      document.documentElement.style.overflow = "";
     };
-  }, [isOpen, close, prev, next]);
+  }, [isOpen, prev, next]);
 
   if (!items.length) return null;
 
@@ -88,7 +94,7 @@ export function ProjectGallery({ images, title, id }: ProjectGalleryProps) {
 
   return (
     // A full row of the page's Bento grid; each shot is its own module.
-    <section id={id} className="col-span-2 scroll-mt-24 lg:col-span-4">
+    <section id={id} className="reveal col-span-2 scroll-mt-24 lg:col-span-4">
       <h2 className="sr-only">{t("project.gallery")}</h2>
 
       {/* One grid per orientation: mixing 16:9 and 9:16 tiles leaves ragged rows. */}
@@ -147,103 +153,90 @@ export function ProjectGallery({ images, title, id }: ProjectGalleryProps) {
         })}
       </div>
 
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
-            role="dialog"
-            aria-modal="true"
-            aria-label={t("project.gallery")}
-            onClick={close}
+      <dialog
+        ref={dialogRef}
+        onClose={close}
+        onClick={close}
+        aria-label={t("project.gallery")}
+        className="dialog-fade lightbox fixed inset-0 m-0 h-dvh max-h-none w-full max-w-none items-center justify-center bg-transparent p-4 open:flex"
+      >
+        <button
+          type="button"
+          onClick={close}
+          aria-label={t("project.galleryClose")}
+          className="press absolute top-4 right-4 z-10 rounded-full bg-white/10 p-2 text-white hover:bg-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+        >
+          <X className="h-6 w-6" />
+        </button>
+
+        {hasMultiple && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              prev();
+            }}
+            aria-label={t("project.galleryPrevious")}
+            className="press absolute left-2 z-10 rounded-full bg-white/10 p-2 text-white hover:bg-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-white sm:left-4"
           >
-            <button
-              type="button"
-              onClick={close}
-              aria-label={t("project.galleryClose")}
-              className="absolute right-4 top-4 z-10 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
-            >
-              <X className="h-6 w-6" />
-            </button>
-
-            {hasMultiple && (
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  prev();
-                }}
-                aria-label={t("project.galleryPrevious")}
-                className="absolute left-2 z-10 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-white sm:left-4"
-              >
-                <ChevronLeft className="h-7 w-7" />
-              </button>
-            )}
-
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={openIndex}
-                initial={{ opacity: 0, scale: 0.98 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.98 }}
-                transition={{ duration: 0.2 }}
-                className="relative h-[80vh] w-full max-w-5xl"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <ImageWithPlaceholder
-                  key={items[openIndex].src}
-                  src={items[openIndex].src}
-                  alt={items[openIndex].alt ?? `${title}, ${openIndex + 1}`}
-                  fill
-                  sizes="100vw"
-                  className="object-contain"
-                  placeholderClassName="rounded-lg bg-white/5"
-                  priority
-                />
-              </motion.div>
-            </AnimatePresence>
-
-            {hasMultiple && (
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  next();
-                }}
-                aria-label={t("project.galleryNext")}
-                className="absolute right-2 z-10 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-white sm:right-4"
-              >
-                <ChevronRight className="h-7 w-7" />
-              </button>
-            )}
-
-            {hasMultiple && (
-              <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2">
-                {items.map((item, index) => (
-                  <button
-                    key={item.src}
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      goTo(index);
-                    }}
-                    aria-label={t("project.galleryImageLabel", {
-                      current: index + 1,
-                      total: items.length,
-                    })}
-                    className={`h-2 rounded-full transition-all ${
-                      index === openIndex ? "w-6 bg-white" : "w-2 bg-white/40 hover:bg-white/70"
-                    }`}
-                  />
-                ))}
-              </div>
-            )}
-          </motion.div>
+            <ChevronLeft className="h-7 w-7" />
+          </button>
         )}
-      </AnimatePresence>
+
+        {/* Keyed by index, so each new image replays the fade-in. */}
+        <div
+          key={shownIndex}
+          className="lightbox-image relative h-[80vh] w-full max-w-5xl"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <ImageWithPlaceholder
+            key={items[shownIndex].src}
+            src={items[shownIndex].src}
+            alt={items[shownIndex].alt ?? `${title}, ${shownIndex + 1}`}
+            fill
+            sizes="100vw"
+            className="object-contain"
+            placeholderClassName="rounded-lg bg-white/5"
+            priority={isOpen}
+          />
+        </div>
+
+        {hasMultiple && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              next();
+            }}
+            aria-label={t("project.galleryNext")}
+            className="press absolute right-2 z-10 rounded-full bg-white/10 p-2 text-white hover:bg-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-white sm:right-4"
+          >
+            <ChevronRight className="h-7 w-7" />
+          </button>
+        )}
+
+        {hasMultiple && (
+          <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2">
+            {items.map((item, index) => (
+              <button
+                key={item.src}
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  goTo(index);
+                }}
+                aria-label={t("project.galleryImageLabel", {
+                  current: index + 1,
+                  total: items.length,
+                })}
+                className={`h-2 rounded-full transition-all ${
+                  index === shownIndex ? "w-6 bg-white" : "w-2 bg-white/40 hover:bg-white/70"
+                }`}
+              />
+            ))}
+          </div>
+        )}
+      </dialog>
     </section>
   );
 }

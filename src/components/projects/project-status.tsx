@@ -23,7 +23,9 @@ export function ProjectStatus({ status, variant = "text", className }: ProjectSt
   if (variant === "chip" && live) {
     return (
       <Badge variant="status" className={className}>
-        <span aria-hidden="true">●</span>
+        <span aria-hidden="true" className="live-dot">
+          ●
+        </span>
         {t(status)}
       </Badge>
     );
@@ -37,7 +39,9 @@ export function ProjectStatus({ status, variant = "text", className }: ProjectSt
         className
       )}
     >
-      <span aria-hidden="true">{live ? "●" : "○"}</span>
+      <span aria-hidden="true" className={live ? "live-dot" : undefined}>
+        {live ? "●" : "○"}
+      </span>
       {t(status)}
     </span>
   );

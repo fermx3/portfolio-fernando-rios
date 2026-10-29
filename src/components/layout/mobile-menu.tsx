@@ -65,7 +65,7 @@ export function MobileMenu({ open, onClose, active }: MobileMenuProps) {
 
   const segment = (selected: boolean) =>
     cn(
-      "flex-1 rounded-full py-2 text-sm font-medium transition-colors",
+      "flex-1 rounded-full py-2 text-sm font-medium press",
       selected ? "bg-primary text-primary-foreground" : "hover:bg-background/60"
     );
 
@@ -79,7 +79,7 @@ export function MobileMenu({ open, onClose, active }: MobileMenuProps) {
       ref={dialogRef}
       onClose={onClose}
       aria-label={t("toggleMenu")}
-      className="fixed inset-0 m-0 h-dvh max-h-none w-full max-w-none flex-col gap-3 overflow-y-auto bg-background p-4 text-foreground open:flex"
+      className="dialog-fade fixed inset-0 m-0 h-dvh max-h-none w-full max-w-none flex-col gap-3 overflow-y-auto bg-background p-4 text-foreground open:flex"
     >
       <div className="flex items-center justify-between px-2 py-1">
         <Link href="/" onClick={onClose} className="text-xl font-bold tracking-tight">
@@ -104,7 +104,7 @@ export function MobileMenu({ open, onClose, active }: MobileMenuProps) {
                 onClick={onClose}
                 aria-current={active === entry.key ? "page" : undefined}
                 className={cn(
-                  "flex items-center justify-between rounded-module px-6 py-4",
+                  "press flex items-center justify-between rounded-module px-6 py-4",
                   entry.tone
                 )}
               >
@@ -137,7 +137,7 @@ export function MobileMenu({ open, onClose, active }: MobileMenuProps) {
                 onClose();
                 setAssistantOpen(true);
               }}
-              className="flex w-full items-center justify-between rounded-module bg-anchor px-6 py-4 text-left text-anchor-foreground"
+              className="press flex w-full items-center justify-between rounded-module bg-anchor px-6 py-4 text-left text-anchor-foreground"
             >
               <span>
                 <span className="flex items-center gap-2 font-mono text-xs opacity-75">
@@ -160,7 +160,7 @@ export function MobileMenu({ open, onClose, active }: MobileMenuProps) {
             <Link
               href="/#contact"
               onClick={onClose}
-              className="flex items-center justify-between rounded-module bg-lilac px-6 py-4 text-lilac-foreground"
+              className="press flex items-center justify-between rounded-module bg-lilac px-6 py-4 text-lilac-foreground"
             >
               <span>
                 <span className="font-mono text-xs opacity-75">04</span>

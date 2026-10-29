@@ -15,7 +15,7 @@ export function HowIWork({ project }: { project: Pick<Project, "slug" | "title">
   const steps = t.raw("steps") as Step[];
 
   return (
-    <Module as="section" span={2} tone="lilac" aria-labelledby="how-i-work">
+    <Module as="section" span={2} tone="lilac" reveal aria-labelledby="how-i-work">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <h2 id="how-i-work" className="font-mono text-xs">
           {t("title")}
@@ -28,15 +28,19 @@ export function HowIWork({ project }: { project: Pick<Project, "slug" | "title">
         </Link>
       </div>
 
-      <ol className="mt-4 space-y-1.5">
+      <ol className="group/steps mt-4 space-y-1.5">
         {steps.map((step, i) => (
           <li
             key={step.name}
             className={cn(
-              "grid grid-cols-[2rem_1fr] items-baseline gap-x-3 gap-y-0.5 rounded-row px-4 py-2 text-sm sm:grid-cols-[2rem_7rem_1fr]",
-              // The last step is where the model meets a user, which is the
-              // point of the hero's tagline; it carries the emphasis.
-              i === steps.length - 1 ? "bg-lilac-foreground text-lilac" : "bg-white/45"
+              "grid grid-cols-[2rem_1fr] items-baseline gap-x-3 gap-y-0.5 rounded-row px-4 py-2 text-sm transition-colors duration-200 sm:grid-cols-[2rem_7rem_1fr]",
+              // The ink highlight follows the pointer. At rest it sits on the
+              // last step, where the model meets a user, which is the point of
+              // the hero's tagline. Hover only: the steps are not controls, so
+              // they take no focus, and the resting state carries the meaning.
+              "bg-white/45 hover:bg-lilac-foreground hover:text-lilac",
+              i === steps.length - 1 &&
+                "bg-lilac-foreground text-lilac group-hover/steps:bg-white/45 group-hover/steps:text-lilac-foreground group-hover/steps:hover:bg-lilac-foreground group-hover/steps:hover:text-lilac"
             )}
           >
             <span className="font-mono text-xs">{String(i + 1).padStart(2, "0")}</span>

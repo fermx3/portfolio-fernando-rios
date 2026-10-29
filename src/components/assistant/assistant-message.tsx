@@ -134,7 +134,7 @@ export function AssistantMessage({ text, projects, onNavigate, complete }: Assis
               <Link
                 href={`/projects/${project.slug}`}
                 onClick={onNavigate}
-                className="flex w-fit max-w-full items-center gap-3 rounded-row bg-panel-foreground/10 p-2 pr-4 transition-colors hover:bg-panel-foreground/15"
+                className="flex w-fit max-w-full items-center gap-3 rounded-row bg-panel-foreground/10 p-2 pr-4 press hover:bg-panel-foreground/15"
               >
                 <Image
                   src={project.coverImage}
@@ -147,7 +147,9 @@ export function AssistantMessage({ text, projects, onNavigate, complete }: Assis
                   <span className="block truncate text-sm font-semibold">{project.title}</span>
                   <span className="block font-mono text-xs opacity-80">
                     {project.status === "production" && (
-                      <span className="text-lime">● {tStatus("production")} · </span>
+                      <span className="text-lime">
+                        <span className="live-dot">●</span> {tStatus("production")} ·{" "}
+                      </span>
                     )}
                     {t("viewProject")} <span aria-hidden="true">→</span>
                   </span>

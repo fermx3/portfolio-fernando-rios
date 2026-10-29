@@ -204,7 +204,9 @@
       "title": "Or reach me directly",
       "note": {
         "description": "For concrete proposals, or if you'd rather not use the assistant."
-      }
+      },
+      "copy": "Copy email",
+      "copied": "Copied"
     }
   },
   "footer": {

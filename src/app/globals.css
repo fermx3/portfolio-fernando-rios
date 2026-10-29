@@ -170,7 +170,8 @@ html {
 
   *,
   *::before,
-  *::after {
+  *::after,
+  *::backdrop {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
@@ -235,4 +236,133 @@ html {
 
 .project-content a:hover {
   text-decoration-thickness: 2px;
+}
+
+/* ---------------------------------------------------------------------------
+   Microinteractions. CSS only, and all of them switch off under
+   prefers-reduced-motion: the global rule above zeroes every transition and
+   animation, and the view-transition pseudos are covered below.
+   --------------------------------------------------------------------------- */
+
+/* Press feedback for buttons, chips and suggestion rows. On a phone there is
+   no hover, so this is the only sign a tap registered. */
+@utility press {
+  transition-property: color, background-color, border-color, scale;
+  transition-duration: 150ms;
+  &:active {
+    scale: 0.97;
+  }
+}
+
+/* "In production": the lime dot breathes. Only that status, so the motion
+   keeps meaning "live". */
+@keyframes live {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.live-dot {
+  animation: live 2.5s ease-in-out infinite;
+}
+
+/* Modules rise into place as they scroll in. Scroll-driven, so no JS; where
+   view timelines are unsupported the modules are simply there. Never applied
+   to the first row: the hero's h1 and the detail page's cover are the LCP. */
+@keyframes reveal {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 30%;
+    }
+  }
+}
+
+/* Dialogs animate in and out. allow-discrete keeps them rendered while
+   display and the top layer flip, so the exit plays too. */
+.dialog-slide,
+.dialog-fade {
+  transition:
+    translate 300ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity 300ms ease,
+    overlay 300ms allow-discrete,
+    display 300ms allow-discrete;
+}
+
+.dialog-slide {
+  translate: 100% 0;
+}
+
+.dialog-fade {
+  opacity: 0;
+  translate: 0 -8px;
+}
+
+.dialog-slide[open],
+.dialog-fade[open] {
+  translate: 0 0;
+  opacity: 1;
+}
+
+@starting-style {
+  .dialog-slide[open] {
+    translate: 100% 0;
+  }
+
+  .dialog-fade[open] {
+    opacity: 0;
+    translate: 0 -8px;
+  }
+}
+
+.dialog-slide::backdrop,
+.dialog-fade::backdrop {
+  background-color: rgb(0 0 0 / 0);
+  transition:
+    background-color 300ms ease,
+    overlay 300ms allow-discrete,
+    display 300ms allow-discrete;
+}
+
+.dialog-slide[open]::backdrop {
+  background-color: rgb(0 0 0 / 0.4);
+}
+
+.dialog-fade.lightbox[open]::backdrop {
+  background-color: rgb(0 0 0 / 0.9);
+}
+
+@starting-style {
+  .dialog-slide[open]::backdrop,
+  .dialog-fade[open]::backdrop {
+    background-color: rgb(0 0 0 / 0);
+  }
+}
+
+/* Each image in the lightbox fades in as it changes. */
+@keyframes lightbox-in {
+  from {
+    opacity: 0;
+    scale: 0.98;
+  }
+}
+
+.lightbox-image {
+  animation: lightbox-in 200ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
 }

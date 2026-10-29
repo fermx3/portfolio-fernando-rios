@@ -25,7 +25,7 @@ interface FiltersBarProps {
 
 const chip = (active: boolean) =>
   cn(
-    "rounded-full px-3.5 py-1.5 text-sm font-medium whitespace-nowrap transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none",
+    "rounded-full px-3.5 py-1.5 text-sm font-medium whitespace-nowrap press focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none",
     active ? "bg-primary text-primary-foreground" : "bg-secondary hover:bg-secondary/70"
   );
 
@@ -101,7 +101,7 @@ export function FiltersBar({
               aria-expanded={tagsOpen}
               aria-controls="tag-filters"
               onClick={() => setTagsOpen(!tagsOpen)}
-              className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium hover:bg-secondary"
+              className="press inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium hover:bg-secondary"
             >
               {t("filters.tags")}
               {selectedTags.length > 0 && (

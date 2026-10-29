@@ -204,7 +204,9 @@
       "title": "O contáctame directamente",
       "note": {
         "description": "Para propuestas concretas o si prefieres no usar el asistente."
-      }
+      },
+      "copy": "Copiar correo",
+      "copied": "Copiado"
     }
   },
   "footer": {

@@ -53,7 +53,7 @@ export function ProjectToc({ items }: { items: TocItem[] }) {
               href={`#${item.id}`}
               aria-current={active === item.id ? "location" : undefined}
               className={cn(
-                "flex items-center gap-2 rounded-full px-3 py-1.5 text-sm whitespace-nowrap transition-colors lg:px-0 lg:py-1",
+                "flex items-center gap-2 rounded-full px-3 py-1.5 text-sm whitespace-nowrap press lg:px-0 lg:py-1",
                 active === item.id
                   ? "bg-primary font-semibold text-primary-foreground lg:bg-transparent lg:text-foreground"
                   : "bg-secondary text-muted-foreground hover:text-foreground lg:bg-transparent"

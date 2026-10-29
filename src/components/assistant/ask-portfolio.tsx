@@ -41,7 +41,7 @@ export function AskPortfolio() {
             <button
               type="button"
               onClick={() => setOpen(true)}
-              className="flex w-full items-center justify-between gap-3 rounded-row bg-lime px-4 py-2.5 text-left text-sm font-medium text-lime-foreground transition-colors hover:bg-lime/85 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
+              className="flex w-full items-center justify-between gap-3 rounded-row bg-lime px-4 py-2.5 text-left text-sm font-medium text-lime-foreground press hover:bg-lime/85 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
             >
               {t("resume")}
               <ArrowRight className="h-4 w-4 shrink-0" aria-hidden="true" />
@@ -53,7 +53,7 @@ export function AskPortfolio() {
               <button
                 type="button"
                 onClick={() => ask(suggestion)}
-                className="flex w-full items-center justify-between gap-3 rounded-row bg-anchor-foreground/10 px-4 py-2.5 text-left text-sm transition-colors hover:bg-anchor-foreground/20 focus-visible:outline-2 focus-visible:outline-lime"
+                className="flex w-full items-center justify-between gap-3 rounded-row bg-anchor-foreground/10 px-4 py-2.5 text-left text-sm press hover:bg-anchor-foreground/20 focus-visible:outline-2 focus-visible:outline-lime"
               >
                 {suggestion}
                 <ArrowRight className="h-4 w-4 shrink-0" aria-hidden="true" />

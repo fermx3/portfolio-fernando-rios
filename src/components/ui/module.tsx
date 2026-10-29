@@ -30,6 +30,10 @@ const moduleVariants = cva("min-w-0 rounded-module p-6 sm:p-7", {
     compact: {
       true: "col-span-1",
     },
+    // Rises into place as it scrolls in (see .reveal). Not for the first row.
+    reveal: {
+      true: "reveal",
+    },
     // Screenshots bleed to the module edge, so the padding moves inside.
     bleed: {
       true: "overflow-hidden p-0 sm:p-0",
@@ -53,10 +57,14 @@ function Module({
   span,
   compact,
   bleed,
+  reveal,
   ...props
 }: ModuleProps) {
   return (
-    <Comp className={cn(moduleVariants({ tone, span, compact, bleed }), className)} {...props} />
+    <Comp
+      className={cn(moduleVariants({ tone, span, compact, bleed, reveal }), className)}
+      {...props}
+    />
   );
 }
 
