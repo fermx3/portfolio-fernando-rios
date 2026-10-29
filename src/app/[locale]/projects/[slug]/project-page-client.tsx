@@ -181,6 +181,7 @@ export function ProjectPageClient({ project }: ProjectPageClientProps) {
             key={fact.key}
             tone={fact.tone}
             span={spans[i]}
+            reveal
             // Four short facts pair up two to a row on a phone.
             compact={facts.length === 4 || undefined}
             className="p-5 sm:p-6"
@@ -192,6 +193,7 @@ export function ProjectPageClient({ project }: ProjectPageClientProps) {
         {/* Reading module: contents on the left, one column of text. */}
         <Module
           span={4}
+          reveal
           className="grid grid-cols-1 gap-10 p-6 sm:p-10 lg:grid-cols-[13rem_1fr] lg:gap-16"
         >
           <div className="max-lg:contents lg:sticky lg:top-24 lg:self-start">
@@ -291,6 +293,7 @@ export function ProjectPageClient({ project }: ProjectPageClientProps) {
             as="section"
             span={4}
             tone="anchor"
+            reveal
             id="impact"
             className="grid scroll-mt-24 gap-4 p-6 sm:p-10 lg:grid-cols-[13rem_1fr] lg:gap-16"
           >

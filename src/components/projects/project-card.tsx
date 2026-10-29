@@ -25,7 +25,11 @@ export function ProjectCard({ project }: ProjectCardProps) {
     <Module
       as="article"
       bleed
-      className="relative col-span-2 flex flex-row has-[a:focus-visible]:ring-2 has-[a:focus-visible]:ring-ring sm:col-span-1 sm:flex-col"
+      reveal
+      // Lets a filter change move each card to its new place (see
+      // withViewTransition in the listing).
+      style={{ viewTransitionName: `card-${project.slug}` }}
+      className="group relative col-span-2 flex flex-row has-[a:focus-visible]:ring-2 has-[a:focus-visible]:ring-ring sm:col-span-1 sm:flex-col"
     >
       <div className="relative w-32 shrink-0 overflow-hidden sm:aspect-[16/10] sm:w-auto">
         <ImageWithPlaceholder
@@ -34,7 +38,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
           placeholderSeed={project.title}
           fill
           sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 128px"
-          className="object-cover object-top"
+          className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.03]"
         />
       </div>
 

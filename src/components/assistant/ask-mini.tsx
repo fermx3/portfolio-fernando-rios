@@ -38,7 +38,7 @@ export function AskMini({ title, example, variant = "input", className }: AskMin
           type="button"
           onClick={() => ask(example)}
           disabled={pending}
-          className="mt-4 w-full rounded-row bg-anchor-foreground/10 px-3 py-2.5 text-left text-sm transition-colors hover:bg-anchor-foreground/20 focus-visible:outline-2 focus-visible:outline-lime disabled:opacity-50"
+          className="mt-4 w-full rounded-row bg-anchor-foreground/10 px-3 py-2.5 text-left text-sm press hover:bg-anchor-foreground/20 focus-visible:outline-2 focus-visible:outline-lime disabled:opacity-50"
         >
           {example} <span aria-hidden="true">→</span>
         </button>
@@ -64,7 +64,7 @@ export function AskMini({ title, example, variant = "input", className }: AskMin
             type="submit"
             disabled={pending}
             aria-label={t("send")}
-            className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-lime text-lime-foreground transition-colors hover:bg-lime/85 disabled:opacity-50"
+            className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-lime text-lime-foreground press hover:bg-lime/85 disabled:opacity-50"
           >
             <ArrowRight className="h-4 w-4" />
           </button>

@@ -35,7 +35,7 @@ export function LanguageToggle() {
               if (code !== locale) router.replace(pathname, { locale: code });
             }}
             className={cn(
-              "rounded-full px-1 py-0.5 font-medium transition-colors",
+              "rounded-full px-1 py-0.5 font-medium press",
               code === locale
                 ? "font-bold text-foreground"
                 : "text-muted-foreground hover:text-foreground"

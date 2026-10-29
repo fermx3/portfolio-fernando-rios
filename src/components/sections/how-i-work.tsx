@@ -1,7 +1,6 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Module } from "@/components/ui/module";
-import { cn } from "@/lib/utils";
 import type { Project } from "@/types/project";
 
 interface Step {
@@ -15,7 +14,7 @@ export function HowIWork({ project }: { project: Pick<Project, "slug" | "title">
   const steps = t.raw("steps") as Step[];
 
   return (
-    <Module as="section" span={2} tone="lilac" aria-labelledby="how-i-work">
+    <Module as="section" span={2} tone="lilac" reveal aria-labelledby="how-i-work">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <h2 id="how-i-work" className="font-mono text-xs">
           {t("title")}
@@ -28,16 +27,15 @@ export function HowIWork({ project }: { project: Pick<Project, "slug" | "title">
         </Link>
       </div>
 
-      <ol className="mt-4 space-y-1.5">
+      {/* The ink highlight runs down the steps on a loop, so the pipeline
+          reads as a flow; hovering stops it and it follows the pointer.
+          Motion and the reduced-motion fallback live in .flow-steps. */}
+      <ol className="flow-steps mt-4 space-y-1.5">
         {steps.map((step, i) => (
           <li
             key={step.name}
-            className={cn(
-              "grid grid-cols-[2rem_1fr] items-baseline gap-x-3 gap-y-0.5 rounded-row px-4 py-2 text-sm sm:grid-cols-[2rem_7rem_1fr]",
-              // The last step is where the model meets a user, which is the
-              // point of the hero's tagline; it carries the emphasis.
-              i === steps.length - 1 ? "bg-lilac-foreground text-lilac" : "bg-white/45"
-            )}
+            style={{ "--step": i } as React.CSSProperties}
+            className="grid grid-cols-[2rem_1fr] items-baseline gap-x-3 gap-y-0.5 rounded-row px-4 py-2 text-sm sm:grid-cols-[2rem_7rem_1fr]"
           >
             <span className="font-mono text-xs">{String(i + 1).padStart(2, "0")}</span>
             <span className="font-semibold">{step.name}</span>

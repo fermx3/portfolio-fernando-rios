@@ -6,7 +6,7 @@ export function Now() {
   const t = useTranslations("about");
 
   return (
-    <Module as="section" tone="lime" aria-labelledby="now" className="flex flex-col">
+    <Module as="section" tone="lime" reveal aria-labelledby="now" className="flex flex-col">
       <Image
         src="/images/profile.png"
         alt=""

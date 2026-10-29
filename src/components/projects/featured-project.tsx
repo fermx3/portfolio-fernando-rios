@@ -16,7 +16,9 @@ interface FeaturedProjectProps {
 // The title link stretches over the whole module, so the card is one target
 // and one tab stop. The module shows its focus ring instead of the link.
 const STRETCHED = "after:absolute after:inset-0 after:rounded-module focus-visible:outline-none";
-const FOCUS_RING = "relative has-[a:focus-visible]:ring-2 has-[a:focus-visible]:ring-ring";
+// "group" drives the hover: the screenshot zooms a little and the arrow moves,
+// which is what tells a visitor the whole module is a link.
+const FOCUS_RING = "group relative has-[a:focus-visible]:ring-2 has-[a:focus-visible]:ring-ring";
 
 export function FeaturedProject({ project, size, id }: FeaturedProjectProps) {
   const t = useTranslations("projects");
@@ -24,7 +26,7 @@ export function FeaturedProject({ project, size, id }: FeaturedProjectProps) {
 
   if (size === "short") {
     return (
-      <Module as="article" compact bleed id={id} className={`${FOCUS_RING} flex flex-col`}>
+      <Module as="article" compact bleed reveal id={id} className={`${FOCUS_RING} flex flex-col`}>
         <div className="relative aspect-[4/3] overflow-hidden">
           <ImageWithPlaceholder
             src={project.coverImage}
@@ -32,7 +34,7 @@ export function FeaturedProject({ project, size, id }: FeaturedProjectProps) {
             placeholderSeed={project.title}
             fill
             sizes="(min-width: 1024px) 25vw, 50vw"
-            className="object-cover object-top"
+            className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.03]"
           />
         </div>
         <div className="flex flex-1 flex-col gap-1.5 p-4 sm:p-5">
@@ -57,6 +59,7 @@ export function FeaturedProject({ project, size, id }: FeaturedProjectProps) {
       as="article"
       span={2}
       bleed
+      reveal
       id={id}
       className={`${FOCUS_RING} grid scroll-mt-20 sm:grid-cols-2`}
     >
@@ -68,7 +71,7 @@ export function FeaturedProject({ project, size, id }: FeaturedProjectProps) {
           placeholderSeed={project.title}
           fill
           sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-          className="object-cover object-top"
+          className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.03]"
         />
       </div>
       <div className="flex flex-col p-6">
@@ -103,7 +106,7 @@ export function FeaturedProject({ project, size, id }: FeaturedProjectProps) {
             aria-hidden="true"
             className="ml-auto grid h-10 w-10 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground"
           >
-            <ArrowRight className="h-4 w-4" />
+            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
           </span>
         </div>
       </div>

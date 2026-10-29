@@ -170,10 +170,12 @@ html {
 
   *,
   *::before,
-  *::after {
+  *::after,
+  *::backdrop {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
   }
 }
 
@@ -235,4 +237,248 @@ html {
 
 .project-content a:hover {
   text-decoration-thickness: 2px;
+}
+
+/* ---------------------------------------------------------------------------
+   Microinteractions. CSS only, and all of them switch off under
+   prefers-reduced-motion: the global rule above zeroes every transition and
+   animation, and the view-transition pseudos are covered below.
+   --------------------------------------------------------------------------- */
+
+/* Press feedback for buttons, chips and suggestion rows. On a phone there is
+   no hover, so this is the only sign a tap registered. */
+@utility press {
+  transition-property: color, background-color, border-color, scale;
+  transition-duration: 150ms;
+  &:active {
+    scale: 0.97;
+  }
+}
+
+/* "In production": the lime dot breathes. Only that status, so the motion
+   keeps meaning "live". */
+@keyframes live {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.live-dot {
+  animation: live 2.5s ease-in-out infinite;
+}
+
+/* Modules rise into place as they scroll in. Scroll-driven, so no JS; where
+   view timelines are unsupported the modules are simply there. Never applied
+   to the first row: the hero's h1 and the detail page's cover are the LCP. */
+@keyframes reveal {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 30%;
+    }
+  }
+}
+
+/* Dialogs animate in and out. allow-discrete keeps them rendered while
+   display and the top layer flip, so the exit plays too. */
+.dialog-slide,
+.dialog-fade {
+  transition:
+    translate 300ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity 300ms ease,
+    overlay 300ms allow-discrete,
+    display 300ms allow-discrete;
+}
+
+.dialog-slide {
+  translate: 100% 0;
+}
+
+.dialog-fade {
+  opacity: 0;
+  translate: 0 -8px;
+}
+
+.dialog-slide[open],
+.dialog-fade[open] {
+  translate: 0 0;
+  opacity: 1;
+}
+
+@starting-style {
+  .dialog-slide[open] {
+    translate: 100% 0;
+  }
+
+  .dialog-fade[open] {
+    opacity: 0;
+    translate: 0 -8px;
+  }
+}
+
+.dialog-slide::backdrop,
+.dialog-fade::backdrop {
+  background-color: rgb(0 0 0 / 0);
+  transition:
+    background-color 300ms ease,
+    overlay 300ms allow-discrete,
+    display 300ms allow-discrete;
+}
+
+.dialog-slide[open]::backdrop {
+  background-color: rgb(0 0 0 / 0.4);
+}
+
+.dialog-fade.lightbox[open]::backdrop {
+  background-color: rgb(0 0 0 / 0.9);
+}
+
+@starting-style {
+  .dialog-slide[open]::backdrop,
+  .dialog-fade[open]::backdrop {
+    background-color: rgb(0 0 0 / 0);
+  }
+}
+
+/* "How I work": the ink highlight runs down the five steps on a 15s loop,
+   3s each, with a long eased crossfade into the next, so the pipeline reads
+   as a flow rather than a blink.
+   Hovering the list stops the loop and the highlight follows the pointer.
+   With reduced motion it rests on the last step, where the model meets a
+   user, which is the point of the hero's tagline. */
+.flow-steps > li {
+  background-color: rgb(255 255 255 / 0.45);
+  color: var(--lilac-foreground);
+  transition:
+    background-color 200ms ease,
+    color 200ms ease;
+}
+
+.flow-steps:hover > li:hover {
+  background-color: var(--lilac-foreground);
+  color: var(--lilac);
+}
+
+/* Each step owns 20% of the loop. It fades in over 8% and out over 8%, and
+   its fade-out overlaps the next step's fade-in, so there is always one
+   highlight in motion and never a gap. */
+@keyframes flow-step {
+  0%,
+  28%,
+  100% {
+    background-color: rgb(255 255 255 / 0.45);
+    color: var(--lilac-foreground);
+  }
+  8%,
+  20% {
+    background-color: var(--lilac-foreground);
+    color: var(--lilac);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .flow-steps > li {
+    /* Negative delays put every step mid-cycle at once: no blank start. */
+    animation: flow-step 15s ease-in-out infinite;
+    animation-delay: calc(var(--step) * 3s - 15s);
+  }
+
+  .flow-steps:hover > li {
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flow-steps:not(:hover) > li:last-child {
+    background-color: var(--lilac-foreground);
+    color: var(--lilac);
+  }
+}
+
+/* Mobile menu. The page is wiped by a circle that grows out of the "Menu"
+   button (top right), then the destinations are dealt in one after another,
+   rising with a slight tilt. Closing pulls the circle back into the button. */
+/* The transition that applies is the one on the state being entered: the
+   [open] rule times the opening, the base rule times the closing. Closing
+   starts fast because the circle begins larger than the screen, and a slow
+   start would look like a pause before anything happens. */
+.menu-reveal {
+  clip-path: circle(0% at calc(100% - 3rem) 2rem);
+  transition:
+    clip-path 420ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    overlay 420ms allow-discrete,
+    display 420ms allow-discrete;
+}
+
+.menu-reveal[open] {
+  clip-path: circle(150% at calc(100% - 3rem) 2rem);
+  transition:
+    clip-path 550ms cubic-bezier(0.7, 0, 0.2, 1),
+    overlay 550ms allow-discrete,
+    display 550ms allow-discrete;
+}
+
+@starting-style {
+  .menu-reveal[open] {
+    clip-path: circle(0% at calc(100% - 3rem) 2rem);
+  }
+}
+
+/* Closing: every module fades at once, fast, ahead of the circle. */
+.menu-reveal .menu-item {
+  opacity: 0;
+  translate: 0 28px;
+  rotate: -2deg;
+  transition:
+    opacity 150ms ease,
+    translate 150ms ease,
+    rotate 150ms ease;
+}
+
+.menu-reveal[open] .menu-item {
+  opacity: 1;
+  translate: 0 0;
+  rotate: 0deg;
+  transition:
+    opacity 400ms ease,
+    translate 500ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    rotate 500ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  /* Dealt after the circle has covered most of the screen. */
+  transition-delay: calc(180ms + var(--i, 0) * 70ms);
+}
+
+@starting-style {
+  .menu-reveal[open] .menu-item {
+    opacity: 0;
+    translate: 0 28px;
+    rotate: -2deg;
+  }
+}
+
+/* Each image in the lightbox fades in as it changes. */
+@keyframes lightbox-in {
+  from {
+    opacity: 0;
+    scale: 0.98;
+  }
+}
+
+.lightbox-image {
+  animation: lightbox-in 200ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
 }

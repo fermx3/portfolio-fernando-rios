@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { flushSync } from "react-dom";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
@@ -14,6 +15,22 @@ import { Project, ProjectCategory } from "@/types/project";
 interface ProjectsPageClientProps {
   projects: Project[];
   tags: string[];
+}
+
+/**
+ * Applies a filter change inside a view transition, so the cards slide to
+ * their new places instead of jumping. Where the API is missing, or the visitor
+ * asked for reduced motion, the update simply happens.
+ */
+function withViewTransition(update: () => void) {
+  if (
+    !document.startViewTransition ||
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  ) {
+    update();
+    return;
+  }
+  document.startViewTransition(() => flushSync(update));
 }
 
 export function ProjectsPageClient({ projects, tags }: ProjectsPageClientProps) {
@@ -74,8 +91,10 @@ export function ProjectsPageClient({ projects, tags }: ProjectsPageClientProps) 
   }, [projects, selectedCategory, searchQuery, selectedTags, sortBy]);
 
   const handleTagToggle = (tag: string) => {
-    setSelectedTags((prev) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
+    withViewTransition(() =>
+      setSelectedTags((prev) =>
+        prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
+      )
     );
   };
 
@@ -113,14 +132,14 @@ export function ProjectsPageClient({ projects, tags }: ProjectsPageClientProps) 
         <FiltersBar
           categories={categories}
           selectedCategory={selectedCategory}
-          onCategoryChange={setSelectedCategory}
+          onCategoryChange={(category) => withViewTransition(() => setSelectedCategory(category))}
           searchQuery={searchQuery}
           onSearchChange={setSearchQuery}
           tags={tags}
           selectedTags={selectedTags}
           onTagToggle={handleTagToggle}
           sortBy={sortBy}
-          onSortChange={setSortBy}
+          onSortChange={(sort) => withViewTransition(() => setSortBy(sort))}
         />
 
         {count > 0 ? (
@@ -131,11 +150,13 @@ export function ProjectsPageClient({ projects, tags }: ProjectsPageClientProps) 
             <Button
               variant="outline"
               className="mt-4"
-              onClick={() => {
-                setSelectedCategory("all");
-                setSearchQuery("");
-                setSelectedTags([]);
-              }}
+              onClick={() =>
+                withViewTransition(() => {
+                  setSelectedCategory("all");
+                  setSearchQuery("");
+                  setSelectedTags([]);
+                })
+              }
             >
               {t("page.clearAllFilters")}
             </Button>
