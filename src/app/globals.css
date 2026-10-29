@@ -360,8 +360,8 @@ html {
    rows to ink, and every frame mid-fade put text and background at similar
    lightness: Lighthouse caught one and failed colour contrast.
    Hovering pauses the loop (every part together, so it resumes in step) and
-   the hovered row turns fully ink. With reduced
-   motion there is no packet and the last step rests fully ink. */
+   lights the hovered step the way the packet does. With reduced motion there
+   is no packet and the last step rests lit. */
 .flow-steps {
   position: relative;
 }
@@ -392,11 +392,33 @@ html {
   box-shadow: 0 0 0 2px color-mix(in oklab, var(--lilac-foreground) 30%, transparent);
 }
 
-/* !important because a paused animation still applies its own value, and
-   animated values beat normal declarations. */
+/* Hover speaks the animation's language: the pointer takes the packet's
+   place, so the hovered step lights exactly as an arriving packet lights it
+   (lime node with an ink ring, a little larger, brighter row) and the others
+   go dark. !important because a paused animation still applies its own
+   values, and animated values beat normal declarations. */
+.flow-steps .flow-node {
+  transition: scale 200ms ease;
+}
+
+.flow-steps:hover > li {
+  background-color: rgb(255 255 255 / 0.45) !important;
+}
+
+.flow-steps:hover .flow-node {
+  background-color: rgb(255 255 255 / 0.75) !important;
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--lilac-foreground) 30%, transparent) !important;
+  scale: 1 !important;
+}
+
 .flow-steps:hover > li:hover {
-  background-color: var(--lilac-foreground) !important;
-  color: var(--lilac);
+  background-color: rgb(255 255 255 / 0.9) !important;
+}
+
+.flow-steps:hover > li:hover .flow-node {
+  background-color: var(--lime) !important;
+  box-shadow: 0 0 0 2px var(--lilac-foreground) !important;
+  scale: 1.2 !important;
 }
 
 /* Each step owns 20% of the loop: lit from the packet's arrival until it
@@ -540,8 +562,12 @@ html {
 
 @media (prefers-reduced-motion: reduce) {
   .flow-steps:not(:hover) > li:last-child {
-    background-color: var(--lilac-foreground);
-    color: var(--lilac);
+    background-color: rgb(255 255 255 / 0.9);
+  }
+
+  .flow-steps:not(:hover) > li:last-child .flow-node {
+    background-color: var(--lime);
+    box-shadow: 0 0 0 2px var(--lilac-foreground);
   }
 }
 
