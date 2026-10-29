@@ -94,7 +94,7 @@
     "steps": [
       {
         "name": "Problema",
-        "detail": "Detectar la enfermedad a tiempo, aunque cueste falsas alarmas"
+        "detail": "Detectar a tiempo, aunque cueste falsas alarmas"
       },
       {
         "name": "Datos",

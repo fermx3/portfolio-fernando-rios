@@ -61,7 +61,7 @@ export function FeaturedProject({ project, size, id }: FeaturedProjectProps) {
       className={`${FOCUS_RING} grid scroll-mt-20 sm:grid-cols-2`}
     >
       <h2 className="sr-only">{t("title")}</h2>
-      <div className="relative aspect-[4/3] overflow-hidden sm:aspect-auto sm:min-h-80">
+      <div className="relative aspect-[4/3] overflow-hidden sm:aspect-auto sm:min-h-64">
         <ImageWithPlaceholder
           src={project.coverImage}
           alt=""
@@ -71,24 +71,29 @@ export function FeaturedProject({ project, size, id }: FeaturedProjectProps) {
           className="object-cover object-top"
         />
       </div>
-      <div className="flex flex-col p-6 sm:p-7">
+      <div className="flex flex-col p-6">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <ProjectStatus status={project.status} variant="chip" />
           <span className="font-mono text-xs text-muted-foreground">
             {t(`filters.${project.category}`)} · {year}
           </span>
         </div>
-        <h3 className="mt-4 text-h3 font-bold sm:text-[1.75rem] sm:leading-[1.05]">
+        <h3 className="mt-3 text-h3 font-bold sm:text-2xl sm:leading-[1.05]">
           <Link href={`/projects/${project.slug}`} className={STRETCHED}>
             {project.title}
           </Link>
         </h3>
-        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{project.summary}</p>
+        {/* Clamped: the summary is written for the listing card and the meta
+            description, not for a module that shares its row. The full text
+            is still in the DOM for screen readers. */}
+        <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-muted-foreground">
+          {project.summary}
+        </p>
 
-        <div className="mt-auto flex items-end justify-between gap-4 pt-6">
+        <div className="mt-auto flex items-end justify-between gap-4 pt-4">
           {project.metric && (
             <p className="leading-tight">
-              <span className="block text-5xl font-bold tracking-tight">
+              <span className="block text-4xl font-bold tracking-tight">
                 {project.metric.value}
               </span>
               <span className="text-sm">{project.metric.label}</span>

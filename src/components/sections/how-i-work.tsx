@@ -28,12 +28,12 @@ export function HowIWork({ project }: { project: Pick<Project, "slug" | "title">
         </Link>
       </div>
 
-      <ol className="mt-5 space-y-2">
+      <ol className="mt-4 space-y-1.5">
         {steps.map((step, i) => (
           <li
             key={step.name}
             className={cn(
-              "grid grid-cols-[2rem_1fr] items-baseline gap-x-3 gap-y-0.5 rounded-row px-4 py-2.5 text-sm sm:grid-cols-[2rem_7rem_1fr]",
+              "grid grid-cols-[2rem_1fr] items-baseline gap-x-3 gap-y-0.5 rounded-row px-4 py-2 text-sm sm:grid-cols-[2rem_7rem_1fr]",
               // The last step is where the model meets a user, which is the
               // point of the hero's tagline; it carries the emphasis.
               i === steps.length - 1 ? "bg-lilac-foreground text-lilac" : "bg-white/45"
