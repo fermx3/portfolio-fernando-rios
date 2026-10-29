@@ -356,12 +356,17 @@ html {
    lime packet travels down it on a 15s loop, 3s per step. When it reaches a
    step, that node lights lime with a small pop and the row brightens; then
    the packet sets off for the next one.
-   The text stays ink on light throughout. An earlier version crossfaded whole
-   rows to ink, and every frame mid-fade put text and background at similar
-   lightness: Lighthouse caught one and failed colour contrast.
-   Hovering pauses the loop (every part together, so it resumes in step) and
-   lights the hovered step the way the packet does. With reduced motion there
-   is no packet and the last step rests lit. */
+
+   Two layers. The loop only ever animates the opacity of a glow behind each
+   row and each node (their ::before). Hover styles the row and node
+   themselves. Hovering pauses and hides the glows, so the pointer lights a
+   step exactly as the packet would, and the loop resumes in step afterwards.
+   (Overriding the animated properties directly with !important left Chrome
+   painting the first hovered row.)
+
+   The text stays ink on light throughout: an earlier version crossfaded whole
+   rows to ink, and a frame mid-fade failed Lighthouse's colour contrast.
+   With reduced motion there is no packet and the last step rests lit. */
 .flow-steps {
   position: relative;
 }
@@ -380,76 +385,86 @@ html {
 }
 
 .flow-steps > li {
+  position: relative;
   background-color: rgb(255 255 255 / 0.45);
   color: var(--lilac-foreground);
-  transition:
-    background-color 200ms ease,
-    color 200ms ease;
+  transition: background-color 200ms ease;
+}
+
+/* The row's text sits above its glow. */
+.flow-steps > li > span:not(.flow-node) {
+  position: relative;
+}
+
+.flow-steps > li::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-color: rgb(255 255 255 / 0.9);
+  opacity: 0;
 }
 
 .flow-steps .flow-node {
   background-color: rgb(255 255 255 / 0.75);
   box-shadow: 0 0 0 2px color-mix(in oklab, var(--lilac-foreground) 30%, transparent);
+  transition:
+    background-color 200ms ease,
+    box-shadow 200ms ease,
+    scale 200ms ease;
 }
 
-/* Hover speaks the animation's language: the pointer takes the packet's
-   place, so the hovered step lights exactly as an arriving packet lights it
-   (lime node with an ink ring, a little larger, brighter row) and the others
-   go dark. !important because a paused animation still applies its own
-   values, and animated values beat normal declarations. */
-.flow-steps .flow-node {
-  transition: scale 200ms ease;
+/* The node's lit state, behind its number. */
+.flow-steps .flow-node::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background-color: var(--lime);
+  box-shadow: 0 0 0 2px var(--lilac-foreground);
+  opacity: 0;
 }
 
-.flow-steps:hover > li {
-  background-color: rgb(255 255 255 / 0.45) !important;
+/* Hover: the pointer lights its step the way the packet does. */
+.flow-steps > li:hover {
+  background-color: rgb(255 255 255 / 0.9);
 }
 
-.flow-steps:hover .flow-node {
-  background-color: rgb(255 255 255 / 0.75) !important;
-  box-shadow: 0 0 0 2px color-mix(in oklab, var(--lilac-foreground) 30%, transparent) !important;
-  scale: 1 !important;
-}
-
-.flow-steps:hover > li:hover {
-  background-color: rgb(255 255 255 / 0.9) !important;
-}
-
-.flow-steps:hover > li:hover .flow-node {
-  background-color: var(--lime) !important;
-  box-shadow: 0 0 0 2px var(--lilac-foreground) !important;
-  scale: 1.2 !important;
+.flow-steps > li:hover .flow-node {
+  background-color: var(--lime);
+  box-shadow: 0 0 0 2px var(--lilac-foreground);
+  scale: 1.2;
 }
 
 /* Each step owns 20% of the loop: lit from the packet's arrival until it
    leaves, with short fades either side. */
-@keyframes flow-row {
+@keyframes flow-glow {
   0%,
   26%,
   100% {
-    background-color: rgb(255 255 255 / 0.45);
+    opacity: 0;
   }
-  3%,
+  4%,
   20% {
-    background-color: rgb(255 255 255 / 0.9);
+    opacity: 1;
   }
 }
 
-@keyframes flow-node {
+@keyframes flow-pop {
   0%,
   26%,
   100% {
-    background-color: rgb(255 255 255 / 0.75);
-    box-shadow: 0 0 0 2px color-mix(in oklab, var(--lilac-foreground) 30%, transparent);
+    opacity: 0;
     scale: 1;
   }
   3% {
-    scale: 1.25;
+    opacity: 1;
+    scale: 1.3;
   }
-  6%,
+  7%,
   20% {
-    background-color: var(--lime);
-    box-shadow: 0 0 0 2px var(--lilac-foreground);
+    opacity: 1;
     scale: 1;
   }
 }
@@ -535,27 +550,23 @@ html {
     animation: flow-packet 15s linear infinite;
   }
 
-  .flow-steps > li {
-    /* Negative delays put every step mid-cycle at once: no blank start. */
-    animation: flow-row 15s ease-in-out infinite;
+  /* Negative delays put every step mid-cycle at once: no blank start. */
+  .flow-steps > li::before {
+    animation: flow-glow 15s ease-in-out infinite;
     animation-delay: calc(var(--step) * 3s - 15s);
   }
 
-  .flow-steps .flow-node {
-    animation: flow-node 15s ease-in-out infinite;
+  .flow-steps .flow-node::before {
+    animation: flow-pop 15s ease-in-out infinite;
     animation-delay: calc(var(--step) * 3s - 15s);
   }
 
-  /* Hovering pauses every part of the loop together, so it resumes in step.
-     Removing the row and node animations instead restarted them from zero on
-     the way out while the packet carried on, and the two drifted apart. */
+  /* Pause every part together, so the loop resumes in step, and hide the
+     glows so only the pointer's step is lit. */
   .flow-steps:hover::after,
-  .flow-steps:hover > li,
-  .flow-steps:hover .flow-node {
+  .flow-steps:hover > li::before,
+  .flow-steps:hover .flow-node::before {
     animation-play-state: paused;
-  }
-
-  .flow-steps:hover::after {
     visibility: hidden;
   }
 }
