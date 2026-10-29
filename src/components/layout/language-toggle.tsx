@@ -1,9 +1,10 @@
 "use client";
 
-import { Languages } from "lucide-react";
+import { Fragment } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter, usePathname } from "@/i18n/navigation";
-import { Button } from "@/components/ui/button";
+import { routing } from "@/i18n/routing";
+import { cn } from "@/lib/utils";
 
 export function LanguageToggle() {
   const t = useTranslations("language");
@@ -14,20 +15,34 @@ export function LanguageToggle() {
   // surgery on the URL, and the user stays on the page they were reading.
   const pathname = usePathname();
 
-  const nextLocale = locale === "en" ? "es" : "en";
-
+  // Both locales stay visible ("ES · EN"); the current one is bold.
   return (
-    <Button
-      variant="ghost"
-      size="icon"
-      onClick={() => router.replace(pathname, { locale: nextLocale })}
-      aria-label={t("toggle")}
-      className="relative"
-    >
-      <Languages className="h-4 w-4" />
-      <span className="absolute -bottom-1 -right-1 text-xs font-medium">
-        {locale.toUpperCase()}
-      </span>
-    </Button>
+    <div role="group" aria-label={t("toggle")} className="flex items-center gap-1.5 text-xs">
+      {routing.locales.map((code, i) => (
+        <Fragment key={code}>
+          {i > 0 && (
+            <span aria-hidden="true" className="text-muted-foreground">
+              ·
+            </span>
+          )}
+          <button
+            type="button"
+            lang={code}
+            aria-pressed={code === locale}
+            onClick={() => {
+              if (code !== locale) router.replace(pathname, { locale: code });
+            }}
+            className={cn(
+              "rounded-full px-1 py-0.5 font-medium transition-colors",
+              code === locale
+                ? "font-bold text-foreground"
+                : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            {code.toUpperCase()}
+          </button>
+        </Fragment>
+      ))}
+    </div>
   );
 }

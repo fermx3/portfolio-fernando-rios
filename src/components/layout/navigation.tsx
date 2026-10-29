@@ -1,13 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Link } from "@/i18n/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
-import { Menu, X } from "lucide-react";
 import { Container } from "./container";
 import { ThemeToggle } from "./theme-toggle";
 import { LanguageToggle } from "./language-toggle";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 // Anchored to "/" rather than bare hashes: the sections only exist on the home
@@ -19,25 +17,43 @@ const navigation = [
   { key: "contact", href: "/#contact" },
 ];
 
+/** Which item to mark: the page the visitor is on, not the section in view. */
+function activeKey(pathname: string): string | null {
+  if (pathname === "/") return "home";
+  if (pathname.startsWith("/projects")) return "projects";
+  return null;
+}
+
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const t = useTranslations("navigation");
+  const active = activeKey(usePathname());
 
   return (
-    <nav className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
+    <nav className="sticky top-0 z-50 bg-background/85 backdrop-blur supports-backdrop-filter:bg-background/70">
       <Container>
         <div className="flex h-16 items-center justify-between">
-          <Link href="/" className="text-xl font-bold" onClick={() => setIsOpen(false)}>
-            Fer Rios
+          <Link
+            href="/"
+            className="text-xl font-bold tracking-tight"
+            onClick={() => setIsOpen(false)}
+          >
+            fr.
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex md:items-center md:gap-8">
+          <div className="hidden items-center gap-1 rounded-full bg-card p-1 md:flex">
             {navigation.map((item) => (
               <Link
                 key={item.key}
                 href={item.href}
-                className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                aria-current={active === item.key ? "page" : undefined}
+                className={cn(
+                  "rounded-full px-4 py-1.5 text-sm font-medium transition-colors",
+                  active === item.key
+                    ? "bg-primary text-primary-foreground"
+                    : "text-foreground hover:bg-secondary"
+                )}
               >
                 {t(item.key)}
               </Link>
@@ -45,39 +61,46 @@ export function Navigation() {
           </div>
 
           {/* Desktop Controls */}
-          <div className="hidden md:flex md:items-center md:gap-2">
-            <ThemeToggle />
+          <div className="hidden items-center gap-3 md:flex">
             <LanguageToggle />
+            <ThemeToggle />
           </div>
 
           {/* Mobile Menu Button */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="md:hidden"
+          <button
+            type="button"
+            className="rounded-full bg-card px-4 py-1.5 text-sm font-medium md:hidden"
             onClick={() => setIsOpen(!isOpen)}
+            aria-expanded={isOpen}
+            aria-controls="mobile-menu"
             aria-label={t("toggleMenu")}
           >
-            {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </Button>
+            {t("menu")}
+          </button>
         </div>
 
         {/* Mobile Navigation */}
-        <div className={cn("md:hidden", isOpen ? "block" : "hidden")}>
-          <div className="space-y-2 pb-4">
+        <div id="mobile-menu" className={cn("pb-4 md:hidden", isOpen ? "block" : "hidden")}>
+          <div className="rounded-module bg-card p-3">
             {navigation.map((item) => (
               <Link
                 key={item.key}
                 href={item.href}
-                className="block py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                aria-current={active === item.key ? "page" : undefined}
+                className={cn(
+                  "block rounded-row px-4 py-2.5 text-sm font-medium transition-colors",
+                  active === item.key
+                    ? "bg-primary text-primary-foreground"
+                    : "text-foreground hover:bg-secondary"
+                )}
                 onClick={() => setIsOpen(false)}
               >
                 {t(item.key)}
               </Link>
             ))}
-            <div className="flex items-center gap-2 pt-2">
-              <ThemeToggle />
+            <div className="mt-2 flex items-center justify-between border-t border-line px-4 pt-3">
               <LanguageToggle />
+              <ThemeToggle />
             </div>
           </div>
         </div>
