@@ -4,6 +4,8 @@ import { ThemeProvider } from "next-themes";
 import { Bricolage_Grotesque, DM_Mono } from "next/font/google";
 import { Navigation } from "@/components/layout/navigation";
 import { Footer } from "@/components/layout/footer";
+import { AssistantProvider } from "@/components/assistant/assistant-provider";
+import { corpusProjects } from "@/lib/assistant/prompt";
 import { Metadata } from "next";
 import { routing } from "@/i18n/routing";
 import { AUTHOR, SITE_URL, absoluteUrl } from "@/lib/site";
@@ -120,11 +122,16 @@ export default async function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <div className="flex min-h-screen flex-col">
-              <Navigation />
-              <main className="flex-1">{children}</main>
-              <Footer />
-            </div>
+            {/* In the layout, not the page: the conversation has to survive a
+                click on a citation and the way back. The project list is read
+                here so citations are checked against the real content. */}
+            <AssistantProvider projects={corpusProjects(locale)}>
+              <div className="flex min-h-screen flex-col">
+                <Navigation />
+                <main className="flex-1">{children}</main>
+                <Footer />
+              </div>
+            </AssistantProvider>
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

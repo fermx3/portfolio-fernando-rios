@@ -175,13 +175,22 @@
       "suggestions": {
         "first": "¿Qué ha construido con visión por computadora?",
         "second": "¿Qué proyectos llegaron a producción?",
-        "third": "¿Qué usa para el backend?"
+        "third": "¿Qué usa para el backend?",
+        "talk": "Quiero hablar con Fer"
       },
       "errors": {
         "generic": "Algo falló de mi lado.",
         "rateLimited": "Van muchas preguntas en poco rato. Dale unos minutos.",
         "unavailable": "El asistente está fuera de servicio ahora mismo.",
         "emailInstead": "Escríbele directamente a Fer"
+      },
+      "close": "Cerrar",
+      "resume": "Volver a la conversación",
+      "viewProject": "ver proyecto",
+      "states": {
+        "limit": "Límite",
+        "offline": "Sin servicio",
+        "error": "Error"
       }
     },
     "direct": {

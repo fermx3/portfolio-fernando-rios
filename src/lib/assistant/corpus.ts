@@ -8,15 +8,22 @@ import esMessages from "../../../messages/es.json";
 
 const contentDirectory = path.join(process.cwd(), "content/projects");
 
+/**
+ * What the client gets per project to turn a citation into a card. Everything
+ * here comes from the repo's own content, never from the model: the model can
+ * only name a slug, so it cannot make the page load an image or a link.
+ */
 export interface CorpusProject {
   slug: string;
   title: string;
+  coverImage: string;
+  status?: "completed" | "production" | "archived";
 }
 
 export interface Corpus {
   /** The whole corpus as plain text, ready to go in the system prompt. */
   text: string;
-  /** slug → title, so the client can label the citation links. */
+  /** Citable projects, so the client can render the citations. */
   projects: CorpusProject[];
 }
 
@@ -131,7 +138,12 @@ export const buildCorpus = cache((locale: string): Corpus => {
       continue;
     }
 
-    projects.push({ slug: project.slug, title: project.title });
+    projects.push({
+      slug: project.slug,
+      title: project.title,
+      coverImage: project.coverImage,
+      status: project.status,
+    });
 
     const links = [
       project.liveUrl || project.demoUrl ? `demo ${project.liveUrl || project.demoUrl}` : "",
