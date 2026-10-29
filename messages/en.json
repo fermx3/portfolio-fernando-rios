@@ -65,6 +65,7 @@
     },
     "project": {
       "viewDemo": "View Demo",
+      "demoWakeNote": "Streamlit demo: if nobody has opened it in a while, it takes a moment to wake up.",
       "viewCode": "View Code",
       "viewCodePrivate": "Private Repository",
       "objective": "Objective",
