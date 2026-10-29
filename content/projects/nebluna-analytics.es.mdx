@@ -1,7 +1,7 @@
 ---
 title: "Nebluna Analytics"
 summary: "App de pronóstico de demanda para cafeterías: un modelo Prophet detrás de un servicio FastAPI en GCP Cloud Run, con un dashboard en Streamlit."
-description: "Recibe un CSV de ventas diarias, pronostica de 7 a 90 días hacia adelante con bandas de confianza del 95% y reporta MAE, MAPE y RMSE sobre una cola reservada de la serie."
+description: "Recibe un CSV de ventas diarias, genera el pronóstico y reporta MAE, MAPE y RMSE sobre una cola reservada de la serie."
 objective: "Servir un pronóstico de demanda desde el navegador en lugar de un notebook."
 theme: "Planeación de inventario para cafeterías pequeñas"
 impact: "El dueño de una cafetería sube un CSV de ventas y obtiene un pronóstico de demanda con su margen de error, sin escribir código."
@@ -37,7 +37,7 @@ challenges:
   - "Las extensiones C de NumPy/Pandas se rompen al mezclar paquetes de conda y pip"
 solutions:
   - "Prophet con estacionalidad semanal y anual, separando el efecto del día de la tendencia"
-  - "Bandas de confianza del 95% más métricas de error sobre datos reservados"
+  - "Métricas de error sobre datos reservados, junto a cada pronóstico"
   - "Conda para desarrollo local, wheels de pip solo dentro de la imagen Docker"
 results:
   - "API en GCP Cloud Run y dashboard en Streamlit Cloud, ambos en producción"
@@ -57,7 +57,7 @@ El dashboard en Streamlit sube un CSV con columnas `date` y `sales` y muestra el
 
 ### Modelo
 
-`DemandForecaster` envuelve Prophet con estacionalidad aditiva semanal y anual. Entrena con todo salvo los últimos 30 días, evalúa sobre esa cola y genera fechas futuras con límites del 95%.
+`DemandForecaster` envuelve Prophet con estacionalidad aditiva semanal y anual. Entrena con todo salvo los últimos 30 días, evalúa sobre esa cola y genera las fechas futuras.
 
 ### API
 

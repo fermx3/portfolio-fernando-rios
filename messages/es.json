@@ -18,7 +18,7 @@
   },
   "hero": {
     "name": "Fer Rios",
-    "kicker": "Machine Learning · Full-Stack · Sistemas en producción",
+    "kicker": "Full-Stack · Machine Learning · Sistemas en producción",
     "role": "Desarrollador full-stack y ML Engineer",
     "description": "Del prototipo a producción: entreno el modelo, lo despliego y construyo la interfaz donde se usa.",
     "cta": {
@@ -174,7 +174,7 @@
       "title": "Pregúntale a mi portafolio",
       "aiLabel": "IA",
       "heading": "Pregunta lo que quieras sobre mis proyectos.",
-      "intro": "Pregunta por los proyectos de este sitio y te respondo con lo que está escrito aquí, enlazando el proyecto del que sale la respuesta. Si prefieres hablar con Fer, dímelo y le paso tus datos.",
+      "intro": "Respondo con lo publicado en este sitio y enlazo el proyecto del que sale cada respuesta. Si prefieres hablar con Fer, dímelo y le paso tus datos.",
       "placeholder": "Pregunta por un proyecto…",
       "send": "Enviar",
       "thinking": "Leyendo los proyectos…",

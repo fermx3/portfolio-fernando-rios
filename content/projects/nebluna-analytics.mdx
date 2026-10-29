@@ -1,7 +1,7 @@
 ---
 title: "Nebluna Analytics"
 summary: "Demand forecasting app for coffee shops: a Prophet model behind a FastAPI service on GCP Cloud Run, with a Streamlit dashboard."
-description: "Takes a daily sales CSV, forecasts 7 to 90 days ahead with 95% confidence bands and reports MAE, MAPE and RMSE on a held-out tail of the series."
+description: "Takes a daily sales CSV, generates the forecast and reports MAE, MAPE and RMSE on a held-out tail of the series."
 objective: "Serve a demand forecast from a browser instead of a notebook."
 theme: "Inventory planning for small coffee shops"
 impact: "A shop owner uploads a sales CSV and gets a demand forecast with its error margin, without writing code."
@@ -37,7 +37,7 @@ challenges:
   - "NumPy/Pandas C extensions break when conda and pip packages mix"
 solutions:
   - "Prophet with weekly and yearly seasonality, separating day-of-week effects from trend"
-  - "95% confidence bands plus error metrics on held-out data"
+  - "Error metrics on held-out data shown with every forecast"
   - "Conda for local development, pip wheels only inside the Docker image"
 results:
   - "API live on GCP Cloud Run and dashboard live on Streamlit Cloud"
@@ -57,7 +57,7 @@ The Streamlit dashboard uploads a CSV with `date` and `sales` columns and shows 
 
 ### Model
 
-`DemandForecaster` wraps Prophet with additive weekly and yearly seasonality. It trains on all but the last 30 days, scores on that tail and generates future dates with 95% bounds.
+`DemandForecaster` wraps Prophet with additive weekly and yearly seasonality. It trains on all but the last 30 days, scores on that tail and generates the future dates.
 
 ### API
 
