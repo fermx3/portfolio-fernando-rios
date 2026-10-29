@@ -176,6 +176,7 @@ Formatos para cualquier captura del portfolio, fijados por cómo las pinta el si
 
 - **Escritorio: 1600 × 900 en `.jpg`.** Tarjetas, portada y miniaturas son 16:9 con `object-cover`; otra proporción pierde los bordes.
 - **Móvil: 1206 px de ancho y 2144 px o más de alto, en `.png`.** La miniatura es 9:16 con `object-top`; el lightbox la enseña entera.
+- **Excepción: capturas oscuras o con degradados en `.jpg` calidad 88, croma 4:4:4.** En PNG un degradado no comprime (la de Iron Fang pesaba 2.5 MB) y reducirla a 256 colores deja bandas y corre el tono. En JPEG queda en ~370 KB sin diferencia visible y con el texto nítido.
 - La galería pinta una rejilla por orientación (escritorio a dos columnas, móvil a cuatro), así que mezclar los dos formatos en `images[]` ya no deja filas desiguales.
 
 ### ~~P3 — Deuda y código muerto~~ · resuelto 2026-08-16

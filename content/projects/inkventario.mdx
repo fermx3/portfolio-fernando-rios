@@ -1,5 +1,5 @@
 ---
-title: "Vitrina"
+title: "Inkventario"
 summary: "White-label, multi-tenant inventory and sales SaaS for piercing and tattoo studios and other small retailers, built with Next.js and Supabase, each business on its own subdomain."
 description: "Covers a catalog with variants, stock by lot and serial number, receiving, a point-of-sale counter, wholesale orders, price lists and sterilization batches. Business rules live in Postgres as constraints, triggers and RPCs."
 objective: "Run a studio's stock and sales, counter and wholesale, from one system."
@@ -28,14 +28,15 @@ technologies:
   - "Playwright"
   - "pgTAP"
   - "Vercel"
+liveUrl: "https://inkventario.com/"
 repoUrl: "https://github.com/fermx3/vitrina"
 repoPrivate: true
-coverImage: "/images/projects/vitrina/cover.jpg"
+coverImage: "/images/projects/inkventario/cover.jpg"
 images:
-  - "/images/projects/vitrina/inventory.jpg"
-  - "/images/projects/vitrina/counter.jpg"
-  - "/images/projects/vitrina/branding.jpg"
-  - { src: "/images/projects/vitrina/counter-mobile.png", type: "mobile", alt: "Vitrina's counter on a phone" }
+  - "/images/projects/inkventario/inventory.jpg"
+  - "/images/projects/inkventario/counter.jpg"
+  - "/images/projects/inkventario/branding.jpg"
+  - { src: "/images/projects/inkventario/counter-mobile.png", type: "mobile", alt: "Inkventario's counter on a phone" }
 challenges:
   - "Computed stock left no row to lock, so concurrent sales could double-sell"
   - "Several businesses share one database without seeing each other's data"
