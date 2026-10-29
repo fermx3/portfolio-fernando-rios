@@ -359,7 +359,8 @@ html {
    The text stays ink on light throughout. An earlier version crossfaded whole
    rows to ink, and every frame mid-fade put text and background at similar
    lightness: Lighthouse caught one and failed colour contrast.
-   Hovering stops the loop and the hovered row turns fully ink. With reduced
+   Hovering pauses the loop (every part together, so it resumes in step) and
+   the hovered row turns fully ink. With reduced
    motion there is no packet and the last step rests fully ink. */
 .flow-steps {
   position: relative;
@@ -391,8 +392,10 @@ html {
   box-shadow: 0 0 0 2px color-mix(in oklab, var(--lilac-foreground) 30%, transparent);
 }
 
+/* !important because a paused animation still applies its own value, and
+   animated values beat normal declarations. */
 .flow-steps:hover > li:hover {
-  background-color: var(--lilac-foreground);
+  background-color: var(--lilac-foreground) !important;
   color: var(--lilac);
 }
 
@@ -521,14 +524,17 @@ html {
     animation-delay: calc(var(--step) * 3s - 15s);
   }
 
-  .flow-steps:hover::after {
-    animation-play-state: paused;
-    opacity: 0;
-  }
-
+  /* Hovering pauses every part of the loop together, so it resumes in step.
+     Removing the row and node animations instead restarted them from zero on
+     the way out while the packet carried on, and the two drifted apart. */
+  .flow-steps:hover::after,
   .flow-steps:hover > li,
   .flow-steps:hover .flow-node {
-    animation: none;
+    animation-play-state: paused;
+  }
+
+  .flow-steps:hover::after {
+    visibility: hidden;
   }
 }
 
