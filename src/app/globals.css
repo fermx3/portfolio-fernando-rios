@@ -352,58 +352,233 @@ html {
   }
 }
 
-/* "How I work": the ink highlight runs down the five steps on a 15s loop,
-   3s each, with a long eased crossfade into the next, so the pipeline reads
-   as a flow rather than a blink.
-   Hovering the list stops the loop and the highlight follows the pointer.
-   With reduced motion it rests on the last step, where the model meets a
-   user, which is the point of the hero's tagline. */
+/* "How I work" reads as a pipeline: a rail joins the step numbers, and a
+   lime packet travels down it on a 15s loop, 3s per step. When it reaches a
+   step, that node lights lime with a small pop and the row brightens; then
+   the packet sets off for the next one.
+
+   Two layers. The loop only ever animates the opacity of a glow behind each
+   row and each node (their ::before). Hover styles the row and node
+   themselves. Hovering pauses and hides the glows, so the pointer lights a
+   step exactly as the packet would, and the loop resumes in step afterwards.
+   (Overriding the animated properties directly with !important left Chrome
+   painting the first hovered row.)
+
+   The text stays ink on light throughout: an earlier version crossfaded whole
+   rows to ink, and a frame mid-fade failed Lighthouse's colour contrast.
+   With reduced motion there is no packet and the last step rests lit. */
+.flow-steps {
+  position: relative;
+}
+
+/* The rail, through the node centres (row padding 1rem + half a 1.5rem node). */
+.flow-steps::before {
+  content: "";
+  position: absolute;
+  left: calc(1.75rem - 1px);
+  top: 10%;
+  bottom: 10%;
+  width: 2px;
+  border-radius: 1px;
+  background-color: color-mix(in oklab, var(--lilac-foreground) 30%, transparent);
+  z-index: 1;
+}
+
 .flow-steps > li {
+  position: relative;
   background-color: rgb(255 255 255 / 0.45);
   color: var(--lilac-foreground);
+  transition: background-color 200ms ease;
+}
+
+/* The row's text sits above its glow. */
+.flow-steps > li > span:not(.flow-node) {
+  position: relative;
+}
+
+.flow-steps > li::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-color: rgb(255 255 255 / 0.9);
+  opacity: 0;
+}
+
+.flow-steps .flow-node {
+  background-color: rgb(255 255 255 / 0.75);
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--lilac-foreground) 30%, transparent);
   transition:
     background-color 200ms ease,
-    color 200ms ease;
+    box-shadow 200ms ease,
+    scale 200ms ease;
 }
 
-.flow-steps:hover > li:hover {
-  background-color: var(--lilac-foreground);
-  color: var(--lilac);
+/* The node's lit state, behind its number. */
+.flow-steps .flow-node::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background-color: var(--lime);
+  box-shadow: 0 0 0 2px var(--lilac-foreground);
+  opacity: 0;
 }
 
-/* Each step owns 20% of the loop. It fades in over 8% and out over 8%, and
-   its fade-out overlaps the next step's fade-in, so there is always one
-   highlight in motion and never a gap. */
-@keyframes flow-step {
+/* Hover: the pointer lights its step the way the packet does. */
+.flow-steps > li:hover {
+  background-color: rgb(255 255 255 / 0.9);
+}
+
+.flow-steps > li:hover .flow-node {
+  background-color: var(--lime);
+  box-shadow: 0 0 0 2px var(--lilac-foreground);
+  scale: 1.2;
+}
+
+/* Each step owns 20% of the loop: lit from the packet's arrival until it
+   leaves, with short fades either side. */
+@keyframes flow-glow {
   0%,
-  28%,
+  26%,
   100% {
-    background-color: rgb(255 255 255 / 0.45);
-    color: var(--lilac-foreground);
+    opacity: 0;
   }
-  8%,
+  4%,
   20% {
-    background-color: var(--lilac-foreground);
-    color: var(--lilac);
+    opacity: 1;
+  }
+}
+
+@keyframes flow-pop {
+  0%,
+  26%,
+  100% {
+    opacity: 0;
+    scale: 1;
+  }
+  3% {
+    opacity: 1;
+    scale: 1.3;
+  }
+  7%,
+  20% {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+/* The packet: leaves a node once it has lit, travels to the next and
+   disappears behind it on arrival (the nodes sit above it). Node k's centre
+   is at (k + 0.5) / 5 of the list. From the last step it fades out and the
+   loop restarts at the first. */
+@keyframes flow-packet {
+  0%,
+  6% {
+    top: 10%;
+    opacity: 0;
+  }
+  9% {
+    top: 12%;
+    opacity: 1;
+  }
+  20% {
+    top: 30%;
+    opacity: 1;
+  }
+  21%,
+  26% {
+    top: 30%;
+    opacity: 0;
+  }
+  29% {
+    top: 32%;
+    opacity: 1;
+  }
+  40% {
+    top: 50%;
+    opacity: 1;
+  }
+  41%,
+  46% {
+    top: 50%;
+    opacity: 0;
+  }
+  49% {
+    top: 52%;
+    opacity: 1;
+  }
+  60% {
+    top: 70%;
+    opacity: 1;
+  }
+  61%,
+  66% {
+    top: 70%;
+    opacity: 0;
+  }
+  69% {
+    top: 72%;
+    opacity: 1;
+  }
+  80% {
+    top: 90%;
+    opacity: 1;
+  }
+  81%,
+  100% {
+    top: 90%;
+    opacity: 0;
   }
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .flow-steps > li {
-    /* Negative delays put every step mid-cycle at once: no blank start. */
-    animation: flow-step 15s ease-in-out infinite;
+  .flow-steps::after {
+    content: "";
+    position: absolute;
+    left: calc(1.75rem - 5px);
+    width: 10px;
+    height: 10px;
+    margin-top: -5px;
+    border-radius: 9999px;
+    background-color: var(--lime);
+    box-shadow:
+      0 0 0 2px var(--lilac-foreground),
+      0 0 12px 2px color-mix(in oklab, var(--lime) 70%, transparent);
+    z-index: 1;
+    animation: flow-packet 15s linear infinite;
+  }
+
+  /* Negative delays put every step mid-cycle at once: no blank start. */
+  .flow-steps > li::before {
+    animation: flow-glow 15s ease-in-out infinite;
     animation-delay: calc(var(--step) * 3s - 15s);
   }
 
-  .flow-steps:hover > li {
-    animation: none;
+  .flow-steps .flow-node::before {
+    animation: flow-pop 15s ease-in-out infinite;
+    animation-delay: calc(var(--step) * 3s - 15s);
+  }
+
+  /* Pause every part together, so the loop resumes in step, and hide the
+     glows so only the pointer's step is lit. */
+  .flow-steps:hover::after,
+  .flow-steps:hover > li::before,
+  .flow-steps:hover .flow-node::before {
+    animation-play-state: paused;
+    visibility: hidden;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .flow-steps:not(:hover) > li:last-child {
-    background-color: var(--lilac-foreground);
-    color: var(--lilac);
+    background-color: rgb(255 255 255 / 0.9);
+  }
+
+  .flow-steps:not(:hover) > li:last-child .flow-node {
+    background-color: var(--lime);
+    box-shadow: 0 0 0 2px var(--lilac-foreground);
   }
 }
 

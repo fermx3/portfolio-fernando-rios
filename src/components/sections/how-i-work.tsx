@@ -27,17 +27,20 @@ export function HowIWork({ project }: { project: Pick<Project, "slug" | "title">
         </Link>
       </div>
 
-      {/* The ink highlight runs down the steps on a loop, so the pipeline
-          reads as a flow; hovering stops it and it follows the pointer.
-          Motion and the reduced-motion fallback live in .flow-steps. */}
+      {/* A lime packet travels down a rail joining the step numbers and
+          lights each one as it arrives, so the pipeline reads as data
+          flowing; hovering stops it and the hovered row turns ink. Motion
+          and the reduced-motion fallback live in .flow-steps. */}
       <ol className="flow-steps mt-4 space-y-1.5">
         {steps.map((step, i) => (
           <li
             key={step.name}
             style={{ "--step": i } as React.CSSProperties}
-            className="grid grid-cols-[2rem_1fr] items-baseline gap-x-3 gap-y-0.5 rounded-row px-4 py-2 text-sm sm:grid-cols-[2rem_7rem_1fr]"
+            className="grid grid-cols-[2rem_1fr] items-center gap-x-3 gap-y-0.5 rounded-row px-4 py-2 text-sm sm:grid-cols-[2rem_7rem_1fr]"
           >
-            <span className="font-mono text-xs">{String(i + 1).padStart(2, "0")}</span>
+            <span className="flow-node relative z-[2] grid h-6 w-6 place-items-center rounded-full font-mono text-[10px] text-lilac-foreground max-sm:row-span-2 max-sm:self-center">
+              {String(i + 1).padStart(2, "0")}
+            </span>
             <span className="font-semibold">{step.name}</span>
             <span className="col-start-2 sm:col-start-3">{step.detail}</span>
           </li>
