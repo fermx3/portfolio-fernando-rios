@@ -38,7 +38,7 @@ export function AskMini({ title, example, variant = "input", className }: AskMin
           type="button"
           onClick={() => ask(example)}
           disabled={pending}
-          className="mt-4 w-full rounded-row bg-anchor-foreground/10 px-3 py-2.5 text-left text-sm press hover:bg-anchor-foreground/20 focus-visible:outline-2 focus-visible:outline-lime disabled:opacity-50"
+          className="mt-4 w-full rounded-row bg-anchor-foreground/10 px-3 py-2.5 text-left text-sm press hover:bg-anchor-foreground/20 focus-visible:outline-2 focus-visible:outline-anchor-foreground disabled:opacity-50"
         >
           {example} <span aria-hidden="true">→</span>
         </button>
@@ -49,7 +49,7 @@ export function AskMini({ title, example, variant = "input", className }: AskMin
             ask(input.trim() || example);
             setInput("");
           }}
-          className="mt-4 flex items-center gap-2 rounded-full bg-background p-1 pl-4 text-foreground focus-within:ring-2 focus-within:ring-lime"
+          className="mt-4 flex items-center gap-2 rounded-full bg-background p-1 pl-4 text-foreground focus-within:ring-2 focus-within:ring-anchor-foreground focus-within:ring-offset-2 focus-within:ring-offset-anchor"
         >
           <input
             value={input}

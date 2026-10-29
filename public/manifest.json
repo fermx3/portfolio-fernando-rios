@@ -1,11 +1,11 @@
 {
   "name": "Fer Rios - Portfolio",
   "short_name": "Fer Rios",
-  "description": "Data Scientist & Full-Stack Developer",
+  "description": "Full-Stack Developer & ML Engineer",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#1a1a2e",
+  "background_color": "#f3f0e7",
+  "theme_color": "#18160c",
   "icons": [
     {
       "src": "/icons/icon-192.png",
@@ -18,7 +18,7 @@
       "type": "image/png"
     },
     {
-      "src": "/icons/icon-512.png",
+      "src": "/icons/icon-maskable-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
