@@ -86,7 +86,7 @@
     "title": "Sobre mí",
     "aboutMe": "Sobre mí",
     "role": "Desarrollador full-stack y ML Engineer",
-    "bio": "Llegué al Machine Learning desde el desarrollo web: cinco años como freelance full-stack, dos en Trust & Safety de TikTok y, en 2025, el bootcamp de Ciencia de Datos e IA de Le Wagon.",
+    "bio": "Mi carrera empezó en el desarrollo web y fue avanzando hacia el Machine Learning. En TikTok vi de cerca cómo el ML y los datos a gran escala sostienen la operación diaria, y eso me llevó al reto de entender cómo funcionan esos sistemas.",
     "expertise": {
       "title": "Qué puedo cubrir",
       "body": "Clasificación de imágenes con transfer learning en TensorFlow y pronóstico de demanda con Prophet, servidos con FastAPI y Docker, con dashboards en Streamlit; el pronóstico corre en GCP Cloud Run. En las apps web, CI con tests de integración y despliegue continuo en Vercel."
@@ -182,7 +182,7 @@
   },
   "metadata": {
     "title": "Fer Rios - Desarrollador full-stack y ML Engineer",
-    "description": "Desarrollador full-stack y ML Engineer: apps web con Next.js y modelos de visión por computadora y pronóstico servidos con FastAPI. Ex-QA Analyst en TikTok, 5 años freelance.",
+    "description": "Desarrollador full-stack y ML Engineer: apps web con Next.js y modelos de visión por computadora y pronóstico servidos con FastAPI. Ex-QA Analyst en TikTok, freelance desde 2021.",
     "siteName": "Portafolio de Fer Rios",
     "keywords": [
       "ciencia de datos",
