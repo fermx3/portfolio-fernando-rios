@@ -11,20 +11,22 @@ interface ProjectStatusProps {
 }
 
 /**
- * Lime marks a project that is live. Anything else is plain metadata, so it
- * stays grey: the colour has to keep meaning "in production".
+ * Lime marks a project that is live, and its dot breathes; lilac marks one
+ * still being built (lilac is "process" in the Bento system). Completed and
+ * archived are plain metadata, so they stay grey: each colour has to keep one
+ * meaning.
  */
 export function ProjectStatus({ status, variant = "text", className }: ProjectStatusProps) {
   const t = useTranslations("projects.status");
-  if (!status) return null;
 
   const live = status === "production";
+  const building = status === "development";
 
-  if (variant === "chip" && live) {
+  if (variant === "chip" && (live || building)) {
     return (
-      <Badge variant="status" className={className}>
-        <span aria-hidden="true" className="live-dot">
-          ●
+      <Badge variant={live ? "status" : "process"} className={className}>
+        <span aria-hidden="true" className={live ? "live-dot" : undefined}>
+          {live ? "●" : "◐"}
         </span>
         {t(status)}
       </Badge>
@@ -40,7 +42,7 @@ export function ProjectStatus({ status, variant = "text", className }: ProjectSt
       )}
     >
       <span aria-hidden="true" className={live ? "live-dot" : undefined}>
-        {live ? "●" : "○"}
+        {live ? "●" : building ? "◐" : "○"}
       </span>
       {t(status)}
     </span>

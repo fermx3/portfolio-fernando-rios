@@ -46,6 +46,19 @@ La página renderiza todos los campos. Cada uno tiene un solo trabajo y ninguno 
 - Si una advertencia acompaña a la cifra (muestra, condiciones de medición), va en `metric.label`, dentro del tope de ≤ 10 palabras: `"recall de enfermedades en test (EfficientNetB0, 25% del dataset)"`.
 - `pnpm check:content` falla si `metric.value` aparece tal cual en `description` o en `results`.
 
+### status
+
+Obligatorio e idéntico en EN y ES; la UI lo traduce. Describe el uso real del proyecto hoy, no lo bien que quedó:
+
+| Valor         | Cuándo                                                            | Cómo se ve               |
+| ------------- | ----------------------------------------------------------------- | ------------------------ |
+| `production`  | Lo usa de verdad el negocio o un cliente                          | chip lima, el punto late |
+| `development` | Se sigue construyendo y aún no tiene uso real                     | chip lila                |
+| `completed`   | Terminado, sin un despliegue en uso (CLI, bootcamp, demo dormida) | texto gris               |
+| `archived`    | Ya no se mantiene ni se usa; queda como muestra de trabajo        | texto gris               |
+
+Un sitio de cliente en línea en el dominio del cliente es `production` aunque ya no lo mantengas tú. Si dejó de usarse, `archived`.
+
 ### team y context
 
 `team: { size, role }` solo en proyectos hechos en equipo; `role` es tu papel (`"Liderazgo del proyecto"`). `context` dice de dónde salió el proyecto (`"Proyecto final, bootcamp de Data Science & AI de Le Wagon"`), ≤ 10 palabras. `size` se comparte entre EN y ES; `role` y `context` se traducen.

@@ -33,16 +33,16 @@ public/images/projects/<slug>/     # cover.png + capturas
 
 ## Frontmatter
 
-Requeridos: `title`, `summary`, `category`, `tags[]`, `featured`, `date`, `repoUrl`, `coverImage`
-Opcionales: `description`, `objective`, `theme`, `impact`, `metric`, `team`, `context`, `technologies[]`, `status`, `repoPrivate`, `liveUrl`, `demoUrl`, `images[]`, `challenges[]`, `solutions[]`, `results[]`
+Requeridos: `title`, `summary`, `category`, `tags[]`, `featured`, `status`, `date`, `repoUrl`, `coverImage`
+Opcionales: `description`, `objective`, `theme`, `impact`, `metric`, `team`, `context`, `technologies[]`, `repoPrivate`, `liveUrl`, `demoUrl`, `images[]`, `challenges[]`, `solutions[]`, `results[]`
 
 **`slug` NO va en el frontmatter** — se deriva del nombre de archivo.
 
 ### Qué se comparte y qué se traduce
 
-| Idénticos en ambos archivos                                                                                                         | Traducidos                                                                                                                                                                          |
-| ----------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `date`, `featured`, `category`, `coverImage`, `images`, `repoUrl`, `repoPrivate`, `liveUrl`, `demoUrl`, `metric.value`, `team.size` | `title`, `summary`, `description`, `objective`, `theme`, `status`, `tags`, `technologies`, `challenges`, `solutions`, `results`, `metric.label`, `team.role`, `context` y el cuerpo |
+| Idénticos en ambos archivos                                                                                                                   | Traducidos                                                                                                                                                                |
+| --------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `date`, `featured`, `status`, `category`, `coverImage`, `images`, `repoUrl`, `repoPrivate`, `liveUrl`, `demoUrl`, `metric.value`, `team.size` | `title`, `summary`, `description`, `objective`, `theme`, `tags`, `technologies`, `challenges`, `solutions`, `results`, `metric.label`, `team.role`, `context` y el cuerpo |
 
 **Tags — antes de inventar uno, mira los que ya existen:**
 
@@ -72,7 +72,7 @@ team: # opcional; solo proyectos en equipo
   role: "<tu papel>"
 context: "<origen del proyecto>" # opcional
 date: "YYYY-MM-DD"
-status: "production" # enum: completed | production | archived (NO se traduce)
+status: "production" # obligatorio: production | development | completed | archived (NO se traduce)
 featured: false
 category: "web-development"
 tags: ["Tag Uno", "Tag Dos"]

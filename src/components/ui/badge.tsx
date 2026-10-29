@@ -14,6 +14,7 @@ const badgeVariants = cva(
         destructive: "bg-destructive text-destructive-foreground",
         outline: "border-line text-foreground",
         status: "bg-lime font-mono text-lime-foreground",
+        process: "bg-lilac font-mono text-lilac-foreground",
         ai: "rounded-md bg-lime px-1.5 py-0.5 font-mono text-lime-foreground",
       },
     },

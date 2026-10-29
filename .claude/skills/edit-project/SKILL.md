@@ -21,7 +21,7 @@ Una entrada son **dos archivos**: `content/projects/<slug>.mdx` y `<slug>.es.mdx
 - **Corregir:** arregla solo lo pedido; no reescribas el resto sin permiso.
 - **Metadatos:**
   - `featured`: la home solo muestra los **6 más recientes** y `pnpm check:content` falla si hay más de 6. Avisa si el cambio desplaza a otro proyecto.
-  - `status`: enum `completed` | `production` | `archived`. No se traduce.
+  - `status`: obligatorio, enum `production` | `development` | `completed` | `archived` (definiciones en `docs/content-guidelines.md`). Idéntico en los dos archivos; no se traduce.
   - `metric`: si la cifra cambió en el repo, actualiza `value` en los dos archivos a la vez. Si ya no se puede verificar, borra `metric` entero; no lo reformules.
 - **Imágenes:** el archivo va en `public/images/projects/<slug>/`, la ruta en ambos archivos, y `type: "mobile"` en las capturas de móvil.
 
