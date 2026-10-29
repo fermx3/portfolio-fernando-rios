@@ -23,11 +23,18 @@ export function AssistantPanel() {
 
   const dialogRef = useRef<HTMLDialogElement>(null);
   const logRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const dialog = dialogRef.current;
     if (!dialog) return;
-    if (open && !dialog.open) dialog.showModal();
+    if (open && !dialog.open) {
+      dialog.showModal();
+      // Type straight away with a keyboard and mouse. On a touch screen, focus
+      // would pop the keyboard up (and, on iOS, zoom) before anyone asked to
+      // type; the dialog keeps focus on its close button instead.
+      if (window.matchMedia("(pointer: fine)").matches) inputRef.current?.focus();
+    }
     if (!open && dialog.open) dialog.close();
 
     // A modal dialog does not stop the page behind it from scrolling.
@@ -180,8 +187,8 @@ export function AssistantPanel() {
             aria-label={t("placeholder")}
             maxLength={MAX_LENGTH}
             disabled={pending}
-            autoFocus
-            className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground disabled:opacity-50"
+            ref={inputRef}
+            className="min-w-0 flex-1 bg-transparent text-base outline-none sm:text-sm placeholder:text-muted-foreground disabled:opacity-50"
           />
           <Button type="submit" variant="lime" size="sm" disabled={pending || !input.trim()}>
             <span className="max-sm:sr-only">{t("send")}</span>

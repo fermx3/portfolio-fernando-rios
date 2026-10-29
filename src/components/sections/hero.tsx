@@ -2,6 +2,7 @@ import { useTranslations } from "next-intl";
 import { ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Module, ModuleLabel } from "@/components/ui/module";
+import { HashLink } from "@/components/layout/hash-link";
 
 export function Hero() {
   const t = useTranslations("hero");
@@ -32,17 +33,17 @@ export function Hero() {
 
       <p className="mt-3 max-w-md text-body text-muted-foreground">{t("description")}</p>
 
-      {/* Plain anchors: smooth scrolling comes from the stylesheet, so the hero
-          no longer needs to be a client component. */}
+      {/* HashLink, not a plain <a>: a link to the hash already in the URL
+          would not scroll on a second click. */}
       <div className="mt-8 flex flex-wrap gap-3">
         <Button asChild>
-          <a href="#projects">
+          <HashLink href="/#projects">
             {t("cta.primary")}
             <ArrowDown className="h-4 w-4" />
-          </a>
+          </HashLink>
         </Button>
         <Button asChild variant="outline">
-          <a href="#contact">{t("cta.secondary")}</a>
+          <HashLink href="/#contact">{t("cta.secondary")}</HashLink>
         </Button>
       </div>
     </Module>

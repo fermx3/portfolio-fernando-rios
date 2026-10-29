@@ -58,7 +58,7 @@ export function AskMini({ title, example, variant = "input", className }: AskMin
             aria-label={t("placeholder")}
             maxLength={1000}
             disabled={pending}
-            className="min-w-0 flex-1 bg-transparent text-xs outline-none placeholder:text-muted-foreground disabled:opacity-50"
+            className="min-w-0 flex-1 bg-transparent text-base outline-none sm:text-xs placeholder:text-muted-foreground disabled:opacity-50"
           />
           <button
             type="submit"

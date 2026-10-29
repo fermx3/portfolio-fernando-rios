@@ -61,7 +61,7 @@ export function FeaturedProject({ project, size, id }: FeaturedProjectProps) {
       bleed
       reveal
       id={id}
-      className={`${FOCUS_RING} grid scroll-mt-20 sm:grid-cols-2`}
+      className={`${FOCUS_RING} grid sm:grid-cols-2`}
     >
       <h2 className="sr-only">{t("title")}</h2>
       <div className="relative aspect-[4/3] overflow-hidden sm:aspect-auto sm:min-h-64">

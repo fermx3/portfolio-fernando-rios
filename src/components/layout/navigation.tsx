@@ -7,6 +7,7 @@ import { Container } from "./container";
 import { ThemeToggle } from "./theme-toggle";
 import { LanguageToggle } from "./language-toggle";
 import { MobileMenu } from "./mobile-menu";
+import { HashLink } from "./hash-link";
 import { cn } from "@/lib/utils";
 
 // Anchored to "/" rather than bare hashes: the sections only exist on the home
@@ -47,21 +48,30 @@ export function Navigation() {
 
           {/* Desktop Navigation */}
           <div className="hidden items-center gap-1 rounded-full bg-card p-1 md:flex">
-            {navigation.map((item) => (
-              <Link
-                key={item.key}
-                href={item.href}
-                aria-current={active === item.key ? "page" : undefined}
-                className={cn(
-                  "rounded-full px-4 py-1.5 text-sm font-medium press",
-                  active === item.key
-                    ? "bg-primary text-primary-foreground"
-                    : "text-foreground hover:bg-secondary"
-                )}
-              >
-                {t(item.key)}
-              </Link>
-            ))}
+            {navigation.map((item) => {
+              const className = cn(
+                "rounded-full px-4 py-1.5 text-sm font-medium press",
+                active === item.key
+                  ? "bg-primary text-primary-foreground"
+                  : "text-foreground hover:bg-secondary"
+              );
+              const current = active === item.key ? "page" : undefined;
+              // Section links scroll even when their hash is already in the URL.
+              return item.href.startsWith("/#") ? (
+                <HashLink
+                  key={item.key}
+                  href={item.href as `/#${string}`}
+                  aria-current={current}
+                  className={className}
+                >
+                  {t(item.key)}
+                </HashLink>
+              ) : (
+                <Link key={item.key} href={item.href} aria-current={current} className={className}>
+                  {t(item.key)}
+                </Link>
+              );
+            })}
           </div>
 
           {/* Desktop Controls */}

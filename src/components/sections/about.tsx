@@ -50,7 +50,7 @@ export async function About({ locale }: AboutProps) {
       span={3}
       reveal
       id="about"
-      className="grid scroll-mt-20 gap-8 sm:p-9 md:grid-cols-[1.3fr_1fr] md:gap-12"
+      className="grid gap-8 sm:p-9 md:grid-cols-[1.3fr_1fr] md:gap-12"
     >
       <div>
         <h2 className="font-mono text-xs text-muted-foreground">{t("aboutMe")}</h2>

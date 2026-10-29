@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useSyncExternalStore } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
 import { ArrowRight, X } from "lucide-react";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { Badge } from "@/components/ui/badge";
 import { useAssistant } from "@/components/assistant/assistant-provider";
+import { HashLink } from "./hash-link";
 import { AUTHOR, CV_PATH } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
@@ -16,6 +17,8 @@ interface MobileMenuProps {
   /** Which entry is the current page: "home", "projects" or none. */
   active: string | null;
 }
+
+const noopSubscribe = () => () => {};
 
 // Spanish first, as in the design; both are always shown.
 const LOCALES = ["es", "en"] as const;
@@ -32,6 +35,15 @@ export function MobileMenu({ open, onClose, active }: MobileMenuProps) {
   const pathname = usePathname();
   const router = useRouter();
   const { resolvedTheme, setTheme } = useTheme();
+  // With the system theme the server cannot know light or dark, so it renders
+  // neither as selected, and React 19 does not patch attributes that differ on
+  // hydration: the selector stayed blank. Read the theme only after mount.
+  const mounted = useSyncExternalStore(
+    noopSubscribe,
+    () => true,
+    () => false
+  );
+  const currentTheme = mounted ? resolvedTheme : undefined;
   const { projects, setOpen: setAssistantOpen } = useAssistant();
   const dialogRef = useRef<HTMLDialogElement>(null);
 
@@ -157,7 +169,7 @@ export function MobileMenu({ open, onClose, active }: MobileMenuProps) {
           </li>
 
           <li className="menu-item" style={{ "--i": 3 } as React.CSSProperties}>
-            <Link
+            <HashLink
               href="/#contact"
               onClick={onClose}
               className="press flex items-center justify-between rounded-module bg-lilac px-6 py-4 text-lilac-foreground"
@@ -169,7 +181,7 @@ export function MobileMenu({ open, onClose, active }: MobileMenuProps) {
                 </span>
               </span>
               <ArrowRight className="h-5 w-5" aria-hidden="true" />
-            </Link>
+            </HashLink>
           </li>
         </ol>
       </nav>
@@ -207,9 +219,9 @@ export function MobileMenu({ open, onClose, active }: MobileMenuProps) {
                 <button
                   key={theme}
                   type="button"
-                  aria-pressed={resolvedTheme === theme}
+                  aria-pressed={currentTheme === theme}
                   onClick={() => setTheme(theme)}
-                  className={segment(resolvedTheme === theme)}
+                  className={segment(currentTheme === theme)}
                 >
                   {t(theme)}
                 </button>

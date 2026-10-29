@@ -78,7 +78,7 @@ export function AskPortfolio() {
           aria-label={t("placeholder")}
           maxLength={MAX_LENGTH}
           disabled={pending}
-          className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground disabled:opacity-50"
+          className="min-w-0 flex-1 bg-transparent text-base outline-none sm:text-sm placeholder:text-muted-foreground disabled:opacity-50"
         />
         <Button type="submit" variant="lime" size="sm" disabled={pending || !input.trim()}>
           {t("send")}

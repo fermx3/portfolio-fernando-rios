@@ -16,7 +16,7 @@ export function AllProjectsLink({ projects, categories, id }: AllProjectsLinkPro
       tone="lilac"
       reveal
       id={id}
-      className="group relative flex min-h-44 scroll-mt-20 flex-col justify-between gap-8 has-[a:focus-visible]:ring-2 has-[a:focus-visible]:ring-ring"
+      className="group relative flex min-h-44 flex-col justify-between gap-8 has-[a:focus-visible]:ring-2 has-[a:focus-visible]:ring-ring"
     >
       <p className="font-mono text-xs">{t("allCount", { projects, categories })}</p>
       <Link
