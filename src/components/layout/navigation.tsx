@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { Container } from "./container";
 import { ThemeToggle } from "./theme-toggle";
 import { LanguageToggle } from "./language-toggle";
+import { MobileMenu } from "./mobile-menu";
 import { cn } from "@/lib/utils";
 
 // Anchored to "/" rather than bare hashes: the sections only exist on the home
@@ -73,41 +74,15 @@ export function Navigation() {
           <button
             type="button"
             className="rounded-full bg-card px-4 py-1.5 text-sm font-medium md:hidden"
-            onClick={() => setIsOpen(!isOpen)}
-            aria-expanded={isOpen}
-            aria-controls="mobile-menu"
+            onClick={() => setIsOpen(true)}
+            aria-haspopup="dialog"
             aria-label={t("toggleMenu")}
           >
             {t("menu")}
           </button>
         </div>
-
-        {/* Mobile Navigation */}
-        <div id="mobile-menu" className={cn("pb-4 md:hidden", isOpen ? "block" : "hidden")}>
-          <div className="rounded-module bg-card p-3">
-            {navigation.map((item) => (
-              <Link
-                key={item.key}
-                href={item.href}
-                aria-current={active === item.key ? "page" : undefined}
-                className={cn(
-                  "block rounded-row px-4 py-2.5 text-sm font-medium transition-colors",
-                  active === item.key
-                    ? "bg-primary text-primary-foreground"
-                    : "text-foreground hover:bg-secondary"
-                )}
-                onClick={() => setIsOpen(false)}
-              >
-                {t(item.key)}
-              </Link>
-            ))}
-            <div className="mt-2 flex items-center justify-between border-t border-line px-4 pt-3">
-              <LanguageToggle />
-              <ThemeToggle />
-            </div>
-          </div>
-        </div>
       </Container>
+      <MobileMenu open={isOpen} onClose={() => setIsOpen(false)} active={active} />
     </nav>
   );
 }

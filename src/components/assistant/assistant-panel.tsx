@@ -96,6 +96,11 @@ export function AssistantPanel() {
         aria-live="polite"
         aria-busy={pending}
       >
+        {/* Opened straight from the menu, there is no question yet: say what
+            this is instead of showing an empty panel. */}
+        {messages.length === 0 && !error && (
+          <p className="max-w-sm leading-relaxed opacity-75">{t("intro")}</p>
+        )}
         {messages.map((message, index) =>
           message.role === "user" ? (
             <p

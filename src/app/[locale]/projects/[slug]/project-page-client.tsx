@@ -190,7 +190,10 @@ export function ProjectPageClient({ project }: ProjectPageClientProps) {
         ))}
 
         {/* Reading module: contents on the left, one column of text. */}
-        <Module span={4} className="grid gap-10 p-6 sm:p-10 lg:grid-cols-[13rem_1fr] lg:gap-16">
+        <Module
+          span={4}
+          className="grid grid-cols-1 gap-10 p-6 sm:p-10 lg:grid-cols-[13rem_1fr] lg:gap-16"
+        >
           <div className="max-lg:contents lg:sticky lg:top-24 lg:self-start">
             <ProjectToc items={toc} />
             <div className="mt-8 hidden lg:block">{ask}</div>

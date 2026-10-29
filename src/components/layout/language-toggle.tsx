@@ -3,8 +3,10 @@
 import { Fragment } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter, usePathname } from "@/i18n/navigation";
-import { routing } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
+
+// Spanish first, as in the design ("ES · EN").
+const LOCALES = ["es", "en"] as const;
 
 export function LanguageToggle() {
   const t = useTranslations("language");
@@ -18,7 +20,7 @@ export function LanguageToggle() {
   // Both locales stay visible ("ES · EN"); the current one is bold.
   return (
     <div role="group" aria-label={t("toggle")} className="flex items-center gap-1.5 text-xs">
-      {routing.locales.map((code, i) => (
+      {LOCALES.map((code, i) => (
         <Fragment key={code}>
           {i > 0 && (
             <span aria-hidden="true" className="text-muted-foreground">

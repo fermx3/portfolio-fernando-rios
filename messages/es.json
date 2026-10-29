@@ -5,7 +5,16 @@
     "about": "Sobre mí",
     "contact": "Contacto",
     "toggleMenu": "Abrir menú",
-    "menu": "Menú"
+    "menu": "Menú",
+    "close": "Cerrar",
+    "youAreHere": "estás aquí",
+    "projectCount": "{count} proyectos",
+    "assistant": "Asistente",
+    "theme": "Tema",
+    "light": "Claro",
+    "dark": "Oscuro",
+    "language": "Idioma",
+    "cv": "CV"
   },
   "hero": {
     "name": "Fer Rios",

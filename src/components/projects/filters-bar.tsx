@@ -79,7 +79,7 @@ export function FiltersBar({
         <div
           role="group"
           aria-label={t("filters.categories")}
-          className="-mx-3 flex gap-2 overflow-x-auto px-3 lg:mx-0 lg:flex-wrap lg:overflow-visible lg:px-0"
+          className="-mx-3 flex gap-2 overflow-x-auto [scrollbar-width:none] px-3 lg:mx-0 lg:flex-wrap lg:overflow-visible lg:px-0"
         >
           {(["all", ...categories] as const).map((category) => (
             <button

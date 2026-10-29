@@ -46,7 +46,7 @@ export function ProjectToc({ items }: { items: TocItem[] }) {
       <p className="mb-3 hidden font-mono text-xs text-muted-foreground lg:block">
         {t("onThisPage")}
       </p>
-      <ul className="flex gap-2 overflow-x-auto lg:flex-col lg:gap-1 lg:overflow-visible">
+      <ul className="flex gap-2 overflow-x-auto [scrollbar-width:none] lg:flex-col lg:gap-1 lg:overflow-visible">
         {items.map((item) => (
           <li key={item.id} className="shrink-0">
             <a
