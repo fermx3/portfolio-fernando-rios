@@ -58,11 +58,9 @@
       "viewDemo": "Ver demo",
       "viewCode": "Ver código",
       "viewCodePrivate": "Repositorio privado",
-      "details": "Detalles del proyecto",
       "objective": "Objetivo",
       "theme": "Tema",
       "date": "Fecha",
-      "category": "Categoría",
       "technologies": "Tecnologías",
       "gallery": "Galería",
       "galleryClose": "Cerrar",
@@ -72,7 +70,14 @@
       "challenges": "Retos",
       "solutions": "Cómo se resolvió",
       "results": "Resultados",
-      "impact": "Impacto"
+      "impact": "Impacto",
+      "overview": "Resumen",
+      "onThisPage": "En esta página",
+      "questions": "¿Dudas sobre este proyecto?",
+      "askExample": "¿Qué fue lo más difícil de {project}?",
+      "mainResult": "Resultado principal",
+      "team": "Equipo",
+      "teamSize": "{count, plural, one {# persona} other {# personas}}"
     },
     "status": {
       "production": "En producción",
