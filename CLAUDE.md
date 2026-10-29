@@ -20,16 +20,16 @@
 Los proyectos son MDX en `content/projects/`, con frontmatter validado por Zod en `src/lib/validations.ts`.
 
 **Campos requeridos:** `title`, `summary`, `category`, `tags[]`, `featured`, `date`, `repoUrl`, `coverImage`
-**Opcionales:** `description`, `objective`, `theme`, `impact`, `technologies[]`, `status`, `repoPrivate`, `liveUrl`, `demoUrl`, `images[]`, `challenges[]`, `solutions[]`, `results[]`
+**Opcionales:** `description`, `objective`, `theme`, `impact`, `metric`, `team`, `context`, `technologies[]`, `status`, `repoPrivate`, `liveUrl`, `demoUrl`, `images[]`, `challenges[]`, `solutions[]`, `results[]`
 
 `category` es un enum cerrado:
 `data-science` | `full-stack` | `ml` | `visualization` | `web-development` | `backend-development`
 
 **Qué se comparte y qué se traduce entre el par EN/ES:**
 
-| Idénticos (estructurales)                                                                              | Traducidos (contenido)                                                                                                                      |
-| ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| `date`, `featured`, `category`, `coverImage`, `images`, `repoUrl`, `repoPrivate`, `liveUrl`, `demoUrl` | `title`, `summary`, `description`, `objective`, `theme`, `status`, `tags`, `technologies`, `challenges`, `solutions`, `results` y el cuerpo |
+| Idénticos (estructurales)                                                                                                           | Traducidos (contenido)                                                                                                                                                              |
+| ----------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `date`, `featured`, `category`, `coverImage`, `images`, `repoUrl`, `repoPrivate`, `liveUrl`, `demoUrl`, `metric.value`, `team.size` | `title`, `summary`, `description`, `objective`, `theme`, `status`, `tags`, `technologies`, `challenges`, `solutions`, `results`, `metric.label`, `team.role`, `context` y el cuerpo |
 
 `category` se mantiene igual porque es una clave de enum; la UI la traduce al renderizar. `tags` **sí** se traducen: `getAllTags()` es locale-aware y alimenta los filtros en el idioma activo.
 
@@ -42,6 +42,7 @@ Los proyectos son MDX en `content/projects/`, con frontmatter validado por Zod e
 - Imágenes en `public/images/projects/<slug>/`. `pnpm check:content` verifica que existan.
 - `impact` es el cierre de la página: qué cambió el proyecto y para quién. Va en el frontmatter, **no** como un `## Impact` al final del cuerpo — ahí quedaría antes de las secciones de Reto/Enfoque/Resultados y rompería el arco narrativo.
 - `status` es un enum: `completed` | `production` | `archived`.
+- `metric` es la cifra de la tarjeta y del detalle: `{ value, label }`, una por proyecto y opcional. `value` se comparte entre EN y ES; solo `label` se traduce. `team` (`{ size, role }`) y `context` alimentan la fila de datos del detalle. Reglas de redacción en `docs/content-guidelines.md`.
 
 **Tags — reglas.** Los tags alimentan el filtro del listado, así que el vocabulario tiene que ser estable:
 

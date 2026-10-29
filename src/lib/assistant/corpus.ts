@@ -145,6 +145,13 @@ export const buildCorpus = cache((locale: string): Corpus => {
         `slug: ${project.slug}\n` +
         `date: ${project.date} · category: ${project.category}\n` +
         line("status", project.status) +
+        line("context", project.context) +
+        line(
+          "team",
+          project.team &&
+            `${project.team.size} people${project.team.role ? `, ${project.team.role}` : ""}`
+        ) +
+        line("metric", project.metric && `${project.metric.value} ${project.metric.label}`) +
         line("tags", project.tags.join(", ")) +
         line("technologies", project.technologies?.join(", ")) +
         line("links", links) +

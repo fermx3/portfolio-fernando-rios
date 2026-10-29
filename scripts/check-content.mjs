@@ -23,8 +23,10 @@ const FEATURED_LIMIT = 6;
 
 const problems = [];
 const tagsByFile = new Map();
+const sharedByFile = new Map();
 
-/** Minimal frontmatter reader: scalars and dash lists, line by line. */
+/** Minimal frontmatter reader: scalars, dash lists and one level of nested
+ *  keys (metric, team), line by line. */
 function parseFrontmatter(raw) {
   const m = raw.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
   if (!m) return null;
@@ -33,15 +35,24 @@ function parseFrontmatter(raw) {
   for (const line of m[1].split("\n")) {
     const scalar = line.match(/^([a-zA-Z]+):\s*(.*)$/);
     const item = line.match(/^\s+-\s*(.*)$/);
+    const nested = line.match(/^\s+([a-zA-Z]+):\s*(.*)$/);
     if (scalar) {
       key = scalar[1];
       const value = scalar[2].trim();
       data[key] = value === "" ? [] : value.replace(/^"|"$/g, "");
     } else if (item && key && Array.isArray(data[key])) {
       data[key].push(item[1].trim().replace(/^"|"$/g, ""));
+    } else if (nested && key && isObjectSlot(data[key])) {
+      if (Array.isArray(data[key])) data[key] = {};
+      data[key][nested[1]] = nested[2].trim().replace(/^"|"$/g, "");
     }
   }
   return { data, body: m[2] };
+}
+
+/** A key with no inline value that has not collected list items yet. */
+function isObjectSlot(value) {
+  return (Array.isArray(value) && value.length === 0) || (value && typeof value === "object");
 }
 
 function imagePaths(data) {
@@ -100,6 +111,15 @@ for (const file of files) {
       : [];
   tagsByFile.set(file, tags);
 
+  // 10. nested fields whose shared half must match between languages
+  sharedByFile.set(file, {
+    "metric.value": data.metric?.value,
+    "team.size": data.team?.size,
+  });
+  if (data.metric && !(data.metric.value && data.metric.label)) {
+    problems.push(`${file}: metric needs both value and label`);
+  }
+
   // 7. a tag must not repeat the project's own category -- the category has its
   //    own filter row, so the tag is a duplicate chip
   const label = CATEGORY_LABELS[data.category];
@@ -130,6 +150,20 @@ for (const slug of slugs) {
     problems.push(
       `${slug}: ${en.length} tags in English but ${es.length} in Spanish; they are paired by position`
     );
+  }
+}
+
+// 10. metric.value and team.size are shared: only the labels are translated
+for (const slug of slugs) {
+  const en = sharedByFile.get(`${slug}.mdx`);
+  const es = sharedByFile.get(`${slug}.es.mdx`);
+  if (!en || !es) continue;
+  for (const field of Object.keys(en)) {
+    if (en[field] !== es[field]) {
+      problems.push(
+        `${slug}: ${field} differs between languages (EN ${en[field] ?? "missing"}, ES ${es[field] ?? "missing"})`
+      );
+    }
   }
 }
 

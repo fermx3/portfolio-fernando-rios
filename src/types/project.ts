@@ -8,6 +8,9 @@ export interface Project {
   objective?: string;
   theme?: string;
   impact?: string;
+  metric?: { value: string; label: string };
+  team?: { size: number; role?: string };
+  context?: string;
   category:
     | "data-science"
     | "full-stack"

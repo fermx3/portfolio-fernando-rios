@@ -21,6 +21,24 @@ export const projectSchema = z.object({
   // Closing statement: what the project changed and for whom. Rendered last,
   // after the results, so the page ends on the "so what".
   impact: z.string().optional(),
+  // One headline figure per project, shown on its card and detail page.
+  // `value` is shared between EN and ES; only `label` is translated. It must be
+  // verifiable in the project's repo: a project without one simply shows none.
+  metric: z
+    .object({
+      value: z.string(),
+      label: z.string(),
+    })
+    .optional(),
+  // Team projects only. `size` is shared between EN and ES; `role` is translated.
+  team: z
+    .object({
+      size: z.number().int().positive(),
+      role: z.string().optional(),
+    })
+    .optional(),
+  // Where the project came from, shown under its date ("Final project, Le Wagon").
+  context: z.string().optional(),
   category: z.enum([
     "data-science",
     "full-stack",
