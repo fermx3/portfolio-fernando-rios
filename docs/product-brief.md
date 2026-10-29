@@ -1,7 +1,7 @@
 # Brief de producto — Portfolio Fernando Ríos
 
 **Estado:** en producción · https://www.fernandorios.dev
-**Última revisión:** 2026-08-13
+**Última revisión:** 2026-10-28
 
 Este documento define qué es el producto, qué está entregado, qué queda fuera a propósito y qué falta. Todo lo que afirma es verificable con los comandos del [apéndice](#apéndice-cómo-verificar-este-documento).
 
@@ -17,21 +17,25 @@ Portfolio bilingüe (EN/ES) de Fernando Ríos: data science, machine learning y 
 
 ---
 
-## 2. Alcance actual — v1 en producción
+## 2. Alcance actual — v2 (rediseño Bento) en producción
 
-| Área                     | Qué hay                                                                                                                                                    |
-| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Home**                 | 4 secciones: Hero, Featured Projects, About, Contact (`src/app/[locale]/page.tsx`)                                                                         |
-| **Listado de proyectos** | Búsqueda por título/summary/tags · filtro por categoría · filtro por tags (lógica AND) · 3 ordenamientos · contador y estado vacío (`projects-client.tsx`) |
-| **Detalle de proyecto**  | Galería con lightbox completa: navegación por teclado, dots, aspect ratio distinto para `mobile`/`web` (`project-gallery.tsx`)                             |
-| **Contenido**            | 11 proyectos, paridad EN/ES al 100% (22 archivos en `content/projects/`)                                                                                   |
-| **i18n**                 | EN/ES con toggle, rutas por locale, middleware de negociación                                                                                              |
-| **Tema**                 | Dark/light con `next-themes`                                                                                                                               |
-| **Infraestructura**      | SSG (35 páginas), sitemap, robots, 7 cabeceras de seguridad, CI de 4 pasos (format · lint · typecheck · build)                                             |
+| Área                     | Qué hay                                                                                                                                                                                 |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Home**                 | Grilla Bento: hero, asistente, proyecto principal + "Cómo trabajo", dos proyectos cortos, "Ahora mismo", enlace a todos, Sobre mí + trayectoria, contacto (`src/app/[locale]/page.tsx`) |
+| **Asistente**            | Pregunta sobre los proyectos (`/api/ask`); panel lateral con tarjetas de cita, captura de contacto vía tool del servidor, entradas en home, listado y detalle                           |
+| **Listado de proyectos** | Búsqueda · filtro por categoría (solo las que tienen proyectos) · tags plegables (lógica AND) · 3 ordenamientos · contador anunciado · estado vacío (`projects-client.tsx`)             |
+| **Detalle de proyecto**  | Versión de lectura: columna de 680 px, índice con scroll-spy, fila de datos (métrica, fecha, equipo, tema), galería con lightbox, impacto (`project-page-client.tsx`)                   |
+| **Diseño**               | Sistema Bento en Claude Design: tokens claro/oscuro, Bricolage Grotesque + DM Mono, menú móvil propio, microinteracciones solo CSS y desactivadas con `prefers-reduced-motion`          |
+| **Contenido**            | 11 proyectos, paridad EN/ES al 100% (22 archivos en `content/projects/`)                                                                                                                |
+| **i18n**                 | EN/ES con toggle, rutas por locale, middleware de negociación                                                                                                                           |
+| **Tema**                 | Dark/light con `next-themes`                                                                                                                                                            |
+| **Infraestructura**      | SSG (36 páginas), sitemap, robots, 7 cabeceras de seguridad, CI de 4 pasos (format · lint · typecheck · build)                                                                          |
 
 ### Métricas verificadas
 
-PageSpeed Insights, [corrida del 2026-08-13](https://pagespeed.web.dev/analysis/https-www-fernandorios-dev-es/fhcpnlfjjf):
+> **Pendiente de remedir.** Estas cifras son del diseño anterior. Después del rediseño Bento (2026-10-28) no se pudo correr Lighthouse: la API pública de PageSpeed agotó su cuota diaria. Hay que repetir la corrida en https://pagespeed.web.dev/ y actualizar esta tabla y la del README.
+
+PageSpeed Insights, [corrida del 2026-08-13](https://pagespeed.web.dev/analysis/https-www-fernandorios-dev-es/fhcpnlfjjf), diseño anterior:
 
 | Categoría      | Móvil | Desktop |
 | -------------- | ----- | ------- |

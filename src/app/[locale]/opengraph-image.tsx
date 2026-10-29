@@ -18,62 +18,130 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
+// The Bento light theme. ImageResponse does not understand oklch(), so these
+// are the globals.css tokens converted to hex.
+const ARENA = "#f3f0e7";
+const PAPER = "#ffffff";
+const INK = "#18160c";
+const GREY = "#4f4d41";
+const LIME = "#bde892";
+
+/**
+ * One weight of a Google font, subset to the text it has to draw. Returns null
+ * on any failure, and the card falls back to the default font: a missing
+ * typeface must not break link previews.
+ */
+async function loadFont(family: string, weight: number, text: string) {
+  try {
+    const css = await fetch(
+      `https://fonts.googleapis.com/css2?family=${family}:wght@${weight}&text=${encodeURIComponent(text)}`
+    ).then((res) => res.text());
+    const url = css.match(/src: url\((.+?)\) format\('(?:opentype|truetype)'\)/)?.[1];
+    if (!url) return null;
+    return await fetch(url).then((res) => res.arrayBuffer());
+  } catch {
+    return null;
+  }
+}
+
 export default async function OpengraphImage({ params }: { params: { locale: string } }) {
   const { locale } = params;
   setRequestLocale(locale);
-  const t = await getTranslations({ locale, namespace: "metadata" });
   const tHero = await getTranslations({ locale, namespace: "hero" });
+  const tAssistant = await getTranslations({ locale, namespace: "contact.assistant" });
 
+  const [first, last] = AUTHOR.name.split(" ");
+  const role = tHero("role");
+  const kicker = tHero("kicker");
+  const domain = "fernandorios.dev";
+  const ask = tAssistant("title");
+  const aiLabel = tAssistant("aiLabel");
+
+  const [display, mono] = await Promise.all([
+    loadFont("Bricolage+Grotesque", 700, `${AUTHOR.name}${role}${ask}`),
+    loadFont("DM+Mono", 500, `${kicker}${domain}${aiLabel}`),
+  ]);
+  const fonts = [
+    display && { name: "Bricolage", data: display, weight: 700 as const },
+    mono && { name: "DM Mono", data: mono, weight: 500 as const },
+  ].filter((font) => font !== null && font !== undefined);
+
+  // The home page's first row, as a card: the hero module beside the anchor.
   return new ImageResponse(
     <div
       style={{
         height: "100%",
         width: "100%",
         display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        backgroundColor: "#0a0a0a",
-        padding: 80,
+        gap: 16,
+        padding: 32,
+        backgroundColor: ARENA,
+        fontFamily: "Bricolage",
       }}
     >
       <div
         style={{
           display: "flex",
-          width: 72,
-          height: 8,
-          backgroundColor: "#9de500",
-          marginBottom: 48,
+          flexDirection: "column",
+          flex: 1.25,
+          padding: 48,
+          borderRadius: 36,
+          backgroundColor: PAPER,
+          color: INK,
         }}
-      />
-      <div style={{ display: "flex", fontSize: 68, fontWeight: 700, color: "#fafafa" }}>
-        {AUTHOR.name}
+      >
+        <div style={{ display: "flex", fontFamily: "DM Mono", fontSize: 17, color: GREY }}>
+          {kicker}
+        </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            marginTop: "auto",
+            fontSize: 150,
+            fontWeight: 700,
+            lineHeight: 0.86,
+            letterSpacing: -6,
+          }}
+        >
+          <span>{first}</span>
+          <span>{last}</span>
+        </div>
+        <div style={{ display: "flex", marginTop: 28, fontSize: 34, fontWeight: 700 }}>{role}</div>
       </div>
+
       <div
         style={{
           display: "flex",
-          fontSize: 40,
-          color: "#9de500",
-          marginTop: 12,
+          flexDirection: "column",
+          justifyContent: "space-between",
+          flex: 1,
+          padding: 48,
+          borderRadius: 36,
+          backgroundColor: INK,
+          color: ARENA,
         }}
       >
-        {tHero("role")}
-      </div>
-      <div
-        style={{
-          display: "flex",
-          fontSize: 26,
-          color: "#a1a1a1",
-          marginTop: 32,
-          maxWidth: 900,
-          lineHeight: 1.4,
-        }}
-      >
-        {t("description")}
-      </div>
-      <div style={{ display: "flex", fontSize: 24, color: "#737373", marginTop: 48 }}>
-        www.fernandorios.dev
+        <div
+          style={{
+            display: "flex",
+            alignSelf: "flex-start",
+            padding: "6px 14px",
+            borderRadius: 10,
+            backgroundColor: LIME,
+            color: INK,
+            fontFamily: "DM Mono",
+            fontSize: 22,
+          }}
+        >
+          {aiLabel}
+        </div>
+        <div style={{ display: "flex", fontSize: 50, fontWeight: 700, lineHeight: 1 }}>{ask}</div>
+        <div style={{ display: "flex", fontFamily: "DM Mono", fontSize: 24, color: LIME }}>
+          {domain}
+        </div>
       </div>
     </div>,
-    size
+    { ...size, fonts }
   );
 }

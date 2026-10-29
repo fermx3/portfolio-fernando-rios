@@ -41,7 +41,7 @@ export function AskPortfolio() {
             <button
               type="button"
               onClick={() => setOpen(true)}
-              className="flex w-full items-center justify-between gap-3 rounded-row bg-lime px-4 py-2.5 text-left text-sm font-medium text-lime-foreground press hover:bg-lime/85 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
+              className="flex w-full items-center justify-between gap-3 rounded-row bg-lime px-4 py-2.5 text-left text-sm font-medium text-lime-foreground press hover:bg-lime/85 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-anchor-foreground"
             >
               {t("resume")}
               <ArrowRight className="h-4 w-4 shrink-0" aria-hidden="true" />
@@ -53,7 +53,7 @@ export function AskPortfolio() {
               <button
                 type="button"
                 onClick={() => ask(suggestion)}
-                className="flex w-full items-center justify-between gap-3 rounded-row bg-anchor-foreground/10 px-4 py-2.5 text-left text-sm press hover:bg-anchor-foreground/20 focus-visible:outline-2 focus-visible:outline-lime"
+                className="flex w-full items-center justify-between gap-3 rounded-row bg-anchor-foreground/10 px-4 py-2.5 text-left text-sm press hover:bg-anchor-foreground/20 focus-visible:outline-2 focus-visible:outline-anchor-foreground"
               >
                 {suggestion}
                 <ArrowRight className="h-4 w-4 shrink-0" aria-hidden="true" />
@@ -69,7 +69,7 @@ export function AskPortfolio() {
           ask(input);
           setInput("");
         }}
-        className="mt-6 flex items-center gap-2 rounded-full bg-background p-1.5 pl-5 text-foreground focus-within:ring-2 focus-within:ring-lime lg:mt-auto"
+        className="mt-6 flex items-center gap-2 rounded-full bg-background p-1.5 pl-5 text-foreground focus-within:ring-2 focus-within:ring-anchor-foreground focus-within:ring-offset-2 focus-within:ring-offset-anchor lg:mt-auto"
       >
         <input
           value={input}

@@ -214,7 +214,9 @@ Design tokens live in `src/app/globals.css` under `@theme inline` (Tailwind 4 is
 
 ## 📈 Performance & Quality
 
-[PageSpeed Insights](https://pagespeed.web.dev/analysis/https-www-fernandorios-dev-es/fhcpnlfjjf) on the live home page, standard Lighthouse conditions:
+> **To be re-measured.** These numbers predate the Bento redesign (2026-10-28); Lighthouse could not be run after it because the public PageSpeed API had used up its daily quota.
+
+[PageSpeed Insights](https://pagespeed.web.dev/analysis/https-www-fernandorios-dev-es/fhcpnlfjjf) on the live home page, previous design, standard Lighthouse conditions:
 
 | Category       | Mobile | Desktop |
 | -------------- | ------ | ------- |
