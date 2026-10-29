@@ -86,7 +86,7 @@
     "title": "About Me",
     "aboutMe": "About Me",
     "role": "Full-Stack Developer & ML Engineer",
-    "bio": "I came to Machine Learning from web development: five years as a freelance full-stack developer, two in Trust & Safety at TikTok and, in 2025, Le Wagon's Data Science & AI bootcamp.",
+    "bio": "My career started in web development and moved toward Machine Learning. At TikTok I saw up close how ML and large-scale data drive day-to-day operations, and that drew me to the challenge of understanding how those systems work.",
     "expertise": {
       "title": "What I can cover",
       "body": "Image classification with TensorFlow transfer learning and demand forecasting with Prophet, served through FastAPI and Docker, with Streamlit dashboards; the forecast runs on GCP Cloud Run. On the web side, CI with integration tests and continuous deployment on Vercel."
@@ -182,7 +182,7 @@
   },
   "metadata": {
     "title": "Fer Rios - Full-Stack Developer & ML Engineer",
-    "description": "Full-stack developer and ML Engineer: web apps built with Next.js, and computer vision and forecasting models served through FastAPI. Ex-QA Analyst at TikTok, 5 years freelance.",
+    "description": "Full-stack developer and ML Engineer: web apps built with Next.js, and computer vision and forecasting models served through FastAPI. Ex-QA Analyst at TikTok, freelance since 2021.",
     "siteName": "Fer Rios Portfolio",
     "keywords": [
       "data science",

@@ -33,6 +33,7 @@ export default async function HomePage({ params }: Props) {
     "@context": "https://schema.org",
     "@type": "Person",
     name: AUTHOR.name,
+    alternateName: "Fernando Ríos",
     url: absoluteUrl(locale),
     jobTitle: t("role"),
     description: tm("description"),
