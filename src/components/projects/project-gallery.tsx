@@ -10,6 +10,8 @@ import { ProjectImage } from "@/types/project";
 interface ProjectGalleryProps {
   images: ProjectImage[];
   title: string;
+  /** Anchor for the page's table of contents. */
+  id?: string;
 }
 
 interface NormalizedImage {
@@ -18,7 +20,7 @@ interface NormalizedImage {
   alt?: string;
 }
 
-export function ProjectGallery({ images, title }: ProjectGalleryProps) {
+export function ProjectGallery({ images, title, id }: ProjectGalleryProps) {
   const t = useTranslations("projects");
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
@@ -85,11 +87,12 @@ export function ProjectGallery({ images, title }: ProjectGalleryProps) {
   const hasMultiple = items.length > 1;
 
   return (
-    <div className="mb-8">
-      <h2 className="text-2xl font-bold tracking-tight mb-4">{t("project.gallery")}</h2>
+    // A full row of the page's Bento grid; each shot is its own module.
+    <section id={id} className="col-span-2 scroll-mt-24 lg:col-span-4">
+      <h2 className="sr-only">{t("project.gallery")}</h2>
 
       {/* One grid per orientation: mixing 16:9 and 9:16 tiles leaves ragged rows. */}
-      <div className="space-y-4">
+      <div className="space-y-3">
         {(["web", "mobile"] as const).map((type) => {
           const group = items
             .map((item, index) => ({ item, index }))
@@ -101,8 +104,8 @@ export function ProjectGallery({ images, title }: ProjectGalleryProps) {
               key={type}
               className={
                 type === "mobile"
-                  ? `grid grid-cols-2 gap-4 ${group.length > 3 ? "sm:grid-cols-4" : "sm:grid-cols-3"}`
-                  : "grid grid-cols-1 gap-4 sm:grid-cols-2"
+                  ? `grid grid-cols-2 gap-3 ${group.length > 3 ? "sm:grid-cols-4" : "sm:grid-cols-3"}`
+                  : "grid grid-cols-1 gap-3 sm:grid-cols-2"
               }
             >
               {group.map(({ item, index }, position) => (
@@ -111,7 +114,7 @@ export function ProjectGallery({ images, title }: ProjectGalleryProps) {
                   type="button"
                   onClick={() => setOpenIndex(index)}
                   // An odd count would strand the last desktop shot; the first one spans instead.
-                  className={`group relative overflow-hidden rounded-lg border border-border bg-muted focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
+                  className={`group relative overflow-hidden rounded-module bg-card focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
                     type === "mobile" ? "aspect-[9/16]" : "aspect-video"
                   } ${type === "web" && position === 0 && group.length % 2 === 1 ? "sm:col-span-2" : ""}`}
                   aria-label={t("project.galleryImageLabel", {
@@ -131,6 +134,12 @@ export function ProjectGallery({ images, title }: ProjectGalleryProps) {
                     }
                     className="object-cover object-top transition-transform duration-300 group-hover:scale-105"
                   />
+                  <span
+                    aria-hidden="true"
+                    className="absolute bottom-3 left-3 rounded-full bg-card/90 px-2.5 py-1 font-mono text-xs text-card-foreground"
+                  >
+                    {index + 1} / {items.length}
+                  </span>
                 </button>
               ))}
             </div>
@@ -235,6 +244,6 @@ export function ProjectGallery({ images, title }: ProjectGalleryProps) {
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </section>
   );
 }

@@ -185,35 +185,34 @@ html {
    but the tokens already hold complete oklch() colours, so that produced
    hsl(oklch(...)): invalid, and dropped by the browser. */
 .project-content {
-  font-size: 1.125rem;
-  line-height: 1.7;
-  color: var(--muted-foreground);
+  color: var(--foreground);
 }
 
 .project-content h2 {
-  font-size: 1.5rem;
+  font-size: 1.75rem;
+  line-height: 1.05;
   font-weight: 700;
-  margin: 2rem 0 1rem;
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 0.5rem;
-  color: var(--foreground);
+  letter-spacing: -0.02em;
+  margin: 2.5rem 0 1rem;
+}
+
+.project-content > h2:first-child {
+  margin-top: 0;
 }
 
 .project-content h3 {
   font-size: 1.25rem;
-  font-weight: 600;
-  margin: 1.5rem 0 0.75rem;
-  color: var(--foreground);
+  font-weight: 700;
+  margin: 1.75rem 0 0.5rem;
 }
 
 .project-content p {
   margin-bottom: 1.25rem;
-  line-height: 1.7;
 }
 
 .project-content ul {
-  margin: 1.5rem 0;
-  padding-left: 1.5rem;
+  margin: 1.25rem 0;
+  padding-left: 1.25rem;
   list-style-type: disc;
 }
 
@@ -222,14 +221,17 @@ html {
   margin-bottom: 0.5rem;
 }
 
+.project-content li::marker {
+  color: var(--lime-ink);
+}
+
 .project-content strong {
-  font-weight: 600;
-  color: var(--foreground);
+  font-weight: 700;
 }
 
 .project-content a {
-  color: var(--foreground);
   text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 .project-content a:hover {
