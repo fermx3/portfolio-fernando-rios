@@ -19,6 +19,20 @@ interface ProjectPageClientProps {
   project: Project;
 }
 
+/**
+ * Streamlit Community Cloud puts apps to sleep after a while without visitors,
+ * and the first visit lands on a "wake this app up" screen. Detected from the
+ * demo's own URL, so any future Streamlit demo gets the note too.
+ */
+function sleepsWhenIdle(url: string | undefined): boolean {
+  if (!url) return false;
+  try {
+    return new URL(url).hostname.endsWith(".streamlit.app");
+  } catch {
+    return false;
+  }
+}
+
 /** Spans for the data row, so 1–4 modules always fill the four columns. */
 const ROW_SPANS: Record<number, (1 | 2 | 4)[]> = {
   1: [4],
@@ -161,6 +175,9 @@ export function ProjectPageClient({ project }: ProjectPageClientProps) {
               </Button>
             )}
           </div>
+          {sleepsWhenIdle(project.liveUrl || project.demoUrl) && (
+            <p className="mt-3 text-xs text-muted-foreground">{t("project.demoWakeNote")}</p>
+          )}
         </Module>
 
         <Module span={2} bleed className="relative min-h-64 sm:min-h-80">
