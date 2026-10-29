@@ -1,0 +1,78 @@
+---
+title: "Vitrina"
+summary: "White-label, multi-tenant inventory and sales SaaS for piercing and tattoo studios and other small retailers, built with Next.js and Supabase, each business on its own subdomain."
+description: "Covers a catalog with variants, stock by lot and serial number, receiving, a point-of-sale counter, wholesale orders, price lists and sterilization batches. Business rules live in Postgres as constraints, triggers and RPCs."
+objective: "Run a studio's stock and sales, counter and wholesale, from one system."
+theme: "Inventory and retail for small businesses"
+impact: "A studio sells at the counter and to other studios from the same stock, and the system refuses to sell a piece that has not been sterilized."
+metric:
+  value: "1,700+"
+  label: "automated tests: pgTAP, Vitest and Playwright"
+date: "2026-10-28"
+status: "development"
+featured: true
+category: "full-stack"
+tags: ["Next.js", "React", "TypeScript", "Supabase", "PostgreSQL", "RLS", "SaaS", "Inventory Management", "Point of Sale"]
+technologies:
+  - "Next.js 16"
+  - "React 19"
+  - "TypeScript"
+  - "Supabase (Postgres, Auth, Storage, Edge Functions)"
+  - "TanStack Query"
+  - "TanStack Table"
+  - "React Hook Form"
+  - "Zod"
+  - "shadcn/ui"
+  - "Tailwind CSS 4"
+  - "Vitest"
+  - "Playwright"
+  - "pgTAP"
+  - "Vercel"
+repoUrl: "https://github.com/fermx3/vitrina"
+repoPrivate: true
+coverImage: "/images/projects/vitrina/cover.jpg"
+images:
+  - "/images/projects/vitrina/inventory.jpg"
+  - "/images/projects/vitrina/counter.jpg"
+  - "/images/projects/vitrina/branding.jpg"
+  - { src: "/images/projects/vitrina/counter-mobile.png", type: "mobile", alt: "Vitrina's counter on a phone" }
+challenges:
+  - "Computed stock left no row to lock, so concurrent sales could double-sell"
+  - "Several businesses share one database without seeing each other's data"
+  - "A piece that has not been sterilized must never reach a customer"
+solutions:
+  - "Append-only inventory ledger with materialized balances that each sale locks"
+  - "Row-level tenancy enforced by Postgres RLS"
+  - "Sterilization batches recorded on the ledger; selling an unsterilized piece is blocked"
+results:
+  - "Catalog, stock engine, receiving, counter, wholesale orders and branding built"
+  - "End-to-end tests on desktop, tablet and mobile, with axe accessibility checks"
+  - "Ten architecture decision records documenting the main trade-offs"
+---
+
+## Overview
+
+Built first for piercing and tattoo studios, which sell jewelry and supplies to the public and to other studios and use some of them in their own work. Vertical presets adapt it to other retailers.
+
+## Technical Implementation
+
+### Data
+
+Stock is an append-only ledger with materialized balances, and money is stored in cents. Constraints, triggers and RPCs keep the rules in the database, where pgTAP tests them.
+
+### Tenancy
+
+Each business runs on its own subdomain with its own logo, accent color and title font. RLS separates tenants, and roles set what owners, admins, staff and viewers can do.
+
+### Delivery
+
+Decisions are recorded as ADRs. CI runs unit, integration and end-to-end tests and deploys production in order.
+
+## Features
+
+- Catalog with variants, vertical presets and CSV import
+- Stock by location, lot and serial number, with expiry alerts
+- Counter with public and studio price lists
+- Wholesale orders and customer price lists
+- Dashboard with low stock and suggested reorders grouped by supplier
+- Branding settings with a live preview and a contrast check

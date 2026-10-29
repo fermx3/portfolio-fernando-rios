@@ -1,0 +1,72 @@
+---
+title: "Iron Fang"
+summary: "Sitio web y RPG gamificado para una cervecería artesanal de Ciudad de México, con Next.js y Supabase: catálogo, blog, un quiz que asigna una senda y códigos canjeables."
+description: "El visitante pasa una barrera de edad 18+, recorre las cervezas, lee el blog y hace un quiz que le asigna una senda. Con sesión, explora, combate y canjea códigos de las botellas en un RPG resuelto en el servidor."
+objective: "Mostrar las cervezas y llevar a quien compra a pedir por Instagram."
+theme: "Marca de cerveza artesanal y gamificación"
+impact: "La cervecería tiene su propio sitio en su dominio, y cada cerveza queda a un toque de un pedido por Instagram. Los códigos impresos en las botellas convierten una compra en avance dentro del juego."
+metric:
+  value: "117"
+  label: "tests unitarios, sobre todo del motor de combate"
+date: "2026-10-06"
+status: "production"
+featured: false
+category: "full-stack"
+tags: ["Next.js", "React", "TypeScript", "Supabase", "PostgreSQL", "RLS", "Gamificación", "Cerveza Artesanal"]
+technologies:
+  - "Next.js 16"
+  - "React 19"
+  - "TypeScript"
+  - "Supabase (Postgres, Auth, RLS)"
+  - "Resend"
+  - "Tailwind CSS 4"
+  - "Vitest"
+  - "Vercel"
+liveUrl: "https://www.ironfangbrew.com.mx"
+repoUrl: "https://github.com/fermx3/iron-fang-website"
+repoPrivate: true
+coverImage: "/images/projects/iron-fang/cover.jpg"
+images:
+  - "/images/projects/iron-fang/beers.jpg"
+  - "/images/projects/iron-fang/quiz.jpg"
+  - "/images/projects/iron-fang/blog.jpg"
+  - { src: "/images/projects/iron-fang/home-mobile.png", type: "mobile", alt: "Inicio de Iron Fang en un celular" }
+challenges:
+  - "Una respuesta lenta de Supabase detenía cada navegación unos 25 segundos"
+  - "Un combate resuelto en el navegador se podía manipular"
+  - "La página de la Fortaleza necesitaba cuatro viajes al servidor en serie"
+solutions:
+  - "El middleware aborta a los 3 segundos y trata el fallo como sesión cerrada"
+  - "El combate se resuelve en el servidor a partir de registros pendientes"
+  - "Verificación local del JWT, lecturas en caché y streaming la dejan en uno"
+results:
+  - "El middleware bajó de 347 ms a 31 ms al verificar el JWT localmente"
+  - "El balance del combate se comprueba con tests de probabilidad Monte Carlo"
+---
+
+## Resumen
+
+El sitio público y el juego comparten una sola app de Next.js. Cervezas, publicaciones y el quiz son datos tipados en el repo; los jugadores y su avance viven en Supabase.
+
+## Implementación Técnica
+
+### Autenticación
+
+Supabase Auth con seguridad a nivel de fila. El JWT de la sesión se verifica localmente, así que la mayoría de las peticiones no llega al servidor de autenticación, y un corte rápido mantiene el sitio usable cuando Supabase va lento.
+
+### Juego
+
+Exploración, combate, resistencia, aliados y un ranking semanal. El combate se decide en el servidor y sus probabilidades están cubiertas por tests de simulación.
+
+### Conversión
+
+No hay tienda: cada cerveza termina en una invitación a pedir por mensaje de Instagram.
+
+## Funcionalidad
+
+- Catálogo de cervezas con una página por cerveza
+- Quiz que asigna a cada visitante una senda
+- Blog con filtros por categoría
+- RPG: fortaleza, exploración, inventario, aliados y ranking semanal
+- Canje por código o QR de los códigos impresos en las botellas
+- Correos de bienvenida con Resend
