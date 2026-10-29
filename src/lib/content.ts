@@ -93,6 +93,22 @@ export const getFeaturedProjects = cache(async (locale: string = "en"): Promise<
   return featured.slice(0, FEATURED_LIMIT);
 });
 
+// The home page leads with one project, and messages.howIWork walks through
+// that same project step by step. Change both together.
+const HOME_LEAD_SLUG = "coffee-disease-detection";
+
+/**
+ * The projects the home page shows: the lead, plus two short cards. Short
+ * cards are featured projects with a metric, since a figure is all they show
+ * besides the title.
+ */
+export const getHomeProjects = cache(async (locale: string = "en") => {
+  const featured = await getFeaturedProjects(locale);
+  const lead = featured.find((p) => p.slug === HOME_LEAD_SLUG) ?? featured[0];
+  const short = featured.filter((p) => p !== lead && p.metric).slice(0, 2);
+  return { lead, short };
+});
+
 export const getProjectBySlug = cache(
   async (slug: string, locale: string = "en"): Promise<Project | null> => {
     try {

@@ -2,12 +2,10 @@
 
 import { Fragment, useEffect, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { ArrowUp, Mail, Sparkles } from "lucide-react";
+import { ArrowRight, Mail } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { AUTHOR } from "@/lib/site";
 import type { CorpusProject } from "@/lib/assistant/corpus";
 
@@ -54,7 +52,7 @@ function inline(text: string, titles: Map<string, string>): React.ReactNode[] {
           <Link
             key={`${slug}-${start}`}
             href={`/projects/${slug}`}
-            className="font-medium text-primary underline underline-offset-4 hover:no-underline"
+            className="font-medium underline underline-offset-4 hover:no-underline"
           >
             {title}
           </Link>
@@ -64,7 +62,7 @@ function inline(text: string, titles: Map<string, string>): React.ReactNode[] {
     }
 
     parts.push(
-      <strong key={`b-${start}`} className="font-medium text-foreground">
+      <strong key={`b-${start}`} className="font-semibold">
         {bold}
       </strong>
     );
@@ -102,7 +100,7 @@ function AssistantMessage({ text, projects }: { text: string; projects: CorpusPr
     <div className="space-y-2 leading-relaxed">
       {blocks.map((block, i) =>
         block.type === "ul" ? (
-          <ul key={i} className="list-disc space-y-1 pl-4 marker:text-lime-400">
+          <ul key={i} className="list-disc space-y-1 pl-4">
             {block.lines.map((item, j) => (
               <li key={j}>{inline(item, titles)}</li>
             ))}
@@ -205,110 +203,112 @@ export function AskPortfolio({ projects }: AskPortfolioProps) {
 
   const suggestions = [t("suggestions.first"), t("suggestions.second"), t("suggestions.third")];
 
+  // Rendered inside the home page's anchor module: every colour here is
+  // relative to it (currentColor, anchor-foreground), never to the page.
   return (
-    <Card className="flex h-full flex-col">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Sparkles className="h-4 w-4 text-lime-400" aria-hidden="true" />
-          {t("title")}
-          {/* Sits in the title, not the intro: the intro is only rendered
-              while the conversation is empty, so an indicator placed there
-              would disappear exactly when someone starts using this. */}
-          <Badge variant="secondary" className="ml-1 font-normal">
-            {t("aiLabel")}
-          </Badge>
-        </CardTitle>
-      </CardHeader>
+    <div className="flex h-full flex-col">
+      <div className="flex items-center justify-between gap-3">
+        <p className="text-sm font-medium">{t("title")}</p>
+        {/* Next to the title, not in the intro: the intro is only rendered
+            while the conversation is empty, so an indicator placed there would
+            disappear exactly when someone starts using this. */}
+        <Badge variant="ai">{t("aiLabel")}</Badge>
+      </div>
 
-      <CardContent className="flex flex-1 flex-col gap-4">
-        {/* The max height is what makes overflow-y-auto do anything. Without
-            it the card grew with every turn, which pushed the input and the
-            "reading…" line below the fold — so the indicator was there but
-            nobody could see it. */}
-        <div
-          ref={logRef}
-          className="min-h-56 max-h-96 flex-1 space-y-4 overflow-y-auto text-sm"
-          aria-live="polite"
-          aria-busy={pending}
-        >
-          {messages.length === 0 ? (
-            <div className="space-y-4">
-              <p className="text-muted-foreground">{t("intro")}</p>
-              <div className="flex flex-wrap gap-2">
-                {suggestions.map((suggestion) => (
+      {/* The max height is what makes overflow-y-auto do anything. Without it
+          the module grew with every turn, which pushed the input and the
+          "reading…" line below the fold. */}
+      <div
+        ref={logRef}
+        className="mt-5 max-h-96 flex-1 space-y-4 overflow-y-auto text-sm"
+        aria-live="polite"
+        aria-busy={pending}
+      >
+        {messages.length === 0 ? (
+          <div>
+            <h2 className="text-[2rem] leading-[1] font-bold tracking-[-0.025em] sm:text-h2">
+              {t("heading")}
+            </h2>
+            <p className="mt-4 max-w-md leading-relaxed opacity-75">{t("intro")}</p>
+            <ul className="mt-6 space-y-2">
+              {suggestions.map((suggestion) => (
+                <li key={suggestion}>
                   <button
-                    key={suggestion}
                     type="button"
                     onClick={() => send(suggestion)}
-                    className="rounded-full border border-border px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:border-lime-400 hover:text-foreground"
+                    className="flex w-full items-center justify-between gap-3 rounded-row bg-anchor-foreground/10 px-4 py-2.5 text-left transition-colors hover:bg-anchor-foreground/20 focus-visible:outline-2 focus-visible:outline-lime"
                   >
                     {suggestion}
+                    <ArrowRight className="h-4 w-4 shrink-0" aria-hidden="true" />
                   </button>
-                ))}
-              </div>
-            </div>
-          ) : (
-            messages.map((message, index) =>
-              message.role === "user" ? (
-                <p key={index} className="ml-auto w-fit max-w-[85%] rounded-lg bg-muted px-3 py-2">
-                  {message.content}
-                </p>
-              ) : (
-                <div key={index} className="max-w-[95%] text-muted-foreground">
-                  {message.content ? (
-                    <AssistantMessage text={message.content} projects={projects} />
-                  ) : (
-                    <span className="inline-flex items-center gap-2">
-                      <span className="flex gap-1" aria-hidden="true">
-                        <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-lime-400 [animation-delay:-0.3s]" />
-                        <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-lime-400 [animation-delay:-0.15s]" />
-                        <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-lime-400" />
-                      </span>
-                      {t("thinking")}
-                    </span>
-                  )}
-                </div>
-              )
-            )
-          )}
-        </div>
-
-        {error && (
-          <div className="rounded-lg bg-muted p-3 text-sm">
-            <p className="text-muted-foreground">{error}</p>
-            <a
-              href={`mailto:${AUTHOR.email}`}
-              className="mt-2 inline-flex items-center gap-2 font-medium text-primary underline underline-offset-4"
-            >
-              <Mail className="h-3.5 w-3.5" aria-hidden="true" />
-              {t("errors.emailInstead")}
-            </a>
+                </li>
+              ))}
+            </ul>
           </div>
+        ) : (
+          messages.map((message, index) =>
+            message.role === "user" ? (
+              <p
+                key={index}
+                className="ml-auto w-fit max-w-[85%] rounded-2xl bg-lime px-3.5 py-2 text-lime-foreground"
+              >
+                {message.content}
+              </p>
+            ) : (
+              <div key={index} className="max-w-[95%]">
+                {message.content ? (
+                  <AssistantMessage text={message.content} projects={projects} />
+                ) : (
+                  <span className="inline-flex items-center gap-2 opacity-75">
+                    <span className="flex gap-1" aria-hidden="true">
+                      <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-current [animation-delay:-0.3s]" />
+                      <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-current [animation-delay:-0.15s]" />
+                      <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-current" />
+                    </span>
+                    {t("thinking")}
+                  </span>
+                )}
+              </div>
+            )
+          )
         )}
+      </div>
 
-        <form
-          onSubmit={(event) => {
-            event.preventDefault();
-            send(input);
-          }}
-          className="flex gap-2"
-        >
-          <Input
-            value={input}
-            onChange={(event) => setInput(event.target.value)}
-            placeholder={t("placeholder")}
-            aria-label={t("placeholder")}
-            maxLength={MAX_LENGTH}
-            disabled={pending}
-          />
-          <Button type="submit" size="icon" disabled={pending || !input.trim()}>
-            <ArrowUp className="h-4 w-4" />
-            <span className="sr-only">{t("send")}</span>
-          </Button>
-        </form>
+      {error && (
+        <div className="mt-4 rounded-row bg-anchor-foreground/10 p-3 text-sm">
+          <p>{error}</p>
+          <a
+            href={`mailto:${AUTHOR.email}`}
+            className="mt-2 inline-flex items-center gap-2 font-medium underline underline-offset-4"
+          >
+            <Mail className="h-3.5 w-3.5" aria-hidden="true" />
+            {t("errors.emailInstead")}
+          </a>
+        </div>
+      )}
 
-        <p className="text-xs text-muted-foreground">{t("disclaimer")}</p>
-      </CardContent>
-    </Card>
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          send(input);
+        }}
+        className="mt-5 flex items-center gap-2 rounded-full bg-background p-1.5 pl-5 text-foreground focus-within:ring-2 focus-within:ring-lime"
+      >
+        <input
+          value={input}
+          onChange={(event) => setInput(event.target.value)}
+          placeholder={t("placeholder")}
+          aria-label={t("placeholder")}
+          maxLength={MAX_LENGTH}
+          disabled={pending}
+          className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground disabled:opacity-50"
+        />
+        <Button type="submit" variant="lime" size="sm" disabled={pending || !input.trim()}>
+          {t("send")}
+        </Button>
+      </form>
+
+      <p className="mt-3 text-xs opacity-60">{t("disclaimer")}</p>
+    </div>
   );
 }

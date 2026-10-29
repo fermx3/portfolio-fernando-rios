@@ -1,91 +1,50 @@
-"use client";
-
 import { useTranslations } from "next-intl";
-import { ArrowDown, Github, Linkedin, Mail } from "lucide-react";
+import { ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Container } from "@/components/layout/container";
-import { Section } from "@/components/layout/section";
-import { AUTHOR } from "@/lib/site";
+import { Module, ModuleLabel } from "@/components/ui/module";
 
 export function Hero() {
   const t = useTranslations("hero");
 
-  const handleScrollToProjects = () => {
-    document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  const handleScrollToContact = () => {
-    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-  };
-
   return (
-    <Section id="hero" className="min-h-screen flex items-center">
-      <Container>
-        <div className="max-w-4xl">
-          {/* The h1 is the LCP element and is deliberately not animated. Any
-              opacity-0 entrance -- JS or CSS -- delays when it actually paints,
-              and Chrome drops such elements as LCP candidates, which flatters
-              the metric without helping the user. It renders immediately; the
-              blocks below still stagger in. */}
-          <h1 className="text-4xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
-            <span className="block">{t("name")}</span>
-            <span className="block text-muted-foreground mt-2">{t("role")}</span>
-          </h1>
+    <Module as="section" span={2} id="hero" className="flex flex-col sm:p-9">
+      <ModuleLabel>{t("kicker")}</ModuleLabel>
 
-          <div className="fade-in-up" style={{ animationDelay: "0.16s" }}>
-            <p className="mt-5 max-w-2xl text-xl text-muted-foreground sm:text-2xl">
-              {t("description")}
-            </p>
-          </div>
+      {/* The h1 is the LCP element and is deliberately not animated. Any
+          opacity-0 entrance -- JS or CSS -- delays when it actually paints,
+          and Chrome drops such elements as LCP candidates, which flatters
+          the metric without helping the user. */}
+      <h1 className="mt-10 sm:mt-14">
+        {/* One word per line: "Fer / Rios" at display size. The trailing
+            spaces keep the accessible name "Fer Rios", not "FerRios". */}
+        {t("name")
+          .split(" ")
+          .map((word) => (
+            <span
+              key={word}
+              className="block text-[5rem] leading-[0.86] font-bold tracking-[-0.045em] sm:text-[6.5rem] lg:text-display"
+            >
+              {word}{" "}
+            </span>
+          ))}
+        <span className="mt-6 block text-h3 font-bold sm:text-[1.625rem]">{t("role")}</span>
+      </h1>
 
-          <div className="fade-in-up" style={{ animationDelay: "0.24s" }}>
-            <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:gap-6">
-              <Button size="lg" onClick={handleScrollToProjects} className="text-base">
-                {t("cta.primary")}
-                <ArrowDown className="ml-2 h-4 w-4" />
-              </Button>
-              <Button
-                variant="outline"
-                size="lg"
-                onClick={handleScrollToContact}
-                className="text-base"
-              >
-                {t("cta.secondary")}
-              </Button>
-            </div>
-          </div>
+      <p className="mt-3 max-w-md text-body text-muted-foreground">{t("description")}</p>
 
-          <div className="fade-in-up" style={{ animationDelay: "0.32s" }}>
-            <div className="mt-16 flex gap-6">
-              <Button variant="ghost" size="icon" asChild>
-                <a
-                  href="https://github.com/fermx3"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="GitHub"
-                >
-                  <Github className="h-5 w-5" />
-                </a>
-              </Button>
-              <Button variant="ghost" size="icon" asChild>
-                <a
-                  href="https://www.linkedin.com/in/riosafernando/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="LinkedIn"
-                >
-                  <Linkedin className="h-5 w-5" />
-                </a>
-              </Button>
-              <Button variant="ghost" size="icon" asChild>
-                <a href={`mailto:${AUTHOR.email}`} aria-label="Email">
-                  <Mail className="h-5 w-5" />
-                </a>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </Container>
-    </Section>
+      {/* Plain anchors: smooth scrolling comes from the stylesheet, so the hero
+          no longer needs to be a client component. */}
+      <div className="mt-8 flex flex-wrap gap-3">
+        <Button asChild>
+          <a href="#projects">
+            {t("cta.primary")}
+            <ArrowDown className="h-4 w-4" />
+          </a>
+        </Button>
+        <Button asChild variant="outline">
+          <a href="#contact">{t("cta.secondary")}</a>
+        </Button>
+      </div>
+    </Module>
   );
 }

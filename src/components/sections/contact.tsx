@@ -1,62 +1,48 @@
-"use client";
-
 import { useTranslations } from "next-intl";
-import { Mail } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Container } from "@/components/layout/container";
-import { Section } from "@/components/layout/section";
-import { FadeIn } from "@/components/motion/fade-in";
-import { AskPortfolio } from "@/components/assistant/ask-portfolio";
+import { Module } from "@/components/ui/module";
 import { AUTHOR } from "@/lib/site";
-import type { CorpusProject } from "@/lib/assistant/corpus";
 
-interface ContactProps {
-  /** slug + title for every project, so the assistant's citations can be
-      checked against the real list before they become links. */
-  projects: CorpusProject[];
-}
+const [mailbox, domain] = AUTHOR.email.split("@");
 
-export function Contact({ projects }: ContactProps) {
-  const t = useTranslations("contact");
+export function Contact() {
+  const t = useTranslations("contact.direct");
 
   return (
-    <Section id="contact">
-      <Container>
-        <FadeIn direction="up">
-          <div className="text-center">
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{t("title")}</h2>
-            <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">{t("subtitle")}</p>
-          </div>
-        </FadeIn>
-
-        <div className="mt-16 grid gap-8 lg:grid-cols-2">
-          <FadeIn direction="left" delay={0.1}>
-            <AskPortfolio projects={projects} />
-          </FadeIn>
-
-          {/* Direct Contact */}
-          <FadeIn direction="right" delay={0.2}>
-            <Card className="h-fit">
-              <CardHeader>
-                <CardTitle>{t("direct.title")}</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <Button asChild variant="outline" className="w-full justify-start">
-                  <a href={`mailto:${AUTHOR.email}`}>
-                    <Mail className="mr-2 h-4 w-4" />
-                    {t("direct.email")}
-                  </a>
-                </Button>
-                <div className="rounded-lg bg-muted p-4">
-                  <h4 className="font-medium mb-2">{t("direct.note.title")}</h4>
-                  <p className="text-sm text-muted-foreground">{t("direct.note.description")}</p>
-                </div>
-              </CardContent>
-            </Card>
-          </FadeIn>
-        </div>
-      </Container>
-    </Section>
+    <Module
+      as="section"
+      tone="anchor"
+      id="contact"
+      aria-labelledby="contact-title"
+      className="flex scroll-mt-20 flex-col"
+    >
+      <h2 id="contact-title" className="font-mono text-xs opacity-75">
+        {t("title")}
+      </h2>
+      {/* Broken after the @ so the address wraps there, not mid-word. */}
+      <a
+        href={`mailto:${AUTHOR.email}`}
+        className="mt-auto pt-8 text-2xl leading-tight font-bold underline-offset-4 hover:underline"
+      >
+        {mailbox}@<wbr />
+        {domain}
+      </a>
+      <p className="mt-3 text-sm opacity-75">{t("note.description")}</p>
+      <div className="mt-5 flex flex-wrap gap-2">
+        {[
+          { label: "GitHub", href: AUTHOR.github },
+          { label: "LinkedIn", href: AUTHOR.linkedin },
+        ].map((link) => (
+          <a
+            key={link.label}
+            href={link.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-full border border-anchor-foreground/40 px-3 py-1 text-xs font-medium transition-colors hover:bg-anchor-foreground/10"
+          >
+            {link.label} <span aria-hidden="true">↗</span>
+          </a>
+        ))}
+      </div>
+    </Module>
   );
 }
