@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -236,31 +235,4 @@ html {
 
 .project-content a:hover {
   text-decoration-thickness: 2px;
-}
-
-/* Entrance animation for above-the-fold content.
-   The hero used framer-motion, which server-renders the element at
-   opacity:0 and only reveals it once the client bundle hydrates. That
-   delayed LCP by ~1s and left the page invisible without JavaScript.
-   This runs from the stylesheet instead, so the content paints on the
-   first frame regardless of JS. */
-@keyframes fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-.fade-in-up {
-  animation: fade-in-up 0.5s ease-out both;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .fade-in-up {
-    animation: none;
-  }
 }

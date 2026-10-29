@@ -5,7 +5,16 @@
     "about": "About",
     "contact": "Contact",
     "toggleMenu": "Toggle menu",
-    "menu": "Menu"
+    "menu": "Menu",
+    "close": "Close",
+    "youAreHere": "you are here",
+    "projectCount": "{count} projects",
+    "assistant": "Assistant",
+    "theme": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "language": "Language",
+    "cv": "CV"
   },
   "hero": {
     "name": "Fer Rios",

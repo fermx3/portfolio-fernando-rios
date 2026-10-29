@@ -12,6 +12,14 @@ export const AUTHOR = {
   linkedin: "https://www.linkedin.com/in/riosafernando/",
 } as const;
 
+/**
+ * Path of the downloadable CV under public/, or null while there is none.
+ * The mobile menu already has a slot for it and shows the button only when
+ * this is set. The product brief lists a downloadable CV as a non-goal, so
+ * review that before turning it on.
+ */
+export const CV_PATH: string | null = null;
+
 /** Absolute URL for a locale-prefixed path: absoluteUrl("es", "/projects") */
 export function absoluteUrl(locale: string, path = ""): string {
   return `${SITE_URL}/${locale}${path}`;
