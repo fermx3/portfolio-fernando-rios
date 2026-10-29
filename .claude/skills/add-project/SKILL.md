@@ -34,15 +34,15 @@ public/images/projects/<slug>/     # cover.png + capturas
 ## Frontmatter
 
 Requeridos: `title`, `summary`, `category`, `tags[]`, `featured`, `date`, `repoUrl`, `coverImage`
-Opcionales: `description`, `objective`, `theme`, `impact`, `technologies[]`, `status`, `repoPrivate`, `liveUrl`, `demoUrl`, `images[]`, `challenges[]`, `solutions[]`, `results[]`
+Opcionales: `description`, `objective`, `theme`, `impact`, `metric`, `team`, `context`, `technologies[]`, `status`, `repoPrivate`, `liveUrl`, `demoUrl`, `images[]`, `challenges[]`, `solutions[]`, `results[]`
 
 **`slug` NO va en el frontmatter** — se deriva del nombre de archivo.
 
 ### Qué se comparte y qué se traduce
 
-| Idénticos en ambos archivos                                                                            | Traducidos                                                                                                                                  |
-| ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| `date`, `featured`, `category`, `coverImage`, `images`, `repoUrl`, `repoPrivate`, `liveUrl`, `demoUrl` | `title`, `summary`, `description`, `objective`, `theme`, `status`, `tags`, `technologies`, `challenges`, `solutions`, `results` y el cuerpo |
+| Idénticos en ambos archivos                                                                                                         | Traducidos                                                                                                                                                                          |
+| ----------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `date`, `featured`, `category`, `coverImage`, `images`, `repoUrl`, `repoPrivate`, `liveUrl`, `demoUrl`, `metric.value`, `team.size` | `title`, `summary`, `description`, `objective`, `theme`, `status`, `tags`, `technologies`, `challenges`, `solutions`, `results`, `metric.label`, `team.role`, `context` y el cuerpo |
 
 **Tags — antes de inventar uno, mira los que ya existen:**
 
@@ -64,6 +64,13 @@ description: "<Alcance técnico que summary no dice>" # ≤ 45 palabras
 objective: "<Problema que resuelve>" # ≤ 15 palabras
 theme: "<Dominio>" # ≤ 8 palabras; omitir si no aporta
 impact: "<Qué cambió y para quién>" # ≤ 2 frases; cierre de la página
+metric: # opcional; solo una cifra verificable en el repo
+  value: "<cifra>" # idéntico en EN y ES
+  label: "<qué mide>" # ≤ 10 palabras, se traduce
+team: # opcional; solo proyectos en equipo
+  size: 4 # idéntico en EN y ES
+  role: "<tu papel>"
+context: "<origen del proyecto>" # opcional
 date: "YYYY-MM-DD"
 status: "production" # enum: completed | production | archived (NO se traduce)
 featured: false

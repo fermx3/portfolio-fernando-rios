@@ -23,11 +23,25 @@ La página renderiza todos los campos. Cada uno tiene un solo trabajo y ninguno 
 | objective            | Problema que resuelve                | ≤ 15 palabras             |
 | theme                | Dominio. Si no aporta, se omite      | ≤ 8 palabras              |
 | impact               | Qué cambió y para quién (cierre)     | ≤ 2 frases                |
+| metric               | La cifra de la tarjeta y del detalle | 1 por proyecto, opcional  |
+| team / context       | Equipo y origen, fila de datos       | solo si existen           |
 | challenges/solutions | Pareados por índice                  | máx. 3, ≤ 15 palabras c/u |
 | results              | Solo verificables                    | máx. 3                    |
 | technologies         | Único lugar donde va el stack        | sin descripciones         |
 
 `summary`, `objective` y `theme` aparecen también en la tarjeta del listado; `impact` cierra la página de detalle.
+
+### metric
+
+`{ value, label }`: `value` es la cifra (`"96.8%"`, `"3"`, `"1,900+"`) y `label` la explica en ≤ 10 palabras (`"plataformas: web, iOS y Android"`). Se lee como una frase, `value` + `label`.
+
+- **Verificable en el repo del proyecto**, como `results`. Si no hay una cifra que se pueda comprobar, el proyecto va sin `metric`: la tarjeta funciona igual. Nunca rellenar con una cifra genérica.
+- **Que no caduque.** Si la cifra crece sola (tests, usuarios), escribe un piso redondeado con `+` (`"1,900+"`), que sigue siendo cierto cuando crece.
+- **`value` idéntico en EN y ES**, sin unidades que se traduzcan: la unidad va en `label` (`"7–90"` + `"días de pronóstico…"`). Separador de miles con coma y decimales con punto en los dos idiomas. `pnpm check:content` lo comprueba.
+
+### team y context
+
+`team: { size, role }` solo en proyectos hechos en equipo; `role` es tu papel (`"Liderazgo del proyecto"`). `context` dice de dónde salió el proyecto (`"Proyecto final, bootcamp de Data Science & AI de Le Wagon"`), ≤ 10 palabras. `size` se comparte entre EN y ES; `role` y `context` se traducen.
 
 ## Cuerpo (≤ 200 palabras)
 
