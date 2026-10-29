@@ -1,0 +1,78 @@
+---
+title: "Vitrina"
+summary: "SaaS de inventario y venta white-label y multi-tenant para estudios de piercing y tatuaje y otros comercios pequeños, con Next.js y Supabase, cada negocio en su subdominio."
+description: "Cubre catálogo con variantes, existencias por lote y número de serie, recepción, mostrador de venta, pedidos de mayoreo, listas de precios y lotes de esterilización. Las reglas de negocio viven en Postgres como constraints, triggers y RPCs."
+objective: "Llevar existencias y ventas de un estudio, mostrador y mayoreo, en un solo sistema."
+theme: "Inventario y venta para negocios pequeños"
+impact: "Un estudio vende en mostrador y a otros estudios desde las mismas existencias, y el sistema se niega a vender una pieza que no se ha esterilizado."
+metric:
+  value: "1,700+"
+  label: "pruebas automatizadas: pgTAP, Vitest y Playwright"
+date: "2026-10-28"
+status: "development"
+featured: true
+category: "full-stack"
+tags: ["Next.js", "React", "TypeScript", "Supabase", "PostgreSQL", "RLS", "SaaS", "Gestión de Inventario", "Punto de Venta"]
+technologies:
+  - "Next.js 16"
+  - "React 19"
+  - "TypeScript"
+  - "Supabase (Postgres, Auth, Storage, Edge Functions)"
+  - "TanStack Query"
+  - "TanStack Table"
+  - "React Hook Form"
+  - "Zod"
+  - "shadcn/ui"
+  - "Tailwind CSS 4"
+  - "Vitest"
+  - "Playwright"
+  - "pgTAP"
+  - "Vercel"
+repoUrl: "https://github.com/fermx3/vitrina"
+repoPrivate: true
+coverImage: "/images/projects/vitrina/cover.jpg"
+images:
+  - "/images/projects/vitrina/inventory.jpg"
+  - "/images/projects/vitrina/counter.jpg"
+  - "/images/projects/vitrina/branding.jpg"
+  - { src: "/images/projects/vitrina/counter-mobile.png", type: "mobile", alt: "Mostrador de Vitrina en un celular" }
+challenges:
+  - "Las existencias calculadas no dejaban fila que bloquear y dos ventas podían vender doble"
+  - "Varios negocios comparten una base sin ver los datos de los demás"
+  - "Una pieza sin esterilizar nunca debe llegar a un cliente"
+solutions:
+  - "Libro de inventario de solo inserción con saldos materializados que cada venta bloquea"
+  - "Separación por tenant a nivel de fila con RLS de Postgres"
+  - "Lotes de esterilización registrados en el libro; vender una pieza sin esterilizar se bloquea"
+results:
+  - "Catálogo, motor de existencias, recepción, mostrador, pedidos de mayoreo y marca construidos"
+  - "Pruebas end-to-end en escritorio, tablet y móvil, con revisión de accesibilidad con axe"
+  - "Diez registros de decisiones de arquitectura con las disyuntivas principales"
+---
+
+## Resumen
+
+Nació para estudios de piercing y tatuaje, que venden joyería e insumos al público y a otros estudios, y usan parte en su trabajo. Los presets por giro lo adaptan a otros comercios.
+
+## Implementación Técnica
+
+### Datos
+
+Las existencias son un libro de solo inserción con saldos materializados, y el dinero se guarda en centavos. Constraints, triggers y RPCs mantienen las reglas en la base, donde pgTAP las prueba.
+
+### Multi-tenant
+
+Cada negocio corre en su subdominio con su logo, color de acento y tipografía de títulos. RLS separa a los tenants, y los roles definen qué pueden hacer dueños, administradores, personal y lectores.
+
+### Entrega
+
+Las decisiones se registran como ADRs. El CI corre pruebas unitarias, de integración y end-to-end, y despliega producción en orden.
+
+## Funcionalidad
+
+- Catálogo con variantes, presets por giro e importación por CSV
+- Existencias por ubicación, lote y número de serie, con alertas de caducidad
+- Mostrador con listas de precios para público y para estudios
+- Pedidos de mayoreo y listas de precios por cliente
+- Panel con artículos por agotarse y reposición sugerida por proveedor
+- Ajustes de marca con vista previa en vivo y revisión de contraste
