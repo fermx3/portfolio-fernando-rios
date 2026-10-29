@@ -214,13 +214,11 @@ Design tokens live in `src/app/globals.css` under `@theme inline` (Tailwind 4 is
 
 ## 📈 Performance & Quality
 
-> **To be re-measured.** These numbers predate the Bento redesign (2026-10-28); Lighthouse could not be run after it because the public PageSpeed API had used up its daily quota.
-
-[PageSpeed Insights](https://pagespeed.web.dev/analysis/https-www-fernandorios-dev-es/fhcpnlfjjf) on the live home page, previous design, standard Lighthouse conditions:
+[PageSpeed Insights](https://pagespeed.web.dev/analysis/https-www-fernandorios-dev-es/74i93i9tsk) on the live home page after the Bento redesign (2026-10-28), standard Lighthouse conditions:
 
 | Category       | Mobile | Desktop |
 | -------------- | ------ | ------- |
-| Performance    | 98     | 100     |
+| Performance    | 99     | 100     |
 | Accessibility  | 100    | 100     |
 | Best Practices | 100    | 100     |
 | SEO            | 100    | 100     |
@@ -229,15 +227,15 @@ Lab metrics from the same run:
 
 | Metric                   | Mobile | Desktop |
 | ------------------------ | ------ | ------- |
-| First Contentful Paint   | 1.0 s  | 0.2 s   |
-| Largest Contentful Paint | 2.4 s  | 0.5 s   |
-| Total Blocking Time      | 20 ms  | 0 ms    |
+| First Contentful Paint   | 0.9 s  | 0.3 s   |
+| Largest Contentful Paint | 2.3 s  | 0.5 s   |
+| Total Blocking Time      | 0 ms   | 0 ms    |
 | Cumulative Layout Shift  | 0      | 0       |
-| Speed Index              | 1.5 s  | 0.5 s   |
+| Speed Index              | 1.4 s  | 0.5 s   |
 
 > Lab data under Lighthouse's simulated mobile throttling; the site has no CrUX field data yet.
 
-An [earlier run](https://pagespeed.web.dev/analysis/https-www-fernandorios-dev-es/a566211t3z) scored Accessibility 91 with mobile LCP at 2.6 s and Speed Index at 2.3 s. Three fixes closed the gap: labelling the icon-only social links, darkening muted text to clear the 4.5:1 AA threshold, and rendering the hero without waiting for the JavaScript bundle — it had been server-rendered at `opacity: 0` and only revealed on hydration.
+The first run after the redesign scored Accessibility 96 on desktop: Lighthouse caught the "How I work" animation mid-crossfade, with a row's text and background at similar lightness. The flow was rebuilt so the text stays ink on light in every frame. On the previous design, the [August run](https://pagespeed.web.dev/analysis/https-www-fernandorios-dev-es/fhcpnlfjjf) scored 98 / 100 / 100 / 100 on mobile, and an [earlier one](https://pagespeed.web.dev/analysis/https-www-fernandorios-dev-es/a566211t3z) scored Accessibility 91 with mobile LCP at 2.6 s and Speed Index at 2.3 s. Three fixes closed the gap: labelling the icon-only social links, darkening muted text to clear the 4.5:1 AA threshold, and rendering the hero without waiting for the JavaScript bundle — it had been server-rendered at `opacity: 0` and only revealed on hydration.
 
 Behind the numbers:
 

@@ -33,23 +33,23 @@ Portfolio bilingüe (EN/ES) de Fernando Ríos: data science, machine learning y 
 
 ### Métricas verificadas
 
-> **Pendiente de remedir.** Estas cifras son del diseño anterior. Después del rediseño Bento (2026-10-28) no se pudo correr Lighthouse: la API pública de PageSpeed agotó su cuota diaria. Hay que repetir la corrida en https://pagespeed.web.dev/ y actualizar esta tabla y la del README.
-
-PageSpeed Insights, [corrida del 2026-08-13](https://pagespeed.web.dev/analysis/https-www-fernandorios-dev-es/fhcpnlfjjf), diseño anterior:
+PageSpeed Insights, [corrida del 2026-10-28](https://pagespeed.web.dev/analysis/https-www-fernandorios-dev-es/74i93i9tsk), después del rediseño Bento:
 
 | Categoría      | Móvil | Desktop |
 | -------------- | ----- | ------- |
-| Performance    | 98    | 100     |
+| Performance    | 99    | 100     |
 | Accessibility  | 100   | 100     |
 | Best Practices | 100   | 100     |
 | SEO            | 100   | 100     |
 
 | Métrica     | Móvil | Desktop |
 | ----------- | ----- | ------- |
-| LCP         | 2.4 s | 0.5 s   |
+| LCP         | 2.3 s | 0.5 s   |
 | CLS         | 0     | 0       |
-| TBT         | 20 ms | 0 ms    |
-| Speed Index | 1.5 s | 0.5 s   |
+| TBT         | 0 ms  | 0 ms    |
+| Speed Index | 1.4 s | 0.5 s   |
+
+> La primera corrida tras el rediseño dio Accessibility 96 en desktop: Lighthouse capturó la animación de "Cómo trabajo" a mitad de un fundido, con texto y fondo de un renglón casi igual de claros. Se rehízo para que el texto quede siempre en tinta sobre claro. La auditoría de tokens solo mide estados en reposo: cualquier animación que toque color de texto o de fondo hay que revisarla también en sus frames intermedios.
 
 > El score de SEO de Lighthouse mide SEO técnico de una página aislada. **No detecta la ausencia de hreflang**, que es la carencia real de este sitio bilingüe (ver P1).
 
