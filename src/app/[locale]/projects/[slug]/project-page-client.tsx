@@ -28,7 +28,7 @@ const ROW_SPANS: Record<number, (1 | 2 | 4)[]> = {
 };
 
 const SECTION_TITLE =
-  "scroll-mt-36 text-[2rem] leading-none font-bold tracking-[-0.025em] lg:scroll-mt-24 sm:text-h2";
+  "scroll-mt-14 text-[2rem] leading-none font-bold tracking-[-0.025em] lg:scroll-mt-0 sm:text-h2";
 
 /**
  * The reading version of the detail page: one 680px column (about 70
@@ -203,7 +203,7 @@ export function ProjectPageClient({ project }: ProjectPageClientProps) {
 
           <article className="min-w-0 max-w-[680px] text-[1.0625rem] leading-relaxed sm:text-lg">
             {(project.objective || project.description) && (
-              <section id="objective" className="scroll-mt-36 lg:scroll-mt-24">
+              <section id="objective" className="scroll-mt-14 lg:scroll-mt-0">
                 {project.objective && (
                   <>
                     <h2 className="font-mono text-xs text-muted-foreground">
@@ -261,7 +261,7 @@ export function ProjectPageClient({ project }: ProjectPageClientProps) {
 
             {/* The body opens with its own "Overview" heading, so the anchor
                 goes on the wrapper rather than adding a second one. */}
-            <section id="overview" className="mt-14 scroll-mt-36 lg:scroll-mt-24">
+            <section id="overview" className="mt-14 scroll-mt-14 lg:scroll-mt-0">
               {/* Fernando's own markdown, rendered at build time: the one
                   place dangerouslySetInnerHTML is acceptable. */}
               <div
@@ -295,7 +295,7 @@ export function ProjectPageClient({ project }: ProjectPageClientProps) {
             tone="anchor"
             reveal
             id="impact"
-            className="grid scroll-mt-24 gap-4 p-6 sm:p-10 lg:grid-cols-[13rem_1fr] lg:gap-16"
+            className="grid gap-4 p-6 sm:p-10 lg:grid-cols-[13rem_1fr] lg:gap-16"
           >
             <h2 className="font-mono text-xs text-lime dark:text-anchor-foreground/75">
               {t("project.impact")}

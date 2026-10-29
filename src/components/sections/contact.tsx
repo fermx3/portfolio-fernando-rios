@@ -15,7 +15,7 @@ export function Contact() {
       reveal
       id="contact"
       aria-labelledby="contact-title"
-      className="flex scroll-mt-20 flex-col"
+      className="flex flex-col"
     >
       <h2 id="contact-title" className="font-mono text-xs opacity-75">
         {t("title")}

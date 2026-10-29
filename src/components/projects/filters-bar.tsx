@@ -61,7 +61,7 @@ export function FiltersBar({
             aria-label={t("search.placeholder")}
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="h-11 w-full rounded-full bg-secondary pr-10 pl-10 text-sm outline-none placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring [&::-webkit-search-cancel-button]:hidden"
+            className="h-11 w-full rounded-full bg-secondary pr-10 pl-10 text-base outline-none sm:text-sm placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring [&::-webkit-search-cancel-button]:hidden"
           />
           {searchQuery && (
             <button

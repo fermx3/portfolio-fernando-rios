@@ -157,9 +157,13 @@
   }
 }
 
-/* Smooth scroll behavior */
+/* Smooth scroll, and one offset for every anchor on the site: the sticky
+   nav (h-16) plus the grid's 12px gap, so a section lands just under the nav
+   with the same spacing the modules have between them. Sections used to set
+   their own scroll-mt-20/24/36, and none of them matched. */
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: calc(4rem + 12px);
 }
 
 /* Reduced motion support */

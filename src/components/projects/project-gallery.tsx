@@ -94,7 +94,7 @@ export function ProjectGallery({ images, title, id }: ProjectGalleryProps) {
 
   return (
     // A full row of the page's Bento grid; each shot is its own module.
-    <section id={id} className="reveal col-span-2 scroll-mt-24 lg:col-span-4">
+    <section id={id} className="reveal col-span-2 lg:col-span-4">
       <h2 className="sr-only">{t("project.gallery")}</h2>
 
       {/* One grid per orientation: mixing 16:9 and 9:16 tiles leaves ragged rows. */}
