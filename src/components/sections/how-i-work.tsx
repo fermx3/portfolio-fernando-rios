@@ -27,9 +27,10 @@ export function HowIWork({ project }: { project: Pick<Project, "slug" | "title">
         </Link>
       </div>
 
-      {/* The ink highlight runs down the steps on a loop, so the pipeline
-          reads as a flow; hovering stops it and it follows the pointer.
-          Motion and the reduced-motion fallback live in .flow-steps. */}
+      {/* A highlight (ink bar + lighter row) runs down the steps on a loop,
+          so the pipeline reads as a flow; hovering stops it and the hovered
+          row turns ink. Motion and the reduced-motion fallback live in
+          .flow-steps. */}
       <ol className="flow-steps mt-4 space-y-1.5">
         {steps.map((step, i) => (
           <li

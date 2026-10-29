@@ -352,15 +352,19 @@ html {
   }
 }
 
-/* "How I work": the ink highlight runs down the five steps on a 15s loop,
-   3s each, with a long eased crossfade into the next, so the pipeline reads
-   as a flow rather than a blink.
-   Hovering the list stops the loop and the highlight follows the pointer.
-   With reduced motion it rests on the last step, where the model meets a
-   user, which is the point of the hero's tagline. */
+/* "How I work": a highlight runs down the five steps on a 15s loop, 3s each,
+   with a long eased crossfade into the next, so the pipeline reads as a flow.
+   The highlight is an ink bar on the left plus a lighter row; the text stays
+   ink on light the whole time. An earlier version crossfaded the whole row to
+   ink, and every frame mid-fade had text and background at similar lightness:
+   Lighthouse caught one and failed colour contrast.
+   Hovering the list stops the loop and the hovered row turns fully ink (a
+   short, user-started transition). With reduced motion the last step, where
+   the model meets a user, rests fully ink. */
 .flow-steps > li {
   background-color: rgb(255 255 255 / 0.45);
   color: var(--lilac-foreground);
+  box-shadow: inset 0 0 0 0 var(--lilac-foreground);
   transition:
     background-color 200ms ease,
     color 200ms ease;
@@ -379,12 +383,12 @@ html {
   28%,
   100% {
     background-color: rgb(255 255 255 / 0.45);
-    color: var(--lilac-foreground);
+    box-shadow: inset 0 0 0 0 var(--lilac-foreground);
   }
   8%,
   20% {
-    background-color: var(--lilac-foreground);
-    color: var(--lilac);
+    background-color: rgb(255 255 255 / 0.9);
+    box-shadow: inset 5px 0 0 0 var(--lilac-foreground);
   }
 }
 
