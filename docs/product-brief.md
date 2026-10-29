@@ -159,12 +159,14 @@ El enum pasó a cuatro estados obligatorios, idénticos en EN y ES: `production`
 
 Asignación tras revisar cada repo (último push, actividad en 90 días, si la URL pública responde) y confirmar con Fer el uso real:
 
-| Estado        | Proyectos                                                                                 |
-| ------------- | ----------------------------------------------------------------------------------------- |
-| `production`  | nebluna-analytics, nebluna-app, portfolio-website, sonambulo-estudio-creativo, tattoo-kim |
-| `development` | companeros-en-ruta                                                                        |
-| `completed`   | cli-task-manager, coffee-disease-detection, log-analyser                                  |
-| `archived`    | corazonada-tattoo, perfectapp                                                             |
+| Estado        | Proyectos                                                                   |
+| ------------- | --------------------------------------------------------------------------- |
+| `production`  | nebluna-app, portfolio-website, sonambulo-estudio-creativo, tattoo-kim      |
+| `development` | companeros-en-ruta                                                          |
+| `completed`   | cli-task-manager, coffee-disease-detection, log-analyser, nebluna-analytics |
+| `archived`    | corazonada-tattoo, perfectapp                                               |
+
+`nebluna-analytics` es `completed` aunque la app siga en línea: fue el prototipo del pronóstico de demanda que se integrará en `nebluna-app`, no un servicio que alguien use.
 
 ### ~~Capturas de `nebluna-app`~~ · resuelto 2026-10-28
 

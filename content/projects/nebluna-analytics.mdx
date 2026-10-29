@@ -1,15 +1,16 @@
 ---
 title: "Nebluna Analytics"
-summary: "Demand forecasting app for coffee shops: a Prophet model behind a FastAPI service on GCP Cloud Run, with a Streamlit dashboard."
+summary: "Demand forecasting from daily sales: a Prophet model behind a FastAPI service on GCP Cloud Run, with a Streamlit dashboard."
 description: "Takes a daily sales CSV, generates the forecast and reports MAE, MAPE and RMSE on a held-out tail of the series."
-objective: "Serve a demand forecast from a browser instead of a notebook."
-theme: "Inventory planning for small coffee shops"
-impact: "A shop owner uploads a sales CSV and gets a demand forecast with its error margin, without writing code."
+objective: "Test demand forecasting before building it into Nebluna's operations system."
+theme: "Inventory planning for a coffee roastery"
+impact: "Showed that a demand forecast with its error margin can be served from a browser, without writing code: the piece that will later be built into Nebluna Inventory & Sales."
 metric:
   value: "7–90"
   label: "days ahead, forecast with 95% confidence bands"
+context: "Prototype of the demand forecast for Nebluna Inventory & Sales"
 date: "2026-08-03"
-status: "production"
+status: "completed"
 featured: true
 category: "data-science"
 tags: ["Time Series","Forecasting","Prophet","FastAPI","Streamlit","Docker","GCP","Python"]
@@ -40,7 +41,7 @@ solutions:
   - "Error metrics on held-out data shown with every forecast"
   - "Conda for local development, pip wheels only inside the Docker image"
 results:
-  - "API live on GCP Cloud Run and dashboard live on Streamlit Cloud"
+  - "API deployed on GCP Cloud Run and dashboard on Streamlit Cloud"
   - "OpenAPI docs generated from Pydantic request and response schemas"
   - "pytest suite covering data processing and every API endpoint"
 ---
