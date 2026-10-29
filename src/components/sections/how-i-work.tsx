@@ -1,7 +1,6 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Module } from "@/components/ui/module";
-import { cn } from "@/lib/utils";
 import type { Project } from "@/types/project";
 
 interface Step {
@@ -28,20 +27,15 @@ export function HowIWork({ project }: { project: Pick<Project, "slug" | "title">
         </Link>
       </div>
 
-      <ol className="group/steps mt-4 space-y-1.5">
+      {/* The ink highlight runs down the steps on a loop, so the pipeline
+          reads as a flow; hovering stops it and it follows the pointer.
+          Motion and the reduced-motion fallback live in .flow-steps. */}
+      <ol className="flow-steps mt-4 space-y-1.5">
         {steps.map((step, i) => (
           <li
             key={step.name}
-            className={cn(
-              "grid grid-cols-[2rem_1fr] items-baseline gap-x-3 gap-y-0.5 rounded-row px-4 py-2 text-sm transition-colors duration-200 sm:grid-cols-[2rem_7rem_1fr]",
-              // The ink highlight follows the pointer. At rest it sits on the
-              // last step, where the model meets a user, which is the point of
-              // the hero's tagline. Hover only: the steps are not controls, so
-              // they take no focus, and the resting state carries the meaning.
-              "bg-white/45 hover:bg-lilac-foreground hover:text-lilac",
-              i === steps.length - 1 &&
-                "bg-lilac-foreground text-lilac group-hover/steps:bg-white/45 group-hover/steps:text-lilac-foreground group-hover/steps:hover:bg-lilac-foreground group-hover/steps:hover:text-lilac"
-            )}
+            style={{ "--step": i } as React.CSSProperties}
+            className="grid grid-cols-[2rem_1fr] items-baseline gap-x-3 gap-y-0.5 rounded-row px-4 py-2 text-sm sm:grid-cols-[2rem_7rem_1fr]"
           >
             <span className="font-mono text-xs">{String(i + 1).padStart(2, "0")}</span>
             <span className="font-semibold">{step.name}</span>
