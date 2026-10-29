@@ -4,7 +4,8 @@
     "projects": "Projects",
     "about": "About",
     "contact": "Contact",
-    "toggleMenu": "Toggle menu"
+    "toggleMenu": "Toggle menu",
+    "menu": "Menu"
   },
   "hero": {
     "name": "Fer Rios",
