@@ -18,7 +18,7 @@
   },
   "hero": {
     "name": "Fer Rios",
-    "kicker": "Machine Learning · Full-Stack · Production systems",
+    "kicker": "Full-Stack · Machine Learning · Production systems",
     "role": "Full-Stack Developer & ML Engineer",
     "description": "From prototype to production: I train the model, deploy it and build the interface where it gets used.",
     "cta": {
@@ -174,7 +174,7 @@
       "title": "Ask my portfolio",
       "aiLabel": "AI",
       "heading": "Ask anything about my projects.",
-      "intro": "Ask about the projects on this site and I'll answer from what's actually written here, with a link to the project I'm drawing on. If you'd rather talk to Fer, say so and I'll pass along your details.",
+      "intro": "I answer from what's published on this site and link the project each answer comes from. If you'd rather talk to Fer, tell me and I'll pass on your details.",
       "placeholder": "Ask about a project…",
       "send": "Send",
       "thinking": "Reading the projects…",

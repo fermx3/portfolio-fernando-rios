@@ -16,18 +16,19 @@ Dos razones para el recorte: quien lee un portfolio escanea, no lee un artículo
 
 La página renderiza todos los campos. Cada uno tiene un solo trabajo y ninguno repite a otro:
 
-| Campo                | Trabajo                              | Tope                      |
-| -------------------- | ------------------------------------ | ------------------------- |
-| summary              | Qué es + con qué. Tarjeta y meta SEO | 1 frase, ≤ 30 palabras    |
-| description          | Alcance técnico que summary no dice  | ≤ 45 palabras             |
-| objective            | Problema que resuelve                | ≤ 15 palabras             |
-| theme                | Dominio. Si no aporta, se omite      | ≤ 8 palabras              |
-| impact               | Qué cambió y para quién (cierre)     | ≤ 2 frases                |
-| metric               | La cifra de la tarjeta y del detalle | 1 por proyecto, opcional  |
-| team / context       | Equipo y origen, fila de datos       | solo si existen           |
-| challenges/solutions | Pareados por índice                  | máx. 3, ≤ 15 palabras c/u |
-| results              | Solo verificables                    | máx. 3                    |
-| technologies         | Único lugar donde va el stack        | sin descripciones         |
+| Campo                | Trabajo                              | Tope                       |
+| -------------------- | ------------------------------------ | -------------------------- |
+| summary              | Qué es + con qué. Tarjeta y meta SEO | 1 frase, ≤ 30 palabras     |
+| description          | Alcance técnico que summary no dice  | ≤ 45 palabras              |
+| objective            | Problema que resuelve                | ≤ 15 palabras              |
+| theme                | Dominio. Si no aporta, se omite      | ≤ 8 palabras               |
+| impact               | Qué cambió y para quién (cierre)     | ≤ 2 frases                 |
+| metric               | La cifra de la tarjeta y del detalle | 1 por proyecto, opcional   |
+| team / context       | Equipo y origen, fila de datos       | solo si existen            |
+| metric/team/context  | Único lugar de su dato               | no se repite en otro campo |
+| challenges/solutions | Pareados por índice                  | máx. 3, ≤ 15 palabras c/u  |
+| results              | Solo verificables                    | máx. 3                     |
+| technologies         | Único lugar donde va el stack        | sin descripciones          |
 
 `summary`, `objective` y `theme` aparecen también en la tarjeta del listado; `impact` cierra la página de detalle.
 
@@ -38,6 +39,12 @@ La página renderiza todos los campos. Cada uno tiene un solo trabajo y ninguno 
 - **Verificable en el repo del proyecto**, como `results`. Si no hay una cifra que se pueda comprobar, el proyecto va sin `metric`: la tarjeta funciona igual. Nunca rellenar con una cifra genérica.
 - **Que no caduque.** Si la cifra crece sola (tests, usuarios), escribe un piso redondeado con `+` (`"1,900+"`), que sigue siendo cierto cuando crece.
 - **`value` idéntico en EN y ES**, sin unidades que se traduzcan: la unidad va en `label` (`"7–90"` + `"días de pronóstico…"`). Separador de miles con coma y decimales con punto en los dos idiomas. `pnpm check:content` lo comprueba.
+
+### Un dato, un solo campo
+
+- `metric`, `team` y `context` son el único lugar de su dato. Lo que va en `metric` no se repite en `summary`, `description`, `results` ni en el cuerpo. Lo que va en `team` o `context` no se repite en `description` ni en el cuerpo.
+- Si una advertencia acompaña a la cifra (muestra, condiciones de medición), va en `metric.label`, dentro del tope de ≤ 10 palabras: `"recall de enfermedades en test (EfficientNetB0, 25% del dataset)"`.
+- `pnpm check:content` falla si `metric.value` aparece tal cual en `description` o en `results`.
 
 ### team y context
 

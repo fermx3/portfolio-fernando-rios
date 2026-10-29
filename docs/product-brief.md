@@ -162,13 +162,15 @@ Pendiente:
 - **Proponer el conjunto de estados.** "En producción" se queda; faltan los intermedios que un visitante necesita para leer bien un proyecto, por ejemplo en desarrollo, demo o prototipo, entregado a un cliente o sin mantenimiento. Cada estado nuevo pasa por el enum de `src/lib/validations.ts`, `projects.status` en `messages/{en,es}.json`, `ProjectStatus` (solo `production` lleva lima) y las guías de contenido.
 - **Revisar el estado real de cada proyecto y actualizarlo.** Reparto actual:
 
-| Estado       | Proyectos                                                                                                  |
-| ------------ | ---------------------------------------------------------------------------------------------------------- |
-| `production` | coffee-disease-detection, corazonada-tattoo, nebluna-analytics, nebluna-app, perfectapp, portfolio-website |
-| `completed`  | cli-task-manager, log-analyser, sonambulo-estudio-creativo                                                 |
-| sin estado   | companeros-en-ruta, tattoo-kim                                                                             |
+| Estado       | Proyectos                                                                            |
+| ------------ | ------------------------------------------------------------------------------------ |
+| `production` | corazonada-tattoo, nebluna-analytics, nebluna-app, perfectapp, portfolio-website     |
+| `completed`  | cli-task-manager, coffee-disease-detection, log-analyser, sonambulo-estudio-creativo |
+| sin estado   | companeros-en-ruta, tattoo-kim                                                       |
 
-Dudas que esa revisión tiene que resolver: si un proyecto de bootcamp con demo en Streamlit (`coffee-disease-detection`) cuenta como producción, si los sitios de clientes siguen en línea y mantenidos, y qué estado corresponde a los dos proyectos que no declaran ninguno.
+`coffee-disease-detection` pasó a `completed` el 2026-10-28: es un proyecto de bootcamp con demo en Streamlit, no un servicio en producción.
+
+Dudas que esa revisión tiene que resolver: si los sitios de clientes siguen en línea y mantenidos, y qué estado corresponde a los dos proyectos que no declaran ninguno.
 
 ### ~~Capturas de `nebluna-app`~~ · resuelto 2026-10-28
 

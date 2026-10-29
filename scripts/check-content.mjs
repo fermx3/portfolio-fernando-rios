@@ -24,6 +24,7 @@ const FEATURED_LIMIT = 6;
 const problems = [];
 const tagsByFile = new Map();
 const sharedByFile = new Map();
+const dataByFile = new Map();
 
 /** Minimal frontmatter reader: scalars, dash lists and one level of nested
  *  keys (metric, team), line by line. */
@@ -79,6 +80,7 @@ for (const file of files) {
     continue;
   }
   const { data } = parsed;
+  dataByFile.set(file, data);
   const slug = file.replace(/\.es\.mdx$|\.mdx$/, "");
   const locale = file.endsWith(".es.mdx") ? "es" : "en";
 
@@ -150,6 +152,27 @@ for (const slug of slugs) {
     problems.push(
       `${slug}: ${en.length} tags in English but ${es.length} in Spanish; they are paired by position`
     );
+  }
+}
+
+// 11. metric is the only place for its figure: the value must not reappear in
+//     description or results. Matched as a whole token, so "3" does not hit
+//     "30" or "3.12".
+for (const [file, data] of dataByFile) {
+  const value = data.metric?.value;
+  if (!value) continue;
+  const escaped = value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const pattern = new RegExp(`(?<![\\w.,])${escaped}(?!\\w|[.,]\\d)`);
+  const fields = [
+    ["description", typeof data.description === "string" ? [data.description] : []],
+    ["results", Array.isArray(data.results) ? data.results : []],
+  ];
+  for (const [field, texts] of fields) {
+    if (texts.some((text) => pattern.test(text))) {
+      problems.push(
+        `${file}: metric value "${value}" repeated in ${field}; metric is the only place for it`
+      );
+    }
   }
 }
 
