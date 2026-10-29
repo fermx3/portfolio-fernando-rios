@@ -2,15 +2,14 @@
 
 import { useState, useMemo } from "react";
 import { useTranslations } from "next-intl";
-import { ArrowLeft } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/layout/container";
-import { Section } from "@/components/layout/section";
-import { FadeIn } from "@/components/motion/fade-in";
-import { ProjectGrid } from "@/components/projects/project-grid";
-import { FiltersBar } from "@/components/projects/filters-bar";
-import { Project } from "@/types/project";
+import { Bento, Module } from "@/components/ui/module";
+import { AskMini } from "@/components/assistant/ask-mini";
+import { ProjectCard } from "@/components/projects/project-card";
+import { FiltersBar, type SortKey } from "@/components/projects/filters-bar";
+import { Project, ProjectCategory } from "@/types/project";
 
 interface ProjectsPageClientProps {
   projects: Project[];
@@ -22,18 +21,21 @@ export function ProjectsPageClient({ projects, tags }: ProjectsPageClientProps) 
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [sortBy, setSortBy] = useState("featured");
+  const [sortBy, setSortBy] = useState<SortKey>("featured");
+
+  // In first-seen order, which follows the date sort from getAllProjects().
+  const categories = useMemo(
+    () => [...new Set(projects.map((p) => p.category))] as ProjectCategory[],
+    [projects]
+  );
 
   const filteredProjects = useMemo(() => {
-    // Always start with a fresh copy of all projects
     let filtered = projects.slice();
 
-    // Filter by category
     if (selectedCategory !== "all") {
       filtered = filtered.filter((project) => project.category === selectedCategory);
     }
 
-    // Filter by search query
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase().trim();
       filtered = filtered.filter(
@@ -44,14 +46,13 @@ export function ProjectsPageClient({ projects, tags }: ProjectsPageClientProps) 
       );
     }
 
-    // Filter by selected tags
+    // AND: every selected tag must be on the project.
     if (selectedTags.length > 0) {
       filtered = filtered.filter((project) =>
         selectedTags.every((tag) => project.tags.includes(tag))
       );
     }
 
-    // Sort projects
     const sorted = [...filtered];
     switch (sortBy) {
       case "featured":
@@ -78,87 +79,69 @@ export function ProjectsPageClient({ projects, tags }: ProjectsPageClientProps) 
     );
   };
 
-  return (
-    <Section className="min-h-screen">
-      <Container>
-        <div className="mb-8">
-          <FadeIn direction="up">
-            <Button variant="ghost" asChild className="mb-6">
-              <Link href="/">
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                {t("page.backToHome")}
-              </Link>
-            </Button>
-          </FadeIn>
+  const count = filteredProjects.length;
 
-          <FadeIn direction="up" delay={0.1}>
-            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
+  return (
+    <Container className="pt-2 pb-3">
+      <Bento>
+        <Module span={3} className="flex flex-col gap-6 sm:flex-row sm:items-end sm:p-9">
+          <div className="flex-1">
+            <Link
+              href="/"
+              className="font-mono text-xs text-muted-foreground underline-offset-4 hover:underline"
+            >
+              ← {t("page.backToHome")}
+            </Link>
+            <h1 className="mt-6 text-5xl leading-[0.95] font-bold tracking-[-0.035em] sm:text-h1">
               {t("page.allProjects")}
             </h1>
-            <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
+            <p className="mt-3 text-sm text-muted-foreground sm:text-body">
               {t("page.allProjectsDescription")}
             </p>
-          </FadeIn>
-        </div>
-
-        <div className="grid gap-8 lg:grid-cols-4">
-          <div className="lg:col-span-1">
-            <FadeIn direction="right" delay={0.2}>
-              <div className="sticky top-24">
-                <FiltersBar
-                  selectedCategory={selectedCategory}
-                  onCategoryChange={setSelectedCategory}
-                  searchQuery={searchQuery}
-                  onSearchChange={setSearchQuery}
-                  tags={tags}
-                  selectedTags={selectedTags}
-                  onTagToggle={handleTagToggle}
-                />
-              </div>
-            </FadeIn>
           </div>
+          {/* Announced, so a screen reader hears the result of each filter. */}
+          <p className="shrink-0 sm:text-right" aria-live="polite">
+            <span className="block text-5xl leading-none font-bold tracking-tight">{count}</span>
+            <span className="font-mono text-xs text-muted-foreground">
+              {count === 1 ? t("page.projectFound") : t("page.projectsFound")}
+            </span>
+          </p>
+        </Module>
 
-          <div className="lg:col-span-3">
-            <FadeIn direction="left" delay={0.3}>
-              <div className="mb-6 flex items-center justify-between">
-                <p className="text-sm text-muted-foreground">
-                  {filteredProjects.length}{" "}
-                  {filteredProjects.length === 1 ? t("page.projectFound") : t("page.projectsFound")}
-                </p>
+        <AskMini title={t("page.lookingFor")} example={t("page.askExample")} />
 
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  className="rounded-md border border-input bg-background px-3 py-2 text-sm"
-                >
-                  <option value="featured">{t("sort.featured")}</option>
-                  <option value="newest">{t("sort.newest")}</option>
-                  <option value="category">{t("sort.category")}</option>
-                </select>
-              </div>
+        <FiltersBar
+          categories={categories}
+          selectedCategory={selectedCategory}
+          onCategoryChange={setSelectedCategory}
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+          tags={tags}
+          selectedTags={selectedTags}
+          onTagToggle={handleTagToggle}
+          sortBy={sortBy}
+          onSortChange={setSortBy}
+        />
 
-              {filteredProjects.length > 0 ? (
-                <ProjectGrid projects={filteredProjects} />
-              ) : (
-                <div className="text-center py-12">
-                  <p className="text-muted-foreground">{t("empty")}</p>
-                  <Button
-                    variant="outline"
-                    className="mt-4"
-                    onClick={() => {
-                      setSelectedCategory("all");
-                      setSearchQuery("");
-                      setSelectedTags([]);
-                    }}
-                  >
-                    {t("page.clearAllFilters")}
-                  </Button>
-                </div>
-              )}
-            </FadeIn>
-          </div>
-        </div>
-      </Container>
-    </Section>
+        {count > 0 ? (
+          filteredProjects.map((project) => <ProjectCard key={project.slug} project={project} />)
+        ) : (
+          <Module span={4} className="py-12 text-center">
+            <p className="text-muted-foreground">{t("page.noResults")}</p>
+            <Button
+              variant="outline"
+              className="mt-4"
+              onClick={() => {
+                setSelectedCategory("all");
+                setSearchQuery("");
+                setSelectedTags([]);
+              }}
+            >
+              {t("page.clearAllFilters")}
+            </Button>
+          </Module>
+        )}
+      </Bento>
+    </Container>
   );
 }

@@ -30,9 +30,8 @@
       "backend-development": "Desarrollo backend",
       "categories": "Categorías",
       "tags": "Etiquetas",
-      "activeFilters": "Filtros activos"
+      "tagsActive": "{count, plural, one {# activa} other {# activas}}"
     },
-    "empty": "No hay proyectos destacados",
     "search": {
       "placeholder": "Buscar proyectos...",
       "clear": "Limpiar búsqueda"
@@ -40,13 +39,8 @@
     "sort": {
       "featured": "Destacados",
       "newest": "Más recientes",
-      "category": "Categoría"
-    },
-    "links": {
-      "demo": "Ver demo",
-      "repo": "Ver código",
-      "repoPrivate": "Repo privado",
-      "details": "Leer más"
+      "category": "Categoría",
+      "label": "Ordenar"
     },
     "page": {
       "backToHome": "Volver al inicio",
@@ -55,7 +49,10 @@
       "allProjectsDescription": "Todos los proyectos, con filtros por categoría y tecnología.",
       "projectsFound": "proyectos encontrados",
       "projectFound": "proyecto encontrado",
-      "clearAllFilters": "Limpiar todos los filtros"
+      "clearAllFilters": "Limpiar todos los filtros",
+      "lookingFor": "¿Buscas algo concreto? Pregúntale a mi portafolio.",
+      "askExample": "¿En qué usó FastAPI?",
+      "noResults": "Ningún proyecto coincide con estos filtros."
     },
     "project": {
       "viewDemo": "Ver demo",
@@ -76,10 +73,6 @@
       "solutions": "Cómo se resolvió",
       "results": "Resultados",
       "impact": "Impacto"
-    },
-    "card": {
-      "objective": "Objetivo",
-      "theme": "Tema"
     },
     "status": {
       "production": "En producción",
