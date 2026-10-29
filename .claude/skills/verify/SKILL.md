@@ -71,7 +71,7 @@ diff <(node -e "const f=(o,p='')=>Object.entries(o).flatMap(([k,v])=>typeof v===
 # c) Los campos estructurales deben coincidir en cada par
 cd content/projects
 for s in $(ls *.mdx | grep -v '\.es\.mdx$' | sed 's/\.mdx$//'); do
-  for f in featured date category coverImage repoUrl repoPrivate liveUrl demoUrl; do
+  for f in featured status date category coverImage repoUrl repoPrivate liveUrl demoUrl; do
     en=$(grep -m1 "^$f:" "$s.mdx"); es=$(grep -m1 "^$f:" "$s.es.mdx")
     [ "$en" = "$es" ] || echo "$s -> $f difiere: EN[$en] ES[$es]"
   done
@@ -79,7 +79,7 @@ done
 # Sin output = paridad correcta
 ```
 
-**No** compares `title`, `summary`, `description`, `objective`, `theme`, `status`, `tags`, `technologies`, `challenges`, `solutions`, `results` ni el cuerpo: esos se traducen a propósito. En particular `tags` **debe** estar en el idioma del archivo, porque `getAllTags()` es locale-aware y alimenta los filtros.
+**No** compares `title`, `summary`, `description`, `objective`, `theme`, `tags`, `technologies`, `challenges`, `solutions`, `results` ni el cuerpo: esos se traducen a propósito. En particular `tags` **debe** estar en el idioma del archivo, porque `getAllTags()` es locale-aware y alimenta los filtros.
 
 ## Trampa crítica
 

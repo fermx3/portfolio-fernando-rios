@@ -17,7 +17,7 @@ export interface CorpusProject {
   slug: string;
   title: string;
   coverImage: string;
-  status?: "completed" | "production" | "archived";
+  status: "production" | "development" | "completed" | "archived";
 }
 
 export interface Corpus {

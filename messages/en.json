@@ -90,6 +90,7 @@
     },
     "status": {
       "production": "In production",
+      "development": "In development",
       "completed": "Completed",
       "archived": "Archived"
     },

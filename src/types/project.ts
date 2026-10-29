@@ -21,7 +21,7 @@ export interface Project {
   tags: string[];
   technologies?: string[];
   featured: boolean;
-  status?: "completed" | "production" | "archived";
+  status: "production" | "development" | "completed" | "archived";
   date: string;
   repoUrl: string;
   repoPrivate?: boolean;

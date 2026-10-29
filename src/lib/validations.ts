@@ -50,9 +50,13 @@ export const projectSchema = z.object({
   tags: z.array(z.string()),
   technologies: z.array(z.string()).optional(),
   featured: z.boolean(),
-  // Closed set: it was a free string with "completed", "production" and
-  // "producción" all in use across the corpus.
-  status: z.enum(["completed", "production", "archived"]).optional(),
+  // Closed set, and required: the chip shows on the home page, the listing,
+  // the detail page and the assistant's citations.
+  //   production  - in real use, by the business or a client
+  //   development - still being built, not in real use yet
+  //   completed   - finished, with no live deployment in use
+  //   archived    - no longer maintained or used; kept as a sample of work
+  status: z.enum(["production", "development", "completed", "archived"]),
   // Calendar date only — formatDate() renders it in UTC to keep the day stable.
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "date must be a YYYY-MM-DD string"),
   repoUrl: z.string(),

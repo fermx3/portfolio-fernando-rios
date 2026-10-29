@@ -20,6 +20,7 @@ const CATEGORY_LABELS = {
 };
 const PUBLIC = "public";
 const FEATURED_LIMIT = 6;
+const STATUSES = ["production", "development", "completed", "archived"];
 
 const problems = [];
 const tagsByFile = new Map();
@@ -115,9 +116,16 @@ for (const file of files) {
 
   // 10. nested fields whose shared half must match between languages
   sharedByFile.set(file, {
+    status: data.status,
     "metric.value": data.metric?.value,
     "team.size": data.team?.size,
   });
+  // 12. status is required: it is the chip on every card and detail page
+  if (!STATUSES.includes(data.status)) {
+    problems.push(
+      `${file}: status must be one of ${STATUSES.join(", ")} (got ${data.status ?? "nothing"})`
+    );
+  }
   if (data.metric && !(data.metric.value && data.metric.label)) {
     problems.push(`${file}: metric needs both value and label`);
   }
@@ -176,7 +184,7 @@ for (const [file, data] of dataByFile) {
   }
 }
 
-// 10. metric.value and team.size are shared: only the labels are translated
+// 10. status, metric.value and team.size are shared: only labels are translated
 for (const slug of slugs) {
   const en = sharedByFile.get(`${slug}.mdx`);
   const es = sharedByFile.get(`${slug}.es.mdx`);

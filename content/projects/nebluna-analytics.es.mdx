@@ -1,15 +1,16 @@
 ---
 title: "Nebluna Analytics"
-summary: "App de pronóstico de demanda para cafeterías: un modelo Prophet detrás de un servicio FastAPI en GCP Cloud Run, con un dashboard en Streamlit."
+summary: "Pronóstico de demanda a partir de ventas diarias: un modelo Prophet detrás de un servicio FastAPI en GCP Cloud Run, con un dashboard en Streamlit."
 description: "Recibe un CSV de ventas diarias, genera el pronóstico y reporta MAE, MAPE y RMSE sobre una cola reservada de la serie."
-objective: "Servir un pronóstico de demanda desde el navegador en lugar de un notebook."
-theme: "Planeación de inventario para cafeterías pequeñas"
-impact: "El dueño de una cafetería sube un CSV de ventas y obtiene un pronóstico de demanda con su margen de error, sin escribir código."
+objective: "Probar el pronóstico de demanda antes de integrarlo al sistema de Nebluna."
+theme: "Planeación de inventario de una tostadora de café"
+impact: "Comprobó que un pronóstico de demanda con su margen de error se puede servir desde el navegador, sin escribir código: la pieza que después se integrará en Nebluna Inventario y Ventas."
 metric:
   value: "7–90"
   label: "días de pronóstico, con bandas de confianza del 95%"
+context: "Prototipo del pronóstico de demanda para Nebluna Inventario y Ventas"
 date: "2026-08-03"
-status: "production"
+status: "completed"
 featured: true
 category: "data-science"
 tags: ["Series de Tiempo","Pronóstico","Prophet","FastAPI","Streamlit","Docker","GCP","Python"]
@@ -40,7 +41,7 @@ solutions:
   - "Métricas de error sobre datos reservados, junto a cada pronóstico"
   - "Conda para desarrollo local, wheels de pip solo dentro de la imagen Docker"
 results:
-  - "API en GCP Cloud Run y dashboard en Streamlit Cloud, ambos en producción"
+  - "API desplegada en GCP Cloud Run y dashboard en Streamlit Cloud"
   - "Documentación OpenAPI generada a partir de los esquemas Pydantic de petición y respuesta"
   - "Suite de pytest que cubre el procesamiento de datos y todos los endpoints de la API"
 ---
