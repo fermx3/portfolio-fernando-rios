@@ -30,9 +30,8 @@
       "backend-development": "Backend Development",
       "categories": "Categories",
       "tags": "Tags",
-      "activeFilters": "Active filters"
+      "tagsActive": "{count, plural, one {# active} other {# active}}"
     },
-    "empty": "No Featured Projects",
     "search": {
       "placeholder": "Search projects...",
       "clear": "Clear search"
@@ -40,13 +39,8 @@
     "sort": {
       "featured": "Featured",
       "newest": "Newest",
-      "category": "Category"
-    },
-    "links": {
-      "demo": "View Demo",
-      "repo": "View Code",
-      "repoPrivate": "Private Repo",
-      "details": "Read More"
+      "category": "Category",
+      "label": "Sort"
     },
     "page": {
       "backToHome": "Back to Home",
@@ -55,7 +49,10 @@
       "allProjectsDescription": "Every project, with filters by category and technology.",
       "projectsFound": "projects found",
       "projectFound": "project found",
-      "clearAllFilters": "Clear all filters"
+      "clearAllFilters": "Clear all filters",
+      "lookingFor": "Looking for something specific? Ask my portfolio.",
+      "askExample": "What did he use FastAPI for?",
+      "noResults": "No project matches these filters."
     },
     "project": {
       "viewDemo": "View Demo",
@@ -76,10 +73,6 @@
       "solutions": "How it was solved",
       "results": "Results",
       "impact": "Impact"
-    },
-    "card": {
-      "objective": "Objective",
-      "theme": "Theme"
     },
     "status": {
       "production": "In production",
