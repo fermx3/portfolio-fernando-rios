@@ -7,9 +7,9 @@ interface ProjectGridProps {
   projects: Project[];
 }
 
-// Callers own the empty state: both ProjectsPageClient and FeaturedProjectsClient
-// guard on length > 0 and render their own translated message, so the branch that
-// used to live here was unreachable.
+// The caller owns the empty state: ProjectsPageClient guards on length > 0 and
+// renders its own translated message, so the branch that used to live here was
+// unreachable.
 export function ProjectGrid({ projects }: ProjectGridProps) {
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

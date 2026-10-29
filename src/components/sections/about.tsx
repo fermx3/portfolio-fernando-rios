@@ -1,214 +1,73 @@
 import { getTranslations } from "next-intl/server";
-import { Github, Linkedin, Mail } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Container } from "@/components/layout/container";
-import { Section } from "@/components/layout/section";
-import { FadeIn } from "@/components/motion/fade-in";
-import { StaggerContainer, StaggerItem } from "@/components/motion/stagger-container";
-import ProfilePicture from "@/components/ui/profile-picture";
-import { AUTHOR } from "@/lib/site";
+import { Module } from "@/components/ui/module";
 
 interface EducationItem {
   institution: string;
   program: string;
   date: string;
-  topics?: string[];
 }
 
 interface ExperienceItem {
   organization: string;
   role: string;
   date: string;
-  description: string;
+}
+
+interface Row {
+  title: string;
+  subtitle: string;
+  date: string;
 }
 
 interface AboutProps {
   locale: string;
 }
 
-const techStack = {
-  frontend: ["React", "Next.js", "TypeScript", "Tailwind CSS"],
-  backend: ["Node.js", "Python", "FastAPI", "PostgreSQL", "MongoDB"],
-  data: ["Pandas", "NumPy", "Scikit-learn", "TensorFlow", "Jupyter"],
-  tools: ["Git", "Docker", "Vercel", "VS Code", "Google Colab", "GCP"],
-};
-
+/**
+ * Bio beside a compact timeline. The expertise, education topics and stack that
+ * used to follow are gone from the page, but expertise and education stay in
+ * messages: buildProfile() reads them for the assistant.
+ */
 export async function About({ locale }: AboutProps) {
   const t = await getTranslations({ locale, namespace: "about" });
 
+  const rows: Row[] = [
+    ...(t.raw("experience.items") as ExperienceItem[]).map((item) => ({
+      title: item.organization,
+      subtitle: item.role,
+      date: item.date,
+    })),
+    ...(t.raw("education.items") as EducationItem[]).map((item) => ({
+      title: item.institution,
+      subtitle: item.program,
+      date: item.date,
+    })),
+  ];
+
   return (
-    <Section id="about" variant="muted">
-      <Container>
-        <FadeIn direction="up">
-          <h2 className="text-3xl font-bold tracking-tight text-center sm:text-4xl">
-            {t("title")}
-          </h2>
-        </FadeIn>
+    <Module
+      as="section"
+      span={3}
+      id="about"
+      className="grid scroll-mt-20 gap-8 sm:p-9 md:grid-cols-[1.3fr_1fr] md:gap-12"
+    >
+      <div>
+        <h2 className="font-mono text-xs text-muted-foreground">{t("aboutMe")}</h2>
+        <p className="mt-4 text-xl leading-snug font-medium sm:text-[1.375rem]">{t("bio")}</p>
+      </div>
 
-        <div className="mt-16 grid gap-8 lg:grid-cols-2 lg:gap-16">
-          {/* Profile Card - Solo */}
-          <FadeIn direction="left" delay={0.1}>
-            <div>
-              <Card className="relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-lime-500/10 via-transparent to-blue-500/10"></div>
-                <CardContent className="pt-8 pb-6 text-center relative">
-                  <div className="mb-6 flex justify-center">
-                    <div className="relative">
-                      <ProfilePicture className="ring-lime-400/30 shadow-xl" />
-                      {/* Availability dot. Decorative on its own -- what it
-                          means is spelled out by the "current" block below. */}
-                      <div
-                        aria-hidden="true"
-                        className="absolute -bottom-2 -right-2 w-6 h-6 bg-lime-400 rounded-full ring-4 ring-background"
-                      ></div>
-                    </div>
-                  </div>
-                  <h3 className="font-bold text-xl mb-2">Fer Rios</h3>
-                  <p className="text-muted-foreground text-sm">{t("role")}</p>
-
-                  {/* Social Links - Compact horizontal */}
-                  <div className="mt-6">
-                    <div className="flex justify-center gap-2">
-                      <Button variant="outline" size="sm" asChild>
-                        <a
-                          href="https://github.com/fermx3"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label="GitHub"
-                        >
-                          <Github className="h-4 w-4" />
-                        </a>
-                      </Button>
-                      <Button variant="outline" size="sm" asChild>
-                        <a
-                          href="https://www.linkedin.com/in/riosafernando/"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label="LinkedIn"
-                        >
-                          <Linkedin className="h-4 w-4" />
-                        </a>
-                      </Button>
-                      <Button variant="outline" size="sm" asChild>
-                        <a href={`mailto:${AUTHOR.email}`} aria-label="Email">
-                          <Mail className="h-4 w-4" />
-                        </a>
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </FadeIn>
-
-          {/* Bio, what the work covers, and what he is doing right now */}
-          <FadeIn direction="up" delay={0.2}>
-            <div className="space-y-8">
-              <div>
-                <h3 className="mb-4 text-lg font-semibold">{t("aboutMe")}</h3>
-                <p className="text-lg text-muted-foreground leading-relaxed">{t("bio")}</p>
-              </div>
-
-              <div>
-                <h3 className="mb-4 text-lg font-semibold">{t("expertise.title")}</h3>
-                <p className="text-lg text-muted-foreground leading-relaxed">
-                  {t("expertise.body")}
-                </p>
-              </div>
-
-              {/* Lime border ties this back to the availability dot on the
-                  profile picture, which otherwise signals nothing. */}
-              <div className="border-l-2 border-lime-400 pl-5">
-                <h3 className="mb-2 text-lg font-semibold">{t("current.title")}</h3>
-                <p className="text-muted-foreground leading-relaxed">{t("current.body")}</p>
-              </div>
-            </div>
-          </FadeIn>
-        </div>
-
-        {/* Experience and Education, side by side below the intro */}
-        <div className="mt-16 grid gap-8 lg:grid-cols-2 lg:gap-16">
-          <FadeIn direction="up" delay={0.3}>
-            <div>
-              <h3 className="mb-4 text-lg font-semibold">{t("experience.title")}</h3>
-              <div className="space-y-4">
-                {t.raw("experience.items").map((item: ExperienceItem, index: number) => (
-                  <Card key={index} className="hover:shadow-md transition-shadow">
-                    <CardContent className="pt-6">
-                      <div className="space-y-2">
-                        <h4 className="font-semibold text-foreground">{item.organization}</h4>
-                        <p className="text-muted-foreground">{item.role}</p>
-                        <p className="text-sm text-muted-foreground">{item.date}</p>
-                        <p className="text-sm text-muted-foreground pt-1">{item.description}</p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          </FadeIn>
-
-          <FadeIn direction="up" delay={0.4}>
-            <div>
-              <h3 className="mb-4 text-lg font-semibold">{t("education.title")}</h3>
-              <div className="space-y-4">
-                {t.raw("education.items").map((item: EducationItem, index: number) => (
-                  <Card key={index} className="hover:shadow-md transition-shadow">
-                    <CardContent className="pt-6">
-                      <div className="space-y-2">
-                        <h4 className="font-semibold text-foreground">{item.institution}</h4>
-                        <p className="text-muted-foreground">{item.program}</p>
-                        <p className="text-sm text-muted-foreground">{item.date}</p>
-                        {item.topics && item.topics.length > 0 && (
-                          <div className="flex flex-wrap gap-2 pt-2">
-                            {item.topics.map((topic) => (
-                              <Badge key={topic} variant="secondary">
-                                {topic}
-                              </Badge>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          </FadeIn>
-        </div>
-
-        {/* Tech Stack - Full width section below */}
-        <div className="mt-16">
-          <FadeIn direction="up" delay={0.5}>
-            <div>
-              <h3 className="mb-8 text-lg font-semibold">{t("techStack.title")}</h3>
-
-              <StaggerContainer className="space-y-6">
-                {Object.entries(techStack).map(([category, technologies]) => (
-                  <StaggerItem key={category}>
-                    <Card className="hover:shadow-md transition-shadow">
-                      <CardHeader className="pb-3">
-                        <CardTitle className="text-base">{t(`techStack.${category}`)}</CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="flex flex-wrap gap-2">
-                          {technologies.map((tech) => (
-                            <Badge key={tech} variant="secondary">
-                              {tech}
-                            </Badge>
-                          ))}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </StaggerItem>
-                ))}
-              </StaggerContainer>
-            </div>
-          </FadeIn>
-        </div>
-      </Container>
-    </Section>
+      <div>
+        <h2 className="font-mono text-xs text-muted-foreground">{t("experience.title")}</h2>
+        <ul className="mt-4 divide-y divide-line">
+          {rows.map((row) => (
+            <li key={row.title} className="py-3 first:pt-0">
+              <p className="text-sm font-bold">{row.title}</p>
+              <p className="text-sm">{row.subtitle}</p>
+              <p className="mt-0.5 font-mono text-xs text-muted-foreground">{row.date}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </Module>
   );
 }

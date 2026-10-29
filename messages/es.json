@@ -9,6 +9,7 @@
   },
   "hero": {
     "name": "Fer Rios",
+    "kicker": "Machine Learning · Full-Stack · Sistemas en producción",
     "role": "Desarrollador full-stack y ML Engineer",
     "description": "Del prototipo a producción: entreno el modelo, lo despliego y construyo la interfaz donde se usa.",
     "cta": {
@@ -18,7 +19,6 @@
   },
   "projects": {
     "title": "Proyectos destacados",
-    "subtitle": "Una selección de mi trabajo reciente en ciencia de datos, Machine Learning y desarrollo full-stack",
     "viewMore": "Ver todos los proyectos",
     "filters": {
       "all": "Todos",
@@ -33,7 +33,6 @@
       "activeFilters": "Filtros activos"
     },
     "empty": "No hay proyectos destacados",
-    "emptyDescription": "Por ahora no hay proyectos destacados.",
     "search": {
       "placeholder": "Buscar proyectos...",
       "clear": "Limpiar búsqueda"
@@ -81,10 +80,41 @@
     "card": {
       "objective": "Objetivo",
       "theme": "Tema"
-    }
+    },
+    "status": {
+      "production": "En producción",
+      "completed": "Completado",
+      "archived": "Archivado"
+    },
+    "allCount": "{projects} proyectos · {categories} categorías"
+  },
+  "howIWork": {
+    "title": "Cómo trabajo",
+    "example": "ej. {project}",
+    "steps": [
+      {
+        "name": "Problema",
+        "detail": "Detectar a tiempo, aunque cueste falsas alarmas"
+      },
+      {
+        "name": "Datos",
+        "detail": "Hojas en 5 clases, dataset desbalanceado"
+      },
+      {
+        "name": "Modelo",
+        "detail": "VGG16 · EfficientNetB0 · CNN propia"
+      },
+      {
+        "name": "Despliegue",
+        "detail": "FastAPI · Docker · Google Cloud Storage"
+      },
+      {
+        "name": "Interfaz",
+        "detail": "Streamlit: sube una foto, recibe el diagnóstico"
+      }
+    ]
   },
   "about": {
-    "title": "Sobre mí",
     "aboutMe": "Sobre mí",
     "role": "Desarrollador full-stack y ML Engineer",
     "bio": "Mi carrera empezó en el desarrollo web y fue avanzando hacia el Machine Learning. En TikTok vi de cerca cómo el ML y los datos a gran escala sostienen la operación diaria, y eso me llevó al reto de entender cómo funcionan esos sistemas.",
@@ -111,14 +141,7 @@
     },
     "current": {
       "title": "Ahora mismo",
-      "body": "Construyo Nebluna Café, mi marca de café tostado. De ahí salió Nebluna Analytics: el sistema de pronóstico de demanda que aparece en los proyectos, hecho para resolver un problema real del negocio. Abierto a roles de ML Engineer y a proyectos freelance de ML o data end to end."
-    },
-    "techStack": {
-      "title": "Stack tecnológico",
-      "frontend": "Frontend",
-      "backend": "Backend",
-      "data": "Datos y ML",
-      "tools": "Herramientas"
+      "body": "Construyo Nebluna Café, mi marca de café tostado. De ahí salió Nebluna Inventario y Ventas: el sistema de operación y tienda en línea, hecho para resolver un problema real del negocio. Abierto a roles de ML Engineer y a proyectos freelance de ML o data end to end."
     },
     "education": {
       "title": "Educación y certificaciones",
@@ -140,11 +163,10 @@
     }
   },
   "contact": {
-    "title": "Contacto",
-    "subtitle": "Si buscas un ML Engineer o necesitas un proyecto freelance de Machine Learning o datos, escríbeme.",
     "assistant": {
       "title": "Pregúntale a mi portafolio",
       "aiLabel": "IA",
+      "heading": "Pregunta lo que quieras sobre mis proyectos.",
       "intro": "Pregunta por los proyectos de este sitio y te respondo con lo que está escrito aquí, enlazando el proyecto del que sale la respuesta. Si prefieres hablar con Fer, dímelo y le paso tus datos.",
       "placeholder": "Pregunta por un proyecto…",
       "send": "Enviar",
@@ -163,10 +185,8 @@
       }
     },
     "direct": {
-      "title": "O contáctame directamente:",
-      "email": "Enviar email",
+      "title": "O contáctame directamente",
       "note": {
-        "title": "Correo directo",
         "description": "Para propuestas concretas o si prefieres no usar el asistente."
       }
     }
