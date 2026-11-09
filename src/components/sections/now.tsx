@@ -10,9 +10,10 @@ export function Now() {
       <Image
         src="/images/profile.png"
         alt=""
-        width={64}
-        height={64}
-        className="h-16 w-16 rounded-full object-cover"
+        width={96}
+        height={96}
+        quality={90}
+        className="h-24 w-24 rounded-full object-cover"
       />
       <h2 id="now" className="mt-6 font-mono text-xs">
         {t("current.title")}

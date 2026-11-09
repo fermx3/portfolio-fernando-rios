@@ -48,6 +48,9 @@ const nextConfig: NextConfig = {
       },
     ],
     formats: ["image/webp", "image/avif"],
+    // 75 is the default; 90 is for the profile photo, where AVIF at 75 smears
+    // a face at avatar size. Next 16 rejects any quality not listed here.
+    qualities: [75, 90],
   },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
